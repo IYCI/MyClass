@@ -99,15 +99,28 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onBackPressed() {
+        // pop title and fragment stack
+        CharSequence currentTitle = mTitleStack.peek();
         if (mNavigationDrawerFragment.isDrawerOpen())
             mNavigationDrawerFragment.closeDrawer();
+        else if(mTitleStack.peek().toString().equals(getString(R.string.title_MyClass)))
+            super.onBackPressed();
         else if (getFragmentManager().getBackStackEntryCount() > 1 ){
             getFragmentManager().popBackStack();
             mTitleStack.pop();
-            CharSequence currentTitle = mTitleStack.peek();
+
             mToolbar.setTitle(currentTitle);
         } else {
             super.onBackPressed();
+        }
+
+        // change navigation drawer selected
+        if (currentTitle.toString().equals(getString(R.string.title_MyClass))) {
+            onNavigationDrawerItemSelected(0);
+        } else if (currentTitle.toString().equals(getString(R.string.title_Reminder))) {
+            onNavigationDrawerItemSelected(1);
+        } else {
+            onNavigationDrawerItemSelected(2);
         }
     }
 
@@ -141,5 +154,7 @@ public class MainActivity extends ActionBarActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }
