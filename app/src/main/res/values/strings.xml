@@ -2,9 +2,15 @@
     <string name="app_name">MyClass</string>
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
-    <string name="action_settings">Settings</string>
+
+    <!-- for action overflow -->
+    <string name="action_settings">Import Courses</string>
+
     <string name="title_MyClass">MyClass</string>
     <string name="title_Reminder">Reminder</string>
     <string name="title_Settings">Settings</string>
     <string name="hello_blank_fragment">this is settings</string>
+
+    <!-- import dialog -->
+    <string name="import_dialog_title">Import Calender</string>
 </resources>

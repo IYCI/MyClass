@@ -124,6 +124,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         return items;
     }
 
+
+
     /**
      * Users of this fragment must call this method to set up the navigation drawer interactions.
      *
@@ -176,6 +178,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
         mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
     }
+
+
 
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;

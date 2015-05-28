@@ -1,12 +1,18 @@
 package com.example.jason.myclass;
 
+import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.Stack;
 
@@ -46,6 +52,8 @@ public class MainActivity extends ActionBarActivity
             mNavigationDrawerFragment.setUserData("Guest", "guest@miao.com", BitmapFactory.decodeResource(getResources(), R.drawable.avatar));
 
         }
+
+        checkFirstRun();
     }
 
     @Override
@@ -124,7 +132,44 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    public void checkFirstRun() {
+        SharedPreferences sp = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
+        boolean isFirstRun = sp.getBoolean("isFirstRun", true);
+        if (isFirstRun){
+            // display the dialog
+            showImportDialog();
+            sp.edit()
+                    .putBoolean("isFirstRun", false)
+                    .apply();
+        }
+    }
 
+    public void showImportDialog() {
+        final Dialog d = new Dialog(MainActivity.this);
+        d.setTitle(R.string.import_dialog_title);
+        d.setContentView(R.layout.dialog_import);
+        Button import_cal_btn = (Button) d.findViewById(R.id.import_cal_btn);
+
+        final EditText editText = (EditText) d.findViewById(R.id.editText);
+        final TextView text_display = (TextView) d.findViewById(R.id.import_display);
+
+
+
+        import_cal_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // set the text display the same as editText
+                //  test with whatever value u want
+                //  just replace editText.getText() with your charsequence
+                text_display.setText(editText.getText());
+
+            }
+        });
+
+
+        d.show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -149,6 +194,7 @@ public class MainActivity extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            showImportDialog();
             return true;
         }
 

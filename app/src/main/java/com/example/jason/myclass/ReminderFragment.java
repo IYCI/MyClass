@@ -14,6 +14,14 @@ public class ReminderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_reminder, container, false);
+        //return inflater.inflate(R.layout.fragment_reminder, container, false);
+
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_reminder, container, false);
+
+        // Make this {@link Fragment} listen for changes in both FABs.
+        //FloatingActionButton fab1 = (FloatingActionButton) rootView.findViewById(R.id.fab_1);
+        //fab1.setOnCheckedChangeListener(this);
+        return rootView;
     }
 }
