@@ -16,14 +16,16 @@
 
 package com.example.jason.myclass;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Outline;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.widget.Checkable;
 import android.widget.FrameLayout;
+
+
 
 /**
  * A Floating Action Button is a {@link Checkable} view distinguished by a circled
@@ -126,11 +128,24 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
      */
     @Override
     public boolean performClick() {
-        final Dialog d = new Dialog(getContext());
+        /*final Dialog d = new Dialog(getContext());
         d.setTitle(R.string.newEvent_dialog_title);
         d.setContentView(R.layout.dialog_add_event);
 
-        d.show();
+        d.show();*/
+
+
+        // 1. Instantiate an AlertDialog.Builder with its constructor
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext().getApplicationContext());
+
+        // 2. Chain together various setter methods to set the dialog characteristics
+                builder.setTitle(R.string.newEvent_dialog_title);
+
+        // 3. Get the AlertDialog from create()
+                AlertDialog dialog = builder.create();
+
+        dialog.setContentView(R.layout.dialog_add_event);
+        dialog.show();
         return super.performClick();
     }
 
