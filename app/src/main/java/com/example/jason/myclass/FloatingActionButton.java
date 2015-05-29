@@ -16,6 +16,7 @@
 
 package com.example.jason.myclass;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Outline;
 import android.util.AttributeSet;
@@ -125,6 +126,11 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
      */
     @Override
     public boolean performClick() {
+        final Dialog d = new Dialog(getContext());
+        d.setTitle(R.string.newEvent_dialog_title);
+        d.setContentView(R.layout.dialog_add_event);
+
+        d.show();
         return super.performClick();
     }
 

@@ -13,4 +13,8 @@
 
     <!-- import dialog -->
     <string name="import_dialog_title">Import Calender</string>
+
+    <!-- newEvent_dialog_title -->
+    <string name="newEvent_dialog_title">New Event</string>
+
 </resources>
