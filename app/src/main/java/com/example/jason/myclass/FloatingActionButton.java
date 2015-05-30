@@ -16,9 +16,10 @@
 
 package com.example.jason.myclass;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Outline;
-import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -123,29 +124,40 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
         //setChecked(!mChecked);
     }
 
+
+
+
     /**
      * Override performClick() so that we can toggle the checked state when the view is clicked
      */
     @Override
     public boolean performClick() {
-        /*final Dialog d = new Dialog(getContext());
-        d.setTitle(R.string.newEvent_dialog_title);
-        d.setContentView(R.layout.dialog_add_event);
-
-        d.show();*/
-
 
         // 1. Instantiate an AlertDialog.Builder with its constructor
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext().getApplicationContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         // 2. Chain together various setter methods to set the dialog characteristics
                 builder.setTitle(R.string.newEvent_dialog_title);
+        builder.setView(R.layout.dialog_add_event);
 
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked confirm button
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked cancel button
+
+            }
+        });
         // 3. Get the AlertDialog from create()
-                AlertDialog dialog = builder.create();
+                final AlertDialog dialog = builder.create();
 
-        dialog.setContentView(R.layout.dialog_add_event);
-        dialog.show();
+                        dialog.show();
+                dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
+                dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
+
         return super.performClick();
     }
 

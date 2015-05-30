@@ -6,15 +6,7 @@
     android:gravity="center"
 
     android:orientation="vertical">
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:elevation="3dp"
-        android:layout_marginLeft="5dip"
-        android:layout_marginRight="5dip"
-        android:background="#ff799ff1"
-        android:layout_alignTop="@+id/linearLayout"
-        android:layout_alignParentEnd="true" />
+
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -24,14 +16,6 @@
 
 
 
-        <Button
-            android:id="@+id/import_cal_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Confirm"
-            android:background="#ffffffff"
-            android:layout_below="@+id/dateBtn"
-            android:layout_alignParentEnd="true" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -69,15 +53,6 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:layout_marginRight="16dp"
-            android:id="@+id/Cancel_button"
-            android:background="#ffffffff"
-            android:layout_alignTop="@+id/import_cal_btn"
-            android:layout_toStartOf="@+id/import_cal_btn" />
 
 
     </RelativeLayout>
