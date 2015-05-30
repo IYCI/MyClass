@@ -140,7 +140,7 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
                 builder.setTitle(R.string.newEvent_dialog_title);
         builder.setView(R.layout.dialog_add_event);
 
-        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked confirm button
             }

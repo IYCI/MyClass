@@ -16,7 +16,7 @@
 
     <!-- newEvent_dialog_title -->
     <string name="newEvent_dialog_title">New Event</string>
-    <string name="confirm">Confirm</string>
+    <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
 
 </resources>

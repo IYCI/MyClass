@@ -1,61 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/add_event_layout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:gravity="center"
+    android:paddingTop="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
 
     android:orientation="vertical">
-
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="32dp"
-        android:id="@+id/linearLayout">
 
 
 
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/event_location"
-            android:text="enter location..."
+            android:hint="enter event name..."
+            android:id="@+id/event_name"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
              />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="enter event name..."
-            android:id="@+id/event_name"
+            android:id="@+id/event_location"
+            android:hint="enter location..."
+            android:layout_below="@+id/event_name"
+             />
+
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pick Date"
+            android:id="@+id/dateBtn"
+            android:textColor="#FF777777"
             android:layout_below="@+id/event_location"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+             />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pick Time"
+            android:id="@+id/TimeBtn"
+            android:textColor="#FF777777"
+            android:layout_below="@+id/dateBtn"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select Date"
-            android:id="@+id/dateBtn"
-            android:layout_below="@+id/TimeBtn"
-            android:layout_alignStart="@+id/TimeBtn"
-            android:layout_alignParentEnd="true" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select Time"
-            android:id="@+id/TimeBtn"
-            android:layout_below="@+id/event_name"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true" />
-
-
-
-    </RelativeLayout>
 
 
 </RelativeLayout>
