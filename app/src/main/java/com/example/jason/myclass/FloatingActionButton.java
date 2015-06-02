@@ -19,13 +19,17 @@ package com.example.jason.myclass;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Outline;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.Checkable;
+import android.widget.DatePicker;
 import android.widget.FrameLayout;
-
+import android.widget.TimePicker;
 
 
 /**
@@ -140,6 +144,8 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
                 builder.setTitle(R.string.newEvent_dialog_title);
         builder.setView(R.layout.dialog_add_event);
 
+
+
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked confirm button
@@ -152,11 +158,99 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
             }
         });
         // 3. Get the AlertDialog from create()
-                final AlertDialog dialog = builder.create();
+        final AlertDialog dialog = builder.create();
+        dialog.show();
 
-                        dialog.show();
-                dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
-                dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
+
+        // button for picking date
+        // create date picker dialog
+        final Button pick_date = (Button) dialog.findViewById(R.id.dateBtn);
+
+
+        pick_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder datePicker_builder = new AlertDialog.Builder(getContext());
+                datePicker_builder.setView(R.layout.dialog_add_event_date_picker);
+
+
+                datePicker_builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked cancel button
+
+                    }
+                });
+                final AlertDialog DatePicker_Dialog;
+                DatePicker_Dialog = datePicker_builder.create();
+                DatePicker_Dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+
+                DatePicker_Dialog.setButton(DatePicker_Dialog.BUTTON_POSITIVE, getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        final DatePicker mDatePicker = (DatePicker) DatePicker_Dialog.findViewById(R.id.datePicker);
+
+                        SharedPreferences new_event_dialog_buffer = getContext().getSharedPreferences("new_event_dialog_buffer", 0);
+                        SharedPreferences.Editor editor = new_event_dialog_buffer.edit();
+                        String date = mDatePicker.getYear() + "/" + mDatePicker.getMonth() + "/" + mDatePicker.getDayOfMonth();
+                        editor.putString("new_event_dialog_buffer", date);
+                        editor.apply();
+                        pick_date.setText(date);
+                        pick_date.setTextSize(22);
+                    }
+                });
+
+                DatePicker_Dialog.show();
+                DatePicker_Dialog.getButton(DatePicker_Dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
+                DatePicker_Dialog.getButton(DatePicker_Dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
+
+            }
+        });
+        /*SharedPreferences new_event_dialog_buffer = getContext().getSharedPreferences("new_event_dialog_buffer", 0);
+        String date = new_event_dialog_buffer.getString("new_event_dialog_buffer", "Pick Date");
+        Calendar mCalendar = Calendar.getInstance();
+
+        pick_date.setText(date);*/
+
+
+        // button for picking time
+        // create date picker dialog
+        final Button pick_time = (Button) dialog.findViewById(R.id.TimeBtn);
+        pick_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder timePicker_builder = new AlertDialog.Builder(getContext());
+                timePicker_builder.setView(R.layout.dialog_add_event_time_picker);
+                timePicker_builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked cancel button
+
+                    }
+                });
+                final AlertDialog TimePicker_Dialog = timePicker_builder.create();
+                TimePicker_Dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+                TimePicker_Dialog.setButton(TimePicker_Dialog.BUTTON_POSITIVE, getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        final TimePicker mTimePicker = (TimePicker) TimePicker_Dialog.findViewById(R.id.timePicker);
+                        SharedPreferences new_event_dialog_buffer = getContext().getSharedPreferences("new_event_dialog_buffer", 0);
+                        SharedPreferences.Editor editor = new_event_dialog_buffer.edit();
+                        String minute = "" + mTimePicker.getCurrentMinute();
+                        if (mTimePicker.getCurrentMinute() < 10) minute = "0" + minute;
+                        String time = mTimePicker.getCurrentHour() + " : " + minute;
+                        editor.putString("new_event_dialog_buffer", time);
+                        editor.apply();
+                        pick_time.setText(time);
+                        pick_time.setTextSize(32);
+                    }
+                });
+
+                TimePicker_Dialog.show();
+                TimePicker_Dialog.getButton(TimePicker_Dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
+                TimePicker_Dialog.getButton(TimePicker_Dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
+            }
+        });
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
 
         return super.performClick();
     }
