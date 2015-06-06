@@ -22,14 +22,18 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Outline;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TimePicker;
+
+import java.util.UUID;
 
 
 /**
@@ -166,6 +170,7 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
         // create date picker dialog
         final Button pick_date = (Button) dialog.findViewById(R.id.dateBtn);
 
+        //int year, month, day, hour, minute;
 
         pick_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,11 +194,21 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
                     public void onClick(DialogInterface dialog, int id) {
                         final DatePicker mDatePicker = (DatePicker) DatePicker_Dialog.findViewById(R.id.datePicker);
 
+                        // saving info to SharedPreferences
                         SharedPreferences new_event_dialog_buffer = getContext().getSharedPreferences("new_event_dialog_buffer", 0);
-                        SharedPreferences.Editor editor = new_event_dialog_buffer.edit();
+                        SharedPreferences.Editor buffer_editor = new_event_dialog_buffer.edit();
+                        buffer_editor.putInt("year", mDatePicker.getYear());
+                        buffer_editor.putInt("month", mDatePicker.getMonth());
+                        buffer_editor.putInt("day", mDatePicker.getDayOfMonth());
+
+                        //int year = new_event_dialog_buffer.getInt("new_event_dialog_buffer", "Pick Date");
+                        //year = mDatePicker.getYear();
+                        //month = mDatePicker.getMonth();
+                        //day = mDatePicker.getDayOfMonth();
                         String date = mDatePicker.getYear() + "/" + mDatePicker.getMonth() + "/" + mDatePicker.getDayOfMonth();
-                        editor.putString("new_event_dialog_buffer", date);
-                        editor.apply();
+                        //editor.putString("new_event_dialog_buffer", date);
+
+                        //editor.apply();
                         pick_date.setText(date);
                         pick_date.setTextSize(22);
                     }
@@ -205,11 +220,7 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
 
             }
         });
-        /*SharedPreferences new_event_dialog_buffer = getContext().getSharedPreferences("new_event_dialog_buffer", 0);
-        String date = new_event_dialog_buffer.getString("new_event_dialog_buffer", "Pick Date");
-        Calendar mCalendar = Calendar.getInstance();
 
-        pick_date.setText(date);*/
 
 
         // button for picking time
@@ -232,13 +243,21 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
                 TimePicker_Dialog.setButton(TimePicker_Dialog.BUTTON_POSITIVE, getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         final TimePicker mTimePicker = (TimePicker) TimePicker_Dialog.findViewById(R.id.timePicker);
+
+                        // saving info to SharedPreferences
                         SharedPreferences new_event_dialog_buffer = getContext().getSharedPreferences("new_event_dialog_buffer", 0);
-                        SharedPreferences.Editor editor = new_event_dialog_buffer.edit();
+                        SharedPreferences.Editor buffer_editor = new_event_dialog_buffer.edit();
+                        buffer_editor.putInt("hour", mTimePicker.getCurrentHour());
+                        buffer_editor.putInt("minute", mTimePicker.getCurrentMinute());
+
+                        //hour = mTimePicker.getCurrentHour();
+                        //minute = mTimePicker.getCurrentMinute();
                         String minute = "" + mTimePicker.getCurrentMinute();
                         if (mTimePicker.getCurrentMinute() < 10) minute = "0" + minute;
                         String time = mTimePicker.getCurrentHour() + " : " + minute;
-                        editor.putString("new_event_dialog_buffer", time);
-                        editor.apply();
+
+                        //editor.putString("new_event_dialog_buffer", time);
+                        //editor.apply();
                         pick_time.setText(time);
                         pick_time.setTextSize(32);
                     }
@@ -251,6 +270,33 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
         });
         dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
         dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
+
+        // insert into database
+        final ReminderDBHandler db = new ReminderDBHandler(getContext());
+        final EditText event_name= (EditText) dialog.findViewById(R.id.event_name);
+        final EditText event_location= (EditText) dialog.findViewById(R.id.event_location);
+
+        dialog.getButton(dialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                // User clicked confirm button
+                SharedPreferences new_event_dialog_buffer = getContext().getSharedPreferences("new_event_dialog_buffer", 0);
+                Log.d("FAB", "Title is : " + event_name.getText().toString());
+                db.addReminder(new Reminder_item(
+                        UUID.randomUUID().toString(),
+                        event_name.getText().toString(),
+                        event_location.getText().toString(),
+                        new_event_dialog_buffer.getInt("year", 0),
+                        new_event_dialog_buffer.getInt("day", 0),
+                        new_event_dialog_buffer.getInt("month", 0),
+                        new_event_dialog_buffer.getInt("hour", 0),
+                        new_event_dialog_buffer.getInt("minute", 0)
+                ));
+
+                dialog.dismiss();
+            }
+        });
+
+
 
         return super.performClick();
     }
