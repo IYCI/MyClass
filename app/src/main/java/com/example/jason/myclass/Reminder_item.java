@@ -22,7 +22,6 @@ public class Reminder_item {
         this.title = title;
         this.location = location;
         this.mClaendar = new GregorianCalendar(year,month,day,hour,minute);
-
     }
 
     // ctor for no hout and minute
@@ -53,6 +52,8 @@ public class Reminder_item {
     }
 
     public long get_unix_time(){
-        return this.mClaendar.getTime().getTime();
+        return this.mClaendar.getTimeInMillis();
     }
 }
+
+

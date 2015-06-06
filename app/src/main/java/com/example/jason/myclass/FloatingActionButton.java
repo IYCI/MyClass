@@ -199,13 +199,14 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
                         SharedPreferences.Editor buffer_editor = new_event_dialog_buffer.edit();
                         buffer_editor.putInt("year", mDatePicker.getYear());
                         buffer_editor.putInt("month", mDatePicker.getMonth());
+                        // Counting of months in the Calendar class is zero based,
+                        // so when we display, we add by one
+                        Log.d("buffer_editor", "Month is : " + mDatePicker.getMonth() + 1);
                         buffer_editor.putInt("day", mDatePicker.getDayOfMonth());
+                        buffer_editor.commit();
 
-                        //int year = new_event_dialog_buffer.getInt("new_event_dialog_buffer", "Pick Date");
-                        //year = mDatePicker.getYear();
-                        //month = mDatePicker.getMonth();
-                        //day = mDatePicker.getDayOfMonth();
-                        String date = mDatePicker.getYear() + "/" + mDatePicker.getMonth() + "/" + mDatePicker.getDayOfMonth();
+                        int month = mDatePicker.getMonth() + 1;
+                        String date = mDatePicker.getYear() + "/" + month + "/" + mDatePicker.getDayOfMonth();
                         //editor.putString("new_event_dialog_buffer", date);
 
                         //editor.apply();
@@ -249,7 +250,7 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
                         SharedPreferences.Editor buffer_editor = new_event_dialog_buffer.edit();
                         buffer_editor.putInt("hour", mTimePicker.getCurrentHour());
                         buffer_editor.putInt("minute", mTimePicker.getCurrentMinute());
-
+                        buffer_editor.commit();
                         //hour = mTimePicker.getCurrentHour();
                         //minute = mTimePicker.getCurrentMinute();
                         String minute = "" + mTimePicker.getCurrentMinute();
@@ -280,14 +281,16 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
             public void onClick(View view) {
                 // User clicked confirm button
                 SharedPreferences new_event_dialog_buffer = getContext().getSharedPreferences("new_event_dialog_buffer", 0);
-                Log.d("FAB", "Title is : " + event_name.getText().toString());
+
+                Log.d("FAB", "Month is : " + new_event_dialog_buffer.getInt("month", 0));
+                Log.d("FAB", "Day is : " + new_event_dialog_buffer.getInt("day", 0));
                 db.addReminder(new Reminder_item(
                         UUID.randomUUID().toString(),
                         event_name.getText().toString(),
                         event_location.getText().toString(),
                         new_event_dialog_buffer.getInt("year", 0),
-                        new_event_dialog_buffer.getInt("day", 0),
                         new_event_dialog_buffer.getInt("month", 0),
+                        new_event_dialog_buffer.getInt("day", 0),
                         new_event_dialog_buffer.getInt("hour", 0),
                         new_event_dialog_buffer.getInt("minute", 0)
                 ));

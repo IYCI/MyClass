@@ -1,9 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_height="70dp"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_margin="18dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
     >
 
     <!-- A CardView that contains a TextView -->
@@ -12,21 +15,83 @@
             android:id="@+id/card_view"
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:elevation="100dp"
             android:clickable="true"
-            card_view:cardCornerRadius="4dp"
+            card_view:cardCornerRadius="2dp"
             >
 
-
-
-
-            <TextView
-                android:id="@+id/TitleInCardView"
-
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp">
+                <RelativeLayout
+                    android:layout_width="223dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    >
+                    <TextView
+                        android:id="@+id/TitleInCardView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TitleHgggjH"
+                        android:textColor="#7f7f7f"
+                        android:gravity="center_vertical"
+                        android:textSize="24sp"
+                        android:clickable="true"
+                        android:layout_alignParentTop="true" />
+                    <TextView
+                        android:id="@+id/LocationInCardView"
+                        android:gravity="bottom"
+                        android:textColor="#7f7f7f"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="LocaTion"
+                        android:textSize="14sp"
+                        android:layout_below="@id/TitleInCardView"
+                        android:clickable="true"
+                        />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/NumberofDaysLeftInCardView"
+                        android:text="789"
+                        android:gravity="right|top"
+                        android:textColor="#7f7f7f"
+                        android:textSize="24sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true" />
+                    <TextView
+                        android:id="@+id/DaysLeftInCardView"
+                        android:text="Days left"
+                        android:gravity="right|bottom"
+                        android:textColor="#7f7f7f"
+                        android:textSize="10sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:layout_below="@+id/NumberofDaysLeftInCardView" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+
+
         </android.support.v7.widget.CardView>
     </LinearLayout>

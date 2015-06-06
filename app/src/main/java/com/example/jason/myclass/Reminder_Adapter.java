@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -21,10 +22,14 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mTextView;
+        public TextView mTitle;
+        public TextView mLocation;
+        public TextView mdaysLeft;
         public ViewHolder(View v) {
             super(v);
-            mTextView = (TextView) v.findViewById(R.id.TitleInCardView);
+            mTitle = (TextView) v.findViewById(R.id.TitleInCardView);
+            mLocation = (TextView) v.findViewById(R.id.LocationInCardView);
+            mdaysLeft = (TextView) v.findViewById(R.id.NumberofDaysLeftInCardView);
         }
     }
 
@@ -51,9 +56,20 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset.get(position).get_title());
-        Log.d("onBindViewHolder" ,"title is : " +  mDataset.get(position).get_title());
+        holder.mTitle.setText(mDataset.get(position).get_title());
+        holder.mLocation.setText(mDataset.get(position).get_location());
 
+        long event_time = mDataset.get(position).get_unix_time();
+        long now_time = GregorianCalendar.getInstance().getTime().getTime();
+        int days_left = (int) (event_time - now_time)/1000/60/60/24;
+
+        if(days_left < 0){
+            // delete it!!!
+        }
+        else holder.mdaysLeft.setText(Integer.toString(days_left));
+
+        Log.d("onBindViewHolder" ,"event_time is : " + event_time);
+        Log.d("onBindViewHolder" ,"now_time is : " +  now_time);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
