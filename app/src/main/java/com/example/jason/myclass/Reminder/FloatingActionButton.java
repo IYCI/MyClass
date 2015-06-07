@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.jason.myclass;
+package com.example.jason.myclass.Reminder;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -33,6 +33,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TimePicker;
+
+import com.example.jason.myclass.MainActivity;
+import com.example.jason.myclass.R;
+import com.example.jason.myclass.Reminder.ReminderDBHandler;
+import com.example.jason.myclass.Reminder.Reminder_Adapter;
+import com.example.jason.myclass.Reminder.Reminder_item;
 
 import java.util.UUID;
 

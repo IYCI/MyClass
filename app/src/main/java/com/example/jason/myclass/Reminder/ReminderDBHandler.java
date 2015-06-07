@@ -1,4 +1,4 @@
-package com.example.jason.myclass;
+package com.example.jason.myclass.Reminder;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -55,7 +55,7 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
      */
 
     // Adding new Reminder
-    void addReminder(Reminder_item reminder) {
+    public void addReminder(Reminder_item reminder) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();

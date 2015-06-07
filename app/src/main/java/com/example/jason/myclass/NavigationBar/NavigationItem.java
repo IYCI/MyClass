@@ -1,4 +1,4 @@
-package com.example.jason.myclass;
+package com.example.jason.myclass.NavigationBar;
 
 
 import android.graphics.drawable.Drawable;

@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         />
 
-    <com.example.jason.myclass.FloatingActionButton
+    <com.example.jason.myclass.Reminder.FloatingActionButton
         android:id="@+id/fab_1"
         android:layout_width="@dimen/fab_size"
         android:layout_height="@dimen/fab_size"
@@ -36,6 +36,6 @@
             android:duplicateParentState="true"
             android:focusableInTouchMode="false" />
 
-    </com.example.jason.myclass.FloatingActionButton>
+    </com.example.jason.myclass.Reminder.FloatingActionButton>
 
 </RelativeLayout>

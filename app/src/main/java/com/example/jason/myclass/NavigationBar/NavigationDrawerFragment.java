@@ -1,4 +1,4 @@
-package com.example.jason.myclass;
+package com.example.jason.myclass.NavigationBar;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -26,6 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.jason.myclass.R;
 
 import java.util.ArrayList;
 import java.util.List;

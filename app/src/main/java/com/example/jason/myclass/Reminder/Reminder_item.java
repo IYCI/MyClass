@@ -1,4 +1,4 @@
-package com.example.jason.myclass;
+package com.example.jason.myclass.Reminder;
 
 import java.util.GregorianCalendar;
 

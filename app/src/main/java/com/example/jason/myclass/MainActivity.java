@@ -14,6 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.jason.myclass.NavigationBar.NavigationDrawerCallbacks;
+import com.example.jason.myclass.NavigationBar.NavigationDrawerFragment;
+import com.example.jason.myclass.Reminder.ReminderFragment;
+
 import java.util.Stack;
 
 

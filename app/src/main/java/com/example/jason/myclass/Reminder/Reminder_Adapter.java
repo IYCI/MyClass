@@ -1,4 +1,4 @@
-package com.example.jason.myclass;
+package com.example.jason.myclass.Reminder;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.jason.myclass.R;
 
 import java.util.GregorianCalendar;
 import java.util.List;

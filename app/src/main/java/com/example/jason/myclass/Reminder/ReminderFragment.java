@@ -1,4 +1,4 @@
-package com.example.jason.myclass;
+package com.example.jason.myclass.Reminder;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.jason.myclass.R;
 
 import java.util.List;
 
