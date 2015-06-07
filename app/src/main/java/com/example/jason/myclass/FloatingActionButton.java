@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Outline;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -40,37 +41,8 @@ import java.util.UUID;
  * A Floating Action Button is a {@link Checkable} view distinguished by a circled
  * icon floating above the UI, with special motion behaviors.
  */
-public class FloatingActionButton extends FrameLayout implements Checkable {
+public class FloatingActionButton extends FrameLayout {
 
-    /**
-     * Interface definition for a callback to be invoked when the checked state
-     * of a compound button changes.
-     */
-    public static interface OnCheckedChangeListener {
-
-        /**
-         * Called when the checked state of a FAB has changed.
-         *
-         * @param fabView   The FAB view whose state has changed.
-         * @param isChecked The new checked state of buttonView.
-         */
-        void onCheckedChanged(FloatingActionButton fabView, boolean isChecked);
-    }
-
-    /**
-     * An array of states.
-     */
-    private static final int[] CHECKED_STATE_SET = {
-            android.R.attr.state_checked
-    };
-
-    private static final String TAG = "FloatingActionButton";
-
-    // A boolean that tells if the FAB is checked or not.
-    private boolean mChecked;
-
-    // A listener to communicate that the FAB has changed it's state
-    private OnCheckedChangeListener mOnCheckedChangeListener;
 
     public FloatingActionButton(Context context) {
         this(context, null, 0, 0);
@@ -103,37 +75,6 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
         // Finally, enable clipping to the outline, using the provider we set above
         setClipToOutline(true);
     }
-
-    /**
-     * Sets the checked/unchecked state of the FAB.
-     * @param checked
-     */
-    public void setChecked(boolean checked) {
-
-    }
-
-    /**
-     * Register a callback to be invoked when the checked state of this button
-     * changes.
-     *
-     * @param listener the callback to call on checked state change
-     */
-    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
-        //mOnCheckedChangeListener = listener;
-    }
-
-    @Override
-    public boolean isChecked() {
-        return mChecked;
-    }
-
-    @Override
-    public void toggle() {
-        //setChecked(!mChecked);
-    }
-
-
-
 
     /**
      * Override performClick() so that we can toggle the checked state when the view is clicked
@@ -203,7 +144,7 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
                         // so when we display, we add by one
                         Log.d("buffer_editor", "Month is : " + mDatePicker.getMonth() + 1);
                         buffer_editor.putInt("day", mDatePicker.getDayOfMonth());
-                        buffer_editor.commit();
+                        buffer_editor.apply();
 
                         int month = mDatePicker.getMonth() + 1;
                         String date = mDatePicker.getYear() + "/" + month + "/" + mDatePicker.getDayOfMonth();
@@ -250,7 +191,7 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
                         SharedPreferences.Editor buffer_editor = new_event_dialog_buffer.edit();
                         buffer_editor.putInt("hour", mTimePicker.getCurrentHour());
                         buffer_editor.putInt("minute", mTimePicker.getCurrentMinute());
-                        buffer_editor.commit();
+                        buffer_editor.apply();
                         //hour = mTimePicker.getCurrentHour();
                         //minute = mTimePicker.getCurrentMinute();
                         String minute = "" + mTimePicker.getCurrentMinute();
@@ -295,6 +236,14 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
                         new_event_dialog_buffer.getInt("minute", 0)
                 ));
 
+                MainActivity mainActivity = (MainActivity) getContext();
+                RecyclerView recyclerView = (RecyclerView) mainActivity.findViewById(R.id.reminder_recycler_view);
+
+                if (recyclerView != null) {
+                    Reminder_Adapter adapter = (Reminder_Adapter) recyclerView.getAdapter();
+                    adapter.updateView();
+                }
+
                 dialog.dismiss();
             }
         });
@@ -315,10 +264,6 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
 
     @Override
     protected int[] onCreateDrawableState(int extraSpace) {
-        final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
-        if (isChecked()) {
-            mergeDrawableStates(drawableState, CHECKED_STATE_SET);
-        }
-        return drawableState;
+        return super.onCreateDrawableState(extraSpace + 1);
     }
 }
