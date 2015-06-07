@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,15 @@ public class ReminderFragment extends Fragment {
         //String[] myDataset = {"123\nsdfsdf","345\n123","456\n123"};
 
         // specify an adapter (see also next example)
-        mAdapter = new Reminder_Adapter(myDataset);
+        mAdapter = new Reminder_Adapter(myDataset, getActivity());
+
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                Log.d("ReminderFragment", "Data set changed");
+            }
+        });
 
         mRecyclerView.setAdapter(mAdapter);
         return rootView;

@@ -1,3 +1,5 @@
+.DS_Store
+
 # Built application files
 *.apk
 *.ap_
@@ -12,11 +14,6 @@
 bin/
 gen/
 
-# Gradle files
-.gradle/
-build/
-/*/build/
-
 # Local configuration file (sdk path, etc)
 local.properties
 
@@ -25,3 +22,10 @@ proguard/
 
 # Log Files
 *.log
+
+# Android Studio
+*.iml
+.idea
+.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
+.gradle
+build/

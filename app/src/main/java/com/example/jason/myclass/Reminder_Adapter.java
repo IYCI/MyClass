@@ -1,5 +1,6 @@
 package com.example.jason.myclass;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import java.util.List;
 
 public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.ViewHolder> {
     private List<Reminder_item> mDataset;
+    private Context mContext;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -34,8 +36,9 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public Reminder_Adapter(List<Reminder_item> myDataset) {
-        mDataset = myDataset;
+    public Reminder_Adapter(List<Reminder_item> myDataset, Context context) {
+        this.mDataset = myDataset;
+        this.mContext = context;
     }
 
     // Create new views (invoked by the layout manager)
@@ -47,8 +50,7 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
                 .inflate(R.layout.reminderitem_cardview, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -63,7 +65,7 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
         long now_time = GregorianCalendar.getInstance().getTime().getTime();
         int days_left = (int) (event_time - now_time)/1000/60/60/24;
 
-        if(days_left < 0){
+        if (days_left < 0){
             // delete it!!!
         }
         else holder.mdaysLeft.setText(Integer.toString(days_left));
@@ -76,5 +78,11 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    public void updateView() {
+        ReminderDBHandler db = new ReminderDBHandler(mContext);
+        mDataset = db.getAllReminders();
+        notifyDataSetChanged();
     }
 }
