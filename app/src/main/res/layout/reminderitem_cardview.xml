@@ -3,6 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:id="@+id/card_view_Layout"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginTop="4dp"
@@ -13,11 +14,13 @@
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/card_view"
+
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:elevation="100dp"
+            android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
             card_view:cardCornerRadius="2dp"
             >
@@ -26,10 +29,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                >
                 <RelativeLayout
                     android:layout_width="223dp"
                     android:layout_height="wrap_content"
+                    android:id="@+id/left_relative_Layout"
                     android:orientation="vertical"
                     android:padding="16dp"
                     >
@@ -41,7 +45,6 @@
                         android:textColor="#7f7f7f"
                         android:gravity="center_vertical"
                         android:textSize="24sp"
-                        android:clickable="true"
                         android:layout_alignParentTop="true" />
                     <TextView
                         android:id="@+id/LocationInCardView"
@@ -52,7 +55,6 @@
                         android:text="LocaTion"
                         android:textSize="14sp"
                         android:layout_below="@id/TitleInCardView"
-                        android:clickable="true"
                         />
                 </RelativeLayout>
 
@@ -66,24 +68,23 @@
 
                     <TextView
                         android:id="@+id/NumberofDaysLeftInCardView"
-                        android:text="789"
                         android:gravity="right|top"
                         android:textColor="#7f7f7f"
                         android:textSize="24sp"
+                        android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentTop="true" />
                     <TextView
                         android:id="@+id/DaysLeftInCardView"
-                        android:text="Days left"
+                        android:text="Days Left"
                         android:gravity="right|bottom"
                         android:textColor="#7f7f7f"
-                        android:textSize="10sp"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-light"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
                         android:layout_below="@+id/NumberofDaysLeftInCardView" />
                 </RelativeLayout>
 

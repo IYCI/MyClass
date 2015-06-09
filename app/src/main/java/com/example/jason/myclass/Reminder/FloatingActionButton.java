@@ -153,7 +153,7 @@ public class FloatingActionButton extends FrameLayout {
                         buffer_editor.apply();
 
                         int month = mDatePicker.getMonth() + 1;
-                        String date = mDatePicker.getYear() + "/" + month + "/" + mDatePicker.getDayOfMonth();
+                        String date = mDatePicker.getYear() + "-" + month + "-" + mDatePicker.getDayOfMonth();
                         //editor.putString("new_event_dialog_buffer", date);
 
                         //editor.apply();

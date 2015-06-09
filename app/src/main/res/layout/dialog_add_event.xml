@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:hint="enter event name..."
             android:id="@+id/event_name"
+
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
              />

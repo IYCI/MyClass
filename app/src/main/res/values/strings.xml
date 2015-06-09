@@ -14,9 +14,12 @@
     <!-- import dialog -->
     <string name="import_dialog_title">Import Calender</string>
 
-    <!-- newEvent_dialog_title -->
+    <!-- newEvent_dialog -->
     <string name="newEvent_dialog_title">New Event</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
 
+    <!-- editEvent dialog -->
+    <string name="edit_Event_dialog_title">Edit Event</string>
+    <string name="delete">Delete</string>
 </resources>
