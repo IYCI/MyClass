@@ -117,6 +117,11 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
         notifyDataSetChanged();
     }
 
+    public void removeAt(int position) {
+        dbItemRemove(position);
+        mDataset.remove(position);
+        notifyItemRemoved(position);
+    }
 
     public void dbItemRemove(int position){
         String mUUID_string = mDataset.get(position).get_id();

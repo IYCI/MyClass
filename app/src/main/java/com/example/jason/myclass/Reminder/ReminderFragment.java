@@ -233,7 +233,7 @@ public class ReminderFragment extends Fragment {
                     public void onClick(View view) {
                         // User clicked confirm button
                         SharedPreferences new_event_dialog_buffer = view.getContext().getSharedPreferences("new_event_dialog_buffer", 0);
-
+                        SharedPreferences.Editor buffer_editor = new_event_dialog_buffer.edit();
                         Log.d("FAB", "Month is : " + new_event_dialog_buffer.getInt("month", 0));
                         Log.d("FAB", "Day is : " + new_event_dialog_buffer.getInt("day", 0));
                         db.addReminder(new Reminder_item(
@@ -246,6 +246,7 @@ public class ReminderFragment extends Fragment {
                                 new_event_dialog_buffer.getInt("hour", 0),
                                 new_event_dialog_buffer.getInt("minute", 0)
                         ));
+                        buffer_editor.clear().apply();
 
                         MainActivity mainActivity = (MainActivity) getActivity();
                         RecyclerView recyclerView = (RecyclerView) mainActivity.findViewById(R.id.reminder_recycler_view);
@@ -269,21 +270,10 @@ public class ReminderFragment extends Fragment {
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // need to delete from DB!!!!
-                        // ****************
-                        // further more, we also need a clean data base button, cuz now DB is not synch with
-                        // the list view any more
-                        // we can do it manuel it by cleaning cache
-                        // ****************
-                        //mAdapter.mDataset.remove(position);
+
                         RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.reminder_recycler_view);
                         Reminder_Adapter adapter = (Reminder_Adapter) recyclerView.getAdapter();
-                        adapter.notifyItemRemoved(position);
-                        // TODO
-                        // some error may be fixed here
-
-                        adapter.dbItemRemove(position);
-                        //mAdapter.notifyItemRangeChanged(position, mDataSet.size());
+                        adapter.removeAt(position);
                     }
                 });
                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

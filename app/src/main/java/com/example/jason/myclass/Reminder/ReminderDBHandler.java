@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -82,6 +83,17 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
+    // get reminder count
+    public int CountReminders(){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        long now_time = GregorianCalendar.getInstance().getTime().getTime();
+        String selectQuery = "SELECT  COUNT(*) FROM " + TABLE_REMINDERS + " WHERE " +
+                KEY_UNIX_TIME + " > " + now_time + " ORDER BY " + KEY_UNIX_TIME;
+        SQLiteStatement s = db.compileStatement(selectQuery);
+        long count = s.simpleQueryForLong();
+        return (int)count;
+    }
 
     // Get All Reminder
     public List<Reminder_item> getAllReminders() {
