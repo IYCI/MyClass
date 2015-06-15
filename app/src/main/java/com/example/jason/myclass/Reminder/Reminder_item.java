@@ -19,6 +19,7 @@ public class Reminder_item {
 
     // Ctor for all
     public Reminder_item(String id, String title, String location, int year, int month, int day, int hour, int minute){
+        this.id = id;
         this.title = title;
         this.location = location;
         this.mClaendar = new GregorianCalendar(year,month,day,hour,minute);
@@ -26,6 +27,7 @@ public class Reminder_item {
 
     // ctor for no hout and minute
     public Reminder_item(String id, String title, String location, int year, int month, int day){
+        this.id = id;
         this.title = title;
         this.location = location;
         this.mClaendar = new GregorianCalendar(year,month,day);
@@ -33,6 +35,7 @@ public class Reminder_item {
 
     //Ctor for unix time
     public Reminder_item(String id, String title, String location, long unix_time){
+        this.id = id;
         this.title = title;
         this.location = location;
         this.mClaendar = new GregorianCalendar();

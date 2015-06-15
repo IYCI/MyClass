@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:hint="enter event name..."
             android:id="@+id/event_name"
-
+            android:theme="@style/Theme.App.Base"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
              />
@@ -26,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/event_location"
+            android:theme="@style/Theme.App.Base"
             android:hint="enter location..."
             android:layout_below="@+id/event_name"
              />

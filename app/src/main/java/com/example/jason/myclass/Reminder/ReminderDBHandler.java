@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -69,13 +71,26 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
+    // remove a reminder
+    public void removeReminder(String uuid_string){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // deleting Row
+        int affected_rows = db.delete(TABLE_REMINDERS, KEY_ID + " = ?", new String[]{uuid_string});
+        Log.d("uuid", "uuid is " + uuid_string);
+        Log.d("removeReminder", affected_rows + " rows deleted");
+        db.close(); // Closing database connection
+    }
+
 
     // Get All Reminder
     public List<Reminder_item> getAllReminders() {
         List<Reminder_item> reminderList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_REMINDERS + " ORDER BY " + KEY_UNIX_TIME;
+        long now_time = GregorianCalendar.getInstance().getTime().getTime();
+        String selectQuery = "SELECT  * FROM " + TABLE_REMINDERS + " WHERE " +
+                KEY_UNIX_TIME + " > " + now_time + " ORDER BY " + KEY_UNIX_TIME;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -83,6 +98,7 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
+                Log.d("getAllReminders", "uuid is " + cursor.getString(0));
                 Reminder_item reminder = new Reminder_item(
                         cursor.getString(0),
                         cursor.getString(1),

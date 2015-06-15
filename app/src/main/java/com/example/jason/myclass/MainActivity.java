@@ -8,8 +8,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.View;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -58,6 +58,15 @@ public class MainActivity extends ActionBarActivity
         }
 
         checkFirstRun();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        /*getFragmentManager().beginTransaction()
+                .remove(mNavigationDrawerFragment)
+                .commit();*/
+
     }
 
     @Override
@@ -112,7 +121,9 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onBackPressed() {
         // pop title and fragment stack
-        CharSequence currentTitle = mTitleStack.peek();
+
+        // there is an ERROR --->
+        /*CharSequence currentTitle = mTitleStack.peek();
         if (mNavigationDrawerFragment.isDrawerOpen())
             mNavigationDrawerFragment.closeDrawer();
         else if(mTitleStack.peek().toString().equals(getString(R.string.title_MyClass)))
@@ -133,7 +144,8 @@ public class MainActivity extends ActionBarActivity
             onNavigationDrawerItemSelected(1);
         } else {
             onNavigationDrawerItemSelected(2);
-        }
+        }*/
+        super.onBackPressed();
     }
 
     public void checkFirstRun() {

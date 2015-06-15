@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -118,6 +119,9 @@ public class ReminderFragment extends Fragment {
                 // create date picker dialog
                 final Button pick_date = (Button) dialog.findViewById(R.id.dateBtn);
 
+                // fetch data from reminder db
+                final ReminderDBHandler db = new ReminderDBHandler(getActivity());
+
                 //int year, month, day, hour, minute;
 
                 pick_date.setOnClickListener(new View.OnClickListener() {
@@ -221,7 +225,7 @@ public class ReminderFragment extends Fragment {
                 dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
 
                 // insert into database
-                final ReminderDBHandler db = new ReminderDBHandler(getActivity());
+
                 final EditText event_name= (EditText) dialog.findViewById(R.id.event_name);
                 final EditText event_location= (EditText) dialog.findViewById(R.id.event_location);
 
@@ -243,7 +247,7 @@ public class ReminderFragment extends Fragment {
                                 new_event_dialog_buffer.getInt("minute", 0)
                         ));
 
-                        MainActivity mainActivity = (MainActivity) view.getContext();
+                        MainActivity mainActivity = (MainActivity) getActivity();
                         RecyclerView recyclerView = (RecyclerView) mainActivity.findViewById(R.id.reminder_recycler_view);
 
                         if (recyclerView != null) {
@@ -257,8 +261,43 @@ public class ReminderFragment extends Fragment {
             }
 
             @Override
-            public void onLongClick(View view, int position) {
+            public void onLongClick(View view, final int position) {
                 Log.d("mRecyclerView", "enter onlongclick");
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Delete this reminder?");
+
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // need to delete from DB!!!!
+                        // ****************
+                        // further more, we also need a clean data base button, cuz now DB is not synch with
+                        // the list view any more
+                        // we can do it manuel it by cleaning cache
+                        // ****************
+                        //mAdapter.mDataset.remove(position);
+                        RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.reminder_recycler_view);
+                        Reminder_Adapter adapter = (Reminder_Adapter) recyclerView.getAdapter();
+                        adapter.notifyItemRemoved(position);
+                        // TODO
+                        // some error may be fixed here
+
+                        adapter.dbItemRemove(position);
+                        //mAdapter.notifyItemRangeChanged(position, mDataSet.size());
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // nothing
+                    }
+                });
+                AlertDialog confirmation = builder.create();
+
+                confirmation.show();
+                //confirmation.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                confirmation.getButton(confirmation.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
+                confirmation.getButton(confirmation.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.myPrimaryColor));
             }
         }));
 
@@ -289,19 +328,29 @@ public class ReminderFragment extends Fragment {
                 public void onLongPress(MotionEvent e) {
                     View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
                     if (child != null && clickListener != null) {
-                        clickListener.onLongClick(child, recyclerView.getChildPosition(child));
+                        clickListener.onLongClick(child, recyclerView.getChildLayoutPosition(child));
                     }
                 }
             });
         }
 
         @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        public boolean onInterceptTouchEvent(final RecyclerView rv, MotionEvent e) {
 
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
+            final View child = rv.findChildViewUnder(e.getX(), e.getY());
             if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildPosition(child));
+                //Log.d("onInterceptTouchEvent", "before delay");
+                // delay 100ms for displaying ripple effect
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        //write the code here which you want to run after 500 milliseconds
+                        //Log.d("onInterceptTouchEvent", "delayed");
+                        clickListener.onClick(child, rv.getChildLayoutPosition(child));
+                    }
+                }, 100);
             }
+
             return false;
         }
 

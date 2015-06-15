@@ -36,9 +36,6 @@ import android.widget.TimePicker;
 
 import com.example.jason.myclass.MainActivity;
 import com.example.jason.myclass.R;
-import com.example.jason.myclass.Reminder.ReminderDBHandler;
-import com.example.jason.myclass.Reminder.Reminder_Adapter;
-import com.example.jason.myclass.Reminder.Reminder_item;
 
 import java.util.UUID;
 
@@ -92,7 +89,7 @@ public class FloatingActionButton extends FrameLayout {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         // 2. Chain together various setter methods to set the dialog characteristics
-                builder.setTitle(R.string.newEvent_dialog_title);
+        builder.setTitle(R.string.newEvent_dialog_title);
         builder.setView(R.layout.dialog_add_event);
 
 
@@ -198,14 +195,10 @@ public class FloatingActionButton extends FrameLayout {
                         buffer_editor.putInt("hour", mTimePicker.getCurrentHour());
                         buffer_editor.putInt("minute", mTimePicker.getCurrentMinute());
                         buffer_editor.apply();
-                        //hour = mTimePicker.getCurrentHour();
-                        //minute = mTimePicker.getCurrentMinute();
                         String minute = "" + mTimePicker.getCurrentMinute();
                         if (mTimePicker.getCurrentMinute() < 10) minute = "0" + minute;
                         String time = mTimePicker.getCurrentHour() + " : " + minute;
 
-                        //editor.putString("new_event_dialog_buffer", time);
-                        //editor.apply();
                         pick_time.setText(time);
                         pick_time.setTextSize(32);
                     }
@@ -228,7 +221,15 @@ public class FloatingActionButton extends FrameLayout {
             public void onClick(View view) {
                 // User clicked confirm button
                 SharedPreferences new_event_dialog_buffer = getContext().getSharedPreferences("new_event_dialog_buffer", 0);
+                SharedPreferences.Editor buffer_editor = new_event_dialog_buffer.edit();
+                Log.d("FAB_onClick", "new_event_dialog_buffer.getInt(\"day\", 0) is " + new_event_dialog_buffer.getInt("day", 0));
+                if(event_name.getText().toString().equals("") ||
+                        new_event_dialog_buffer.getInt("day", 0) == 0){
 
+                    // TODO
+                    // show/hint that no created
+                    return;
+                }
                 Log.d("FAB", "Month is : " + new_event_dialog_buffer.getInt("month", 0));
                 Log.d("FAB", "Day is : " + new_event_dialog_buffer.getInt("day", 0));
                 db.addReminder(new Reminder_item(
@@ -241,6 +242,7 @@ public class FloatingActionButton extends FrameLayout {
                         new_event_dialog_buffer.getInt("hour", 0),
                         new_event_dialog_buffer.getInt("minute", 0)
                 ));
+                buffer_editor.clear().apply();
 
                 MainActivity mainActivity = (MainActivity) getContext();
                 RecyclerView recyclerView = (RecyclerView) mainActivity.findViewById(R.id.reminder_recycler_view);

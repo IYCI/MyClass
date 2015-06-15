@@ -23,7 +23,7 @@ import java.util.List;
 public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.ViewHolder> {
     private List<Reminder_item> mDataset;
     private Context mContext;
-
+    private ReminderDBHandler db;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -41,9 +41,6 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
             mLocation = (TextView) v.findViewById(R.id.LocationInCardView);
             mdaysLeft = (TextView) v.findViewById(R.id.NumberofDaysLeftInCardView);
             mdaysLeft_Symbol = (TextView) v.findViewById(R.id.DaysLeftInCardView);
-            //mcard_view = (CardView) v.findViewById(R.id.card_view);
-            //mleft_relative_Layout = (RelativeLayout) v.findViewById(R.id.left_relative_Layout);
-            //mcard_view.setOnClickListener(this);
         }
 
 
@@ -53,6 +50,7 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
     public Reminder_Adapter(List<Reminder_item> myDataset, Context context) {
         this.mDataset = myDataset;
         this.mContext = context;
+        this.db = new ReminderDBHandler(mContext);
     }
 
 
@@ -67,11 +65,11 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
         final ViewHolder mViewHolder = new ViewHolder(v);
         mViewHolder.itemView.setClickable(true);
         mViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                                                   @Override
-                                                   public void onClick(View v) {
-                                                       Log.d("mViewHolder", "enter onclick");
-                                                   }
-                                               }
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        Log.d("mViewHolder", "enter onclick");
+                                                    }
+                                                }
         );
         return mViewHolder;
     }
@@ -89,20 +87,16 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
         long now_time = GregorianCalendar.getInstance().getTime().getTime();
         int days_left = (int) (event_time - now_time)/1000/60/60/24;
 
-        if (days_left < 0){
-            // delete it!!!
-        }
-        else{
-            if(days_left < 2){
+        if(days_left < 2){
                 holder.mdaysLeft_Symbol.setText("Day Left");
                 holder.mdaysLeft.setTextColor(Color.parseColor("#ff5252"));
-            }
-            holder.mdaysLeft.setText(Integer.toString(days_left));
         }
+        holder.mdaysLeft.setText(Integer.toString(days_left));
 
 
-        Log.d("onBindViewHolder" ,"event_time is : " + event_time);
-        Log.d("onBindViewHolder" ,"now_time is : " +  now_time);
+
+        Log.d("onBindViewHolder", "event_time is : " + event_time);
+        Log.d("onBindViewHolder", "now_time is : " + now_time);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -117,8 +111,16 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
     }
 
     public void updateView() {
+        Log.d("Reminder adapter ", "updating view");
         ReminderDBHandler db = new ReminderDBHandler(mContext);
         mDataset = db.getAllReminders();
         notifyDataSetChanged();
+    }
+
+
+    public void dbItemRemove(int position){
+        String mUUID_string = mDataset.get(position).get_id();
+        Log.d("dbItemRemove", "position is " + position);
+        db.removeReminder(mUUID_string);
     }
 }
