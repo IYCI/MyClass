@@ -1,4 +1,4 @@
-package com.example.jason.myclass.Calendar;
+package com.example.jason.myclass.Courses;
 
 /**
  * Created by Lincoln on 2015-06-02.

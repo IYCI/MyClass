@@ -1,4 +1,4 @@
-package com.example.jason.myclass.Reminder;
+package com.example.jason.myclass.Courses;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -30,7 +30,7 @@ import java.util.UUID;
 /**
  * Created by Jason on 2015-05-25.
  */
-public class ReminderFragment extends Fragment {
+public class CoursesFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -44,7 +44,7 @@ public class ReminderFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_reminder, container, false);
 
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_reminder, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_courses, container, false);
 
         // Make this {@link Fragment} listen for changes in both FABs.
         //FloatingActionButton fab1 = (FloatingActionButton) rootView.findViewById(R.id.fab_1);
@@ -53,7 +53,7 @@ public class ReminderFragment extends Fragment {
 
 
         // RecyclerView:
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.reminder_recycler_view);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.courses_recycler_view);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView

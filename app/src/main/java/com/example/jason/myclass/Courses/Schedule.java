@@ -1,4 +1,4 @@
-package com.example.jason.myclass.Calendar;
+package com.example.jason.myclass.Courses;
 
 import java.util.Arrays;
 import java.util.List;

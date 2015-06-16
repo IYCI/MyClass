@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.jason.myclass.Courses.CoursesFragment;
 import com.example.jason.myclass.NavigationBar.NavigationDrawerCallbacks;
 import com.example.jason.myclass.NavigationBar.NavigationDrawerFragment;
 import com.example.jason.myclass.Reminder.ReminderFragment;
@@ -88,24 +89,33 @@ public class MainActivity extends ActionBarActivity
             }
 
         }
-
-        if (position == 1 && !mTitleStack.peek().toString().equals(getString(R.string.title_Reminder))) {
-            mTitle = getString(R.string.title_Reminder);
-
+        if (position == 1 && !mTitleStack.peek().toString().equals(getString(R.string.title_Courses))) {
+            mTitle = getString(R.string.title_Courses);
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new ReminderFragment())
+                    .replace(R.id.container, new CoursesFragment())
                     .addToBackStack("1")
                     .commit();
 
             mTitleStack.push(mTitle);
             mToolbar.setTitle(mTitle);
         }
-        if (position == 2 && !mTitleStack.peek().toString().equals(getString(R.string.title_Settings))){
+        if (position == 2 && !mTitleStack.peek().toString().equals(getString(R.string.title_Reminder))) {
+            mTitle = getString(R.string.title_Reminder);
+
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, new ReminderFragment())
+                    .addToBackStack("2")
+                    .commit();
+
+            mTitleStack.push(mTitle);
+            mToolbar.setTitle(mTitle);
+        }
+        if (position == 3 && !mTitleStack.peek().toString().equals(getString(R.string.title_Settings))){
             mTitle = getString(R.string.title_Settings);
 
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new SettingFragment())
-                    .addToBackStack("2")
+                    .addToBackStack("3")
                     .commit();
 
             mTitleStack.push(mTitle);
