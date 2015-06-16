@@ -11,6 +11,10 @@ public class Schedule {
     protected boolean valid;
     protected int NumofCourse;
 
+    public CourseInfo getCourse(int position){
+        return courses[position];
+    }
+
     public Schedule(String input){
         valid = true;
         String[] input_array = input.split("\\s+");

@@ -20,7 +20,7 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 3;
 
     // DB Name
-    private static final String DATABASE_NAME = "RemindersManager";
+    private static final String DATABASE_NAME = "ReminderManager";
 
     // Table name
     private static final String TABLE_REMINDERS = "reminders";
@@ -37,6 +37,7 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d("ReminderDBHandler", "onCreate");
         String CREATE_TABLE = "CREATE TABLE " + TABLE_REMINDERS + "("
                 + KEY_ID + " STRING PRIMARY KEY," + KEY_TITLE + " TEXT,"
                 + KEY_LOCATION + " TEXT," + KEY_UNIX_TIME + " TEXT" + ")";
@@ -117,7 +118,7 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
                         cursor.getString(2),
                         Long.parseLong(cursor.getString(3)));
 
-                // Adding contact to list
+                // Adding reminder to list
                 reminderList.add(reminder);
             } while (cursor.moveToNext());
         }

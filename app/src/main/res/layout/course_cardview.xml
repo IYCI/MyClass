@@ -1,0 +1,99 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:id="@+id/card_view_course"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    >
+
+    <!-- A CardView that contains a TextView -->
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view_course"
+
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:elevation="100dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            card_view:cardCornerRadius="2dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <RelativeLayout
+                    android:layout_width="148dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/left_relative_Layout"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    >
+                    <TextView
+                        android:id="@+id/TitleInCardView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CS 350"
+                        android:textColor="#7f7f7f"
+                        android:gravity="center_vertical"
+                        android:textSize="24sp"
+                        android:layout_alignParentTop="true" />
+                    <TextView
+                        android:id="@+id/LocationInCardView"
+                        android:gravity="bottom"
+                        android:textColor="#7f7f7f"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="LocaTion"
+                        android:textSize="14sp"
+                        android:layout_below="@id/TitleInCardView"
+                        />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/SecInCardView"
+                        android:gravity="right|top"
+                        android:textColor="#7f7f7f"
+                        android:textSize="24sp"
+                        android:text="Section 002"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true" />
+                    <TextView
+                        android:id="@+id/TimeInCardView"
+                        android:text="MW 10:00AM-11:20AM"
+                        android:gravity="right|bottom"
+                        android:textColor="#7f7f7f"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/SecInCardView"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>

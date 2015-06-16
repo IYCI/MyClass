@@ -360,7 +360,7 @@ public class ReminderFragment extends Fragment {
                         //Log.d("onInterceptTouchEvent", "delayed");
                         clickListener.onClick(child, rv.getChildLayoutPosition(child));
                     }
-                }, 100);
+                }, 200);
             }
 
             return false;

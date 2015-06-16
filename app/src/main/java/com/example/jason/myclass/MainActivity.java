@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.jason.myclass.Courses.CoursesDBHandler;
 import com.example.jason.myclass.Courses.CoursesFragment;
+import com.example.jason.myclass.Courses.Schedule;
 import com.example.jason.myclass.NavigationBar.NavigationDrawerCallbacks;
 import com.example.jason.myclass.NavigationBar.NavigationDrawerFragment;
 import com.example.jason.myclass.Reminder.ReminderFragment;
@@ -188,8 +192,19 @@ public class MainActivity extends ActionBarActivity
                 // set the text display the same as editText
                 //  test with whatever value u want
                 //  just replace editText.getText() with your charsequence
-                text_display.setText(editText.getText());
+                Editable QuestData = editText.getText();
+                Log.d("try to print this", QuestData.toString());
 
+                /** constructor of Schedule*/
+                Schedule schedule = new Schedule(QuestData.toString());
+                /** need to check valid of class Schedule then decide to raise exception
+                 *  or go on displaying */
+
+                // insert into db
+                final CoursesDBHandler db = new CoursesDBHandler(getApplicationContext());
+                db.addSchedule(schedule);
+
+                d.dismiss();
             }
         });
 

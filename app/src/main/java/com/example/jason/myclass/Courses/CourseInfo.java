@@ -30,6 +30,8 @@ public class CourseInfo {
     public void setNum(String number){
         courseNum = number;
     }
+
+
     public void setLoc(String loc){
         courseLoc = loc;
     }
