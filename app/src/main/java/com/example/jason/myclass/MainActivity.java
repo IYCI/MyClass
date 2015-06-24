@@ -201,7 +201,7 @@ public class MainActivity extends ActionBarActivity
                  *  or go on displaying */
                 Log.d("after making schedule","");
                 // insert into db
-                if(schedule.geValidity()) {
+                if(schedule.getValidity()) {
                     Log.d("set onlcick", "input is valid");
                     final CoursesDBHandler db = new CoursesDBHandler(getApplicationContext());
                     db.addSchedule(schedule);

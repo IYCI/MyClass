@@ -85,13 +85,13 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
         holder.mLocation.setText(mDataset.get(position).get_location());
         long event_time = mDataset.get(position).get_unix_time();
         long now_time = GregorianCalendar.getInstance().getTime().getTime();
-        int days_left = (int) (event_time - now_time)/1000/60/60/24;
+        long days_left = (event_time - now_time)/1000/60/60/24;
 
         if(days_left < 2){
                 holder.mdaysLeft_Symbol.setText("Day Left");
                 holder.mdaysLeft.setTextColor(Color.parseColor("#ff5252"));
         }
-        holder.mdaysLeft.setText(Integer.toString(days_left));
+        holder.mdaysLeft.setText(Long.toString(days_left));
 
 
 

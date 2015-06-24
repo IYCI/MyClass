@@ -14,7 +14,8 @@ public class Schedule {
     public CourseInfo getCourse(int position){
         return courses[position];
     }
-    public boolean geValidity(){return valid;}
+    public int getNumofCourse(){return NumofCourse;}
+    public boolean getValidity(){return valid;}
     public Schedule(String input){
         valid = true;
         String[] input_array = input.split("\\s+");
@@ -42,10 +43,10 @@ public class Schedule {
                 course = input_list.get(0) + " " + input_list.get(1);
             }
             courses[i] = new CourseInfo(course);
-            int index = input_list.indexOf("Grade");
-            courses[i].setNum(input_list.get(index + 2));
-           // Log.d("we want this is nbr", input_list.get(index + 2));
-            courses[i].setSec(input_list.get(index + 3));
+            int index = input_list.indexOf("ComponentLEC");
+            courses[i].setNum(input_list.get(index - 2));
+            // Log.d("we want this is nbr", input_list.get(index + 2));
+            courses[i].setSec(input_list.get(index - 1));
             if(courses[i].isOnline){
                 index = input_list.indexOf("RoomTBA");
                 String prof = input_list.get(index + 1);
@@ -59,21 +60,28 @@ public class Schedule {
                 length = input_list.size();
                 //Log.d("sub string length is", Integer.toString(length));
             }else{
-                index = input_list.indexOf("Days");
-                String time = input_list.get(index + 2);
+                //index = input_list.indexOf("Days");
+                String time = input_list.get(index + 3);
                 time = time.substring(5,time.length());
-                time = time + " " + input_list.get(index + 3) + input_list.get(index + 4) + input_list.get(index + 5);
+                time = time + " " + input_list.get(index + 4) + input_list.get(index + 5) + input_list.get(index + 6);
                 courses[i].setTime(time);
-                String room = input_list.get(index + 6);
-                room = room.substring(4,room.length());
-                room = room + input_list.get(index + 7);
-                courses[i].setLoc(room);
-                String prof = input_list.get(index + 8);
-                //Log.d("kkkkkkkkkkkkkkkkkkkkkk  is ", prof);
-                int stringlen = prof.length();
-                prof = prof.substring(10, stringlen);
-                prof = prof + " " + input_list.get(index + 9);
-                courses[i].setProf(prof);
+                String room = input_list.get(index + 7);
+                if(room == "RoomTBA"){
+
+                }else{
+                    room = room.substring(4,room.length());
+                    room = room + input_list.get(index + 8);
+                    courses[i].setLoc(room);
+                    String prof = input_list.get(index + 9);
+                    int stringlen = prof.length();
+                    prof = prof.substring(10, stringlen);
+                    if(prof == "Staff"){
+                    }else {
+                        prof = prof + " " + input_list.get(index + 10);
+                    }
+                    courses[i].setProf(prof);
+                }
+
                 index = input_list.indexOf("ComponentTUT");
                 if(index == -1){
                     index = input_list.indexOf("Information");
