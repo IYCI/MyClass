@@ -199,10 +199,16 @@ public class MainActivity extends ActionBarActivity
                 Schedule schedule = new Schedule(QuestData.toString());
                 /** need to check valid of class Schedule then decide to raise exception
                  *  or go on displaying */
-
+                Log.d("after making schedule","");
                 // insert into db
-                final CoursesDBHandler db = new CoursesDBHandler(getApplicationContext());
-                db.addSchedule(schedule);
+                if(schedule.geValidity()) {
+                    Log.d("set onlcick", "input is valid");
+                    final CoursesDBHandler db = new CoursesDBHandler(getApplicationContext());
+                    db.addSchedule(schedule);
+                }
+                else{
+                    // TODO:show the user input invalid
+                }
 
                 d.dismiss();
             }

@@ -14,7 +14,7 @@ public class Schedule {
     public CourseInfo getCourse(int position){
         return courses[position];
     }
-
+    public boolean geValidity(){return valid;}
     public Schedule(String input){
         valid = true;
         String[] input_array = input.split("\\s+");
