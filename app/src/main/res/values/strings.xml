@@ -4,7 +4,8 @@
     <string name="drawer_close">Menu closed</string>
 
     <!-- for action overflow -->
-    <string name="action_settings">Import Courses</string>
+    <string name="Import_Courses_setting">Import</string>
+    <string name="Search_setting">Search</string>
 
     <string name="title_MyClass">MyClass</string>
     <string name="title_Courses">Courses</string>

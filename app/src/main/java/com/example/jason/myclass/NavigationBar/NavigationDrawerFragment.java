@@ -243,6 +243,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         return mFragmentContainerView.findViewById(R.id.googleDrawer);
     }
 
+    public int getPositionSelected() {return mCurrentSelectedPosition; }
+
     public static class RoundImage extends Drawable {
         private final Bitmap mBitmap;
         private final Paint mPaint;
@@ -322,6 +324,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         public Bitmap getBitmap() {
             return mBitmap;
         }
+
 
     }
 }

@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Outline;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -223,13 +224,25 @@ public class FloatingActionButton extends FrameLayout {
                 SharedPreferences new_event_dialog_buffer = getContext().getSharedPreferences("new_event_dialog_buffer", 0);
                 SharedPreferences.Editor buffer_editor = new_event_dialog_buffer.edit();
                 Log.d("FAB_onClick", "new_event_dialog_buffer.getInt(\"day\", 0) is " + new_event_dialog_buffer.getInt("day", 0));
-                if(event_name.getText().toString().equals("") ||
-                        new_event_dialog_buffer.getInt("day", 0) == 0){
 
-                    // TODO
-                    // show/hint that no created
+                // refuse to create
+                if(event_name.getText().toString().equals("") &&
+                        new_event_dialog_buffer.getInt("day", 0) == 0){
+                    Snackbar.make(view, "Please enter name and date", Snackbar.LENGTH_SHORT)
+                            .show();
                     return;
                 }
+                else if(event_name.getText().toString().equals("")){
+                    Snackbar.make(view, "Please enter event name", Snackbar.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+                else if(new_event_dialog_buffer.getInt("day", 0) == 0){
+                    Snackbar.make(view, "Please pick a date", Snackbar.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
                 Log.d("FAB", "Month is : " + new_event_dialog_buffer.getInt("month", 0));
                 Log.d("FAB", "Day is : " + new_event_dialog_buffer.getInt("day", 0));
                 db.addReminder(new Reminder_item(
@@ -253,6 +266,11 @@ public class FloatingActionButton extends FrameLayout {
                 }
 
                 dialog.dismiss();
+
+                // show snackBar Insert confirmation
+                //final View ReminderView = findViewById(R.id.reminder_view);
+                Snackbar.make(recyclerView, "Event Inserted", Snackbar.LENGTH_SHORT)
+                        .show();
             }
         });
 

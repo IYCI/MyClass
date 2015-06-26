@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -82,7 +83,7 @@ public class ReminderFragment extends Fragment {
 
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), mRecyclerView, new ClickListener() {
             @Override
-            public void onClick(View view, final int position) {
+            public void onClick(final View view, final int position) {
                 Log.d("mRecyclerView", "enter onclick");
                 // 1. Instantiate an AlertDialog.Builder with its constructor
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -117,6 +118,10 @@ public class ReminderFragment extends Fragment {
                                 RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.reminder_recycler_view);
                                 Reminder_Adapter adapter = (Reminder_Adapter) recyclerView.getAdapter();
                                 adapter.removeAt(position);
+
+                                // show snackBar
+                                Snackbar.make(view, "Event Removed", Snackbar.LENGTH_SHORT)
+                                        .show();
                             }
                         });
                         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -280,12 +285,17 @@ public class ReminderFragment extends Fragment {
                         }
 
                         dialog.dismiss();
+
+                        // show snackBar Event updated
+                        Snackbar.make(view, "Event Updated", Snackbar.LENGTH_SHORT)
+                                .show();
+
                     }
                 });
             }
 
             @Override
-            public void onLongClick(View view, final int position) {
+            public void onLongClick(final View view, final int position) {
                 Log.d("mRecyclerView", "enter onlongclick");
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Delete this reminder?");
@@ -297,6 +307,10 @@ public class ReminderFragment extends Fragment {
                         RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.reminder_recycler_view);
                         Reminder_Adapter adapter = (Reminder_Adapter) recyclerView.getAdapter();
                         adapter.removeAt(position);
+
+                        // show snackBar
+                        Snackbar.make(view, "Event Removed", Snackbar.LENGTH_SHORT)
+                                .show();
                     }
                 });
                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

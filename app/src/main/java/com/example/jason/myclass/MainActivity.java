@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.jason.myclass.Courses.CoursesDBHandler;
 import com.example.jason.myclass.Courses.CoursesFragment;
@@ -46,6 +46,10 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
 
         mTitleStack = new Stack<>();
+        // push MyClass into mTitleStack
+        //mTitle = getString(R.string.app_name);
+        //mTitleStack.push(mTitle);
+
         setContentView(R.layout.activity_main);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
@@ -54,9 +58,7 @@ public class MainActivity extends ActionBarActivity
             mNavigationDrawerFragment = (NavigationDrawerFragment)
                     getFragmentManager().findFragmentById(R.id.fragment_drawer);
 
-            // push MyClass into mTitleStack
-            mTitle = getString(R.string.app_name);
-            mTitleStack.push(mTitle);
+
 
             // Set up the drawer.
             mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
@@ -80,9 +82,8 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // convert stack into arraylist
-        ArrayList titleList = new ArrayList(mTitleStack);
+        ArrayList<String> titleList = new ArrayList(mTitleStack);
         savedInstanceState.putStringArrayList(TITLE_STACK_KEY, titleList);
-
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -193,7 +194,6 @@ public class MainActivity extends ActionBarActivity
         Button import_cal_btn = (Button) d.findViewById(R.id.import_cal_btn);
 
         final EditText editText = (EditText) d.findViewById(R.id.editText);
-        final TextView text_display = (TextView) d.findViewById(R.id.import_display);
 
 
 
@@ -219,10 +219,16 @@ public class MainActivity extends ActionBarActivity
                     db.addSchedule(schedule);
                 }
                 else{
-                    // TODO:show the user input invalid
+                    // show snackBar
+                    Snackbar.make(v, "Invalid input, please follow the instruction and try again", Snackbar.LENGTH_SHORT)
+                            .show();
                 }
 
                 d.dismiss();
+                // show snackBar
+                final View CalenderView = findViewById(R.id.course_fragment);
+                Snackbar.make(CalenderView, "Courses Updated", Snackbar.LENGTH_SHORT)
+                        .show();
             }
         });
 
@@ -236,7 +242,10 @@ public class MainActivity extends ActionBarActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main, menu);
+
+            if(mNavigationDrawerFragment.getPositionSelected() == 0) {
+                getMenuInflater().inflate(R.menu.calender_action_overflow, menu);
+            }
             return true;
         }
         return super.onCreateOptionsMenu(menu);
@@ -252,7 +261,7 @@ public class MainActivity extends ActionBarActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.Import_Courses_setting) {
             showImportDialog();
             return true;
         }
