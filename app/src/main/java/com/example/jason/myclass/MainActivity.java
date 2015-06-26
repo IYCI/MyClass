@@ -23,6 +23,7 @@ import com.example.jason.myclass.NavigationBar.NavigationDrawerCallbacks;
 import com.example.jason.myclass.NavigationBar.NavigationDrawerFragment;
 import com.example.jason.myclass.Reminder.ReminderFragment;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 
@@ -38,6 +39,8 @@ public class MainActivity extends ActionBarActivity
     private Stack<CharSequence> mTitleStack;
     private CharSequence currentTitle;
 
+    private static final String TITLE_STACK_KEY = "title stack";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +50,7 @@ public class MainActivity extends ActionBarActivity
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
 
-        if (savedInstanceState == null) {
+        //if (savedInstanceState == null) {
             mNavigationDrawerFragment = (NavigationDrawerFragment)
                     getFragmentManager().findFragmentById(R.id.fragment_drawer);
 
@@ -60,7 +63,7 @@ public class MainActivity extends ActionBarActivity
             // populate the navigation drawer
             mNavigationDrawerFragment.setUserData("Guest", "guest@miao.com", BitmapFactory.decodeResource(getResources(), R.drawable.avatar));
 
-        }
+        //}
 
         checkFirstRun();
     }
@@ -72,6 +75,15 @@ public class MainActivity extends ActionBarActivity
                 .remove(mNavigationDrawerFragment)
                 .commit();*/
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // convert stack into arraylist
+        ArrayList titleList = new ArrayList(mTitleStack);
+        savedInstanceState.putStringArrayList(TITLE_STACK_KEY, titleList);
+
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
