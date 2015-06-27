@@ -54,7 +54,7 @@ public class MainActivity extends ActionBarActivity
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
 
-        //if (savedInstanceState == null) {
+        if (savedInstanceState == null) {
             mNavigationDrawerFragment = (NavigationDrawerFragment)
                     getFragmentManager().findFragmentById(R.id.fragment_drawer);
 
@@ -65,7 +65,7 @@ public class MainActivity extends ActionBarActivity
             // populate the navigation drawer
             mNavigationDrawerFragment.setUserData("Guest", "guest@miao.com", BitmapFactory.decodeResource(getResources(), R.drawable.avatar));
 
-        //}
+        }
 
         checkFirstRun();
     }
