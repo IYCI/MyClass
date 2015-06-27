@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.jason.myclass.CourseSearch.SearchFragment;
 import com.example.jason.myclass.Courses.CoursesDBHandler;
 import com.example.jason.myclass.Courses.CoursesFragment;
 import com.example.jason.myclass.Courses.Schedule;
@@ -271,6 +272,15 @@ public class MainActivity extends ActionBarActivity
             showImportDialog();
             return true;
         }
+        // TODO: Need to intergrate with search interface
+        if (id == R.id.Search_setting) {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, new SearchFragment())
+                    .addToBackStack("4")
+                    .commit();
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
