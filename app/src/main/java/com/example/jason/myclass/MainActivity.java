@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.jason.myclass.Courses.CoursesDBHandler;
 import com.example.jason.myclass.Courses.CoursesFragment;
@@ -22,9 +23,6 @@ import com.example.jason.myclass.Courses.Schedule;
 import com.example.jason.myclass.NavigationBar.NavigationDrawerCallbacks;
 import com.example.jason.myclass.NavigationBar.NavigationDrawerFragment;
 import com.example.jason.myclass.Reminder.ReminderFragment;
-
-import java.util.ArrayList;
-import java.util.Stack;
 
 
 public class MainActivity extends ActionBarActivity
@@ -36,16 +34,19 @@ public class MainActivity extends ActionBarActivity
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
     private CharSequence mTitle;
-    private Stack<CharSequence> mTitleStack;
     private CharSequence currentTitle;
 
-    private static final String TITLE_STACK_KEY = "title stack";
+    private static final String TITLE_KEY = "title key";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
+        Log.d("MainActivity", "enter onCreate");
         super.onCreate(savedInstanceState);
 
-        mTitleStack = new Stack<>();
+        if (savedInstanceState != null){
+            // get title out
+            mTitle = savedInstanceState.getCharSequence(TITLE_KEY);
+        }
         // push MyClass into mTitleStack
         //mTitle = getString(R.string.app_name);
         //mTitleStack.push(mTitle);
@@ -54,7 +55,11 @@ public class MainActivity extends ActionBarActivity
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null) Log.d("MainActivity", "savedInstanceState is null");
+        else Log.d("MainActivity", "savedInstanceState is NOT null");
+
+        //if (savedInstanceState == null) {
+
             mNavigationDrawerFragment = (NavigationDrawerFragment)
                     getFragmentManager().findFragmentById(R.id.fragment_drawer);
 
@@ -65,13 +70,23 @@ public class MainActivity extends ActionBarActivity
             // populate the navigation drawer
             mNavigationDrawerFragment.setUserData("Guest", "guest@miao.com", BitmapFactory.decodeResource(getResources(), R.drawable.avatar));
 
-        }
+        //}
 
         checkFirstRun();
     }
 
     @Override
+    protected void onStop() {
+        Log.d("MainActivity", "enter onStop");
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
+        Log.d("MainActivity", "enter onDestroy");
+        Toast.makeText(getApplicationContext(), "onDestroy", Toast.LENGTH_LONG)
+                .show();
+        //getFragmentManager().beginTransaction().remove(mNavigationDrawerFragment).commit();
         super.onDestroy();
         /*getFragmentManager().beginTransaction()
                 .remove(mNavigationDrawerFragment)
@@ -82,8 +97,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // convert stack into arraylist
-        ArrayList<String> titleList = new ArrayList(mTitleStack);
-        savedInstanceState.putStringArrayList(TITLE_STACK_KEY, titleList);
+        savedInstanceState.putCharSequence(TITLE_KEY, mTitle);
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -91,7 +105,7 @@ public class MainActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
 
         if (position == 0) {
-            if (mTitleStack.size() == 0 || !mTitleStack.peek().toString().equals(getString(R.string.title_MyClass))) {
+            if (mTitle == null || !mTitle.equals(getString(R.string.title_MyClass))) {
                 mTitle = getString(R.string.title_MyClass);
 
                 getFragmentManager().beginTransaction()
@@ -99,43 +113,35 @@ public class MainActivity extends ActionBarActivity
                         .addToBackStack("0")
                         .commit();
 
-                mTitleStack.push(mTitle);
                 if (null != mToolbar) {
                     mToolbar.setTitle(mTitle);
                 }
             }
-
         }
-        if (position == 1 && !mTitleStack.peek().toString().equals(getString(R.string.title_Courses))) {
+        if (position == 1 && !mTitle.equals(getString(R.string.title_Courses))) {
             mTitle = getString(R.string.title_Courses);
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new CoursesFragment())
                     .addToBackStack("1")
                     .commit();
-
-            mTitleStack.push(mTitle);
             mToolbar.setTitle(mTitle);
         }
-        if (position == 2 && !mTitleStack.peek().toString().equals(getString(R.string.title_Reminder))) {
+        if (position == 2 && !mTitle.equals(getString(R.string.title_Reminder))) {
             mTitle = getString(R.string.title_Reminder);
 
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new ReminderFragment())
                     .addToBackStack("2")
                     .commit();
-
-            mTitleStack.push(mTitle);
             mToolbar.setTitle(mTitle);
         }
-        if (position == 3 && !mTitleStack.peek().toString().equals(getString(R.string.title_Settings))){
+        if (position == 3 && !mTitle.equals(getString(R.string.title_Settings))) {
             mTitle = getString(R.string.title_Settings);
 
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new SettingFragment())
                     .addToBackStack("3")
                     .commit();
-
-            mTitleStack.push(mTitle);
             mToolbar.setTitle(mTitle);
         }
 
