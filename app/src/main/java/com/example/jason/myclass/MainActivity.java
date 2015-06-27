@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.jason.myclass.CourseSearch.SearchFragment;
+import com.example.jason.myclass.CourseSelect.SubjectitemFragment;
 import com.example.jason.myclass.Courses.CoursesDBHandler;
 import com.example.jason.myclass.Courses.CoursesFragment;
 import com.example.jason.myclass.Courses.Schedule;
@@ -127,21 +128,30 @@ public class MainActivity extends ActionBarActivity
                     .commit();
             mToolbar.setTitle(mTitle);
         }
-        if (position == 2 && !mTitle.equals(getString(R.string.title_Reminder))) {
-            mTitle = getString(R.string.title_Reminder);
+        if (position == 2 && !mTitle.equals(getString(R.string.title_Settings))) {
+            mTitle = getString(R.string.title_Course_Select);
 
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new ReminderFragment())
+                    .replace(R.id.container, new SubjectitemFragment())
                     .addToBackStack("2")
                     .commit();
             mToolbar.setTitle(mTitle);
         }
-        if (position == 3 && !mTitle.equals(getString(R.string.title_Settings))) {
+        if (position == 3 && !mTitle.equals(getString(R.string.title_Reminder))) {
+            mTitle = getString(R.string.title_Reminder);
+
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, new ReminderFragment())
+                    .addToBackStack("3")
+                    .commit();
+            mToolbar.setTitle(mTitle);
+        }
+        if (position == 4 && !mTitle.equals(getString(R.string.title_Settings))) {
             mTitle = getString(R.string.title_Settings);
 
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new SettingFragment())
-                    .addToBackStack("3")
+                    .addToBackStack("4")
                     .commit();
             mToolbar.setTitle(mTitle);
         }
