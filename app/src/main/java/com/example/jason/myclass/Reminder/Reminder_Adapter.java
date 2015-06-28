@@ -12,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.jason.myclass.R;
+import com.example.jason.myclass.Reminder.helpers.ItemTouchHelperAdapter;
+import com.example.jason.myclass.Reminder.helpers.ItemTouchHelperViewHolder;
 
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -20,14 +22,16 @@ import java.util.List;
  * Created by Jason on 2015-06-05.
  */
 
-public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.ViewHolder> {
+public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.ViewHolder> implements ItemTouchHelperAdapter {
     private List<Reminder_item> mDataset;
     private Context mContext;
     private ReminderDBHandler db;
+
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
         // each data item is just a string in this case
         public TextView mTitle;
         public TextView mLocation;
@@ -41,8 +45,18 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
             mLocation = (TextView) v.findViewById(R.id.LocationInCardView);
             mdaysLeft = (TextView) v.findViewById(R.id.NumberofDaysLeftInCardView);
             mdaysLeft_Symbol = (TextView) v.findViewById(R.id.DaysLeftInCardView);
+            mcard_view = (CardView) v.findViewById(R.id.card_view);
         }
 
+        @Override
+        public void onItemSelected() {
+            itemView.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(0);
+        }
 
     }
 
@@ -78,7 +92,7 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mTitle.setText(mDataset.get(position).get_title());
@@ -127,5 +141,11 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
         String mUUID_string = mDataset.get(position).get_id();
         Log.d("dbItemRemove", "position is " + position);
         db.removeReminder(mUUID_string);
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        mDataset.remove(position);
+        notifyItemRemoved(position);
     }
 }
