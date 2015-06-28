@@ -7,8 +7,10 @@
     <string name="Import_Courses_setting">Import</string>
     <string name="Search_setting">Search</string>
 
+    <!-- for title -->
     <string name="title_MyClass">MyClass</string>
     <string name="title_Courses">Courses</string>
+    <string name="title_Course_Select">Course Select</string>
     <string name="title_Reminder">Reminder</string>
     <string name="title_Settings">Settings</string>
     <string name="hello_blank_fragment">this is settings</string>
