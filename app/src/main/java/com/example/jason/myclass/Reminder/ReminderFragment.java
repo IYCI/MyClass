@@ -11,6 +11,7 @@ import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -25,6 +26,8 @@ import android.widget.TimePicker;
 
 import com.example.jason.myclass.MainActivity;
 import com.example.jason.myclass.R;
+import com.example.jason.myclass.Reminder.helpers.ItemTouchHelperAdapter;
+import com.example.jason.myclass.Reminder.helpers.SimpleItemTouchHelperCallback;
 
 import java.util.List;
 import java.util.UUID;
@@ -36,6 +39,7 @@ public class ReminderFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private ItemTouchHelper mItemTouchHelper;
 
 
 
@@ -92,7 +96,6 @@ public class ReminderFragment extends Fragment {
                 // 2. Chain together various setter methods to set the dialog characteristics
                 builder.setTitle(R.string.edit_Event_dialog_title);
                 builder.setView(R.layout.dialog_add_event);
-
 
 
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -203,7 +206,6 @@ public class ReminderFragment extends Fragment {
                 });
 
 
-
                 // button for picking time
                 // create date picker dialog
                 final Button pick_time = (Button) dialog.findViewById(R.id.TimeBtn);
@@ -255,8 +257,8 @@ public class ReminderFragment extends Fragment {
 
                 // insert into database
 
-                final EditText event_name= (EditText) dialog.findViewById(R.id.event_name);
-                final EditText event_location= (EditText) dialog.findViewById(R.id.event_location);
+                final EditText event_name = (EditText) dialog.findViewById(R.id.event_name);
+                final EditText event_location = (EditText) dialog.findViewById(R.id.event_location);
 
                 dialog.getButton(dialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
@@ -334,6 +336,11 @@ public class ReminderFragment extends Fragment {
         }));
 
         mRecyclerView.setAdapter(mAdapter);
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback((ItemTouchHelperAdapter) mAdapter, rootView);
+        mItemTouchHelper  = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+
         return rootView;
     }
 
@@ -388,6 +395,10 @@ public class ReminderFragment extends Fragment {
 
         @Override
         public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean bool) {
         }
     }
 }
