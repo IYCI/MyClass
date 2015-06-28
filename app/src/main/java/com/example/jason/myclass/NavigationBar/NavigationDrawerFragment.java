@@ -119,10 +119,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     public List<NavigationItem> getMenu() {
-        List<NavigationItem> items = new ArrayList<NavigationItem>();
+        List<NavigationItem> items = new ArrayList<>();
         items.add(new NavigationItem("Calender", getResources().getDrawable(R.drawable.ic_calendar_grey600_24dp)));
         items.add(new NavigationItem("Courses", getResources().getDrawable(R.drawable.ic_school_grey600_24dp)));
-        items.add(new NavigationItem("Course Select", getResources().getDrawable(R.drawable.ic_school_grey600_24dp)));
+        items.add(new NavigationItem("Course Select", getResources().getDrawable(R.drawable.ic_playlist_plus_grey600_24dp)));
         items.add(new NavigationItem("Reminder", getResources().getDrawable(R.drawable.ic_format_list_numbers_grey600_24dp)));
         items.add(new NavigationItem("Setting", getResources().getDrawable(R.drawable.ic_settings_grey600_24dp)));
         return items;

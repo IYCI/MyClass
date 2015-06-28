@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.util.Log;
@@ -27,7 +27,7 @@ import com.example.jason.myclass.NavigationBar.NavigationDrawerFragment;
 import com.example.jason.myclass.Reminder.ReminderFragment;
 
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationDrawerCallbacks {
 
     /**
@@ -54,6 +54,7 @@ public class MainActivity extends ActionBarActivity
         //mTitleStack.push(mTitle);
 
         setContentView(R.layout.activity_main);
+
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
 
@@ -126,7 +127,9 @@ public class MainActivity extends ActionBarActivity
                     .replace(R.id.container, new CoursesFragment())
                     .addToBackStack("1")
                     .commit();
-            mToolbar.setTitle(mTitle);
+            if (null != mToolbar) {
+                mToolbar.setTitle(mTitle);
+            }
         }
         if (position == 2 && !mTitle.equals(getString(R.string.title_Settings))) {
             mTitle = getString(R.string.title_Course_Select);
@@ -135,7 +138,9 @@ public class MainActivity extends ActionBarActivity
                     .replace(R.id.container, new SubjectitemFragment())
                     .addToBackStack("2")
                     .commit();
-            mToolbar.setTitle(mTitle);
+            if (null != mToolbar) {
+                mToolbar.setTitle(mTitle);
+            }
         }
         if (position == 3 && !mTitle.equals(getString(R.string.title_Reminder))) {
             mTitle = getString(R.string.title_Reminder);
@@ -144,7 +149,9 @@ public class MainActivity extends ActionBarActivity
                     .replace(R.id.container, new ReminderFragment())
                     .addToBackStack("3")
                     .commit();
-            mToolbar.setTitle(mTitle);
+            if (null != mToolbar) {
+                mToolbar.setTitle(mTitle);
+            }
         }
         if (position == 4 && !mTitle.equals(getString(R.string.title_Settings))) {
             mTitle = getString(R.string.title_Settings);
@@ -153,7 +160,9 @@ public class MainActivity extends ActionBarActivity
                     .replace(R.id.container, new SettingFragment())
                     .addToBackStack("4")
                     .commit();
-            mToolbar.setTitle(mTitle);
+            if (null != mToolbar) {
+                mToolbar.setTitle(mTitle);
+            }
         }
 
 
@@ -286,7 +295,7 @@ public class MainActivity extends ActionBarActivity
         if (id == R.id.Search_setting) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new SearchFragment())
-                    .addToBackStack("4")
+                    .addToBackStack("5")
                     .commit();
             return true;
         }
