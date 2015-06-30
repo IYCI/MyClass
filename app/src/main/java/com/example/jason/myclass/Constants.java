@@ -28,5 +28,9 @@ public class Constants {
         return UWAPIRoot + "codes/subjects" + ".json?key=" + key;
     }
 
+    public static String getCatalogNum(String subject) {
+        return UWAPIRoot + "courses/" + subject + ".json?key=" + key;
+    }
+
 
 }

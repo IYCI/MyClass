@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.jason.myclass.CourseSelect.ShowList.AsyncTaskCallbackInterface;
-import com.example.jason.myclass.CourseSelect.ShowList.SubjectFetchTask;
+import com.example.jason.myclass.CourseSelect.ShowList.CatalogNumFetchTask;
 import com.example.jason.myclass.R;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class SubjectsFragment extends ListFragment {
+public class CatalogNumFragment extends ListFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,24 +30,28 @@ public class SubjectsFragment extends ListFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    ArrayList<String> mSubject_arraylist;
+    private String mSubject;
+
+    ArrayList<String> mCatalogNum_arraylist;
+
     private OnFragmentInteractionListener mListener;
 
     // TODO: Rename and change types of parameters
-    public static SubjectsFragment newInstance(String param1, String param2) {
-        SubjectsFragment fragment = new SubjectsFragment();
+    /*public static CatalogNumFragment newInstance(String param1, String param2) {
+        CatalogNumFragment fragment = new CatalogNumFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
+    }*/
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public SubjectsFragment() {
+    public CatalogNumFragment(String subject) {
+        mSubject = subject;
     }
 
     @Override
@@ -59,15 +63,15 @@ public class SubjectsFragment extends ListFragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        final SubjectFetchTask subjectFetchTask = new SubjectFetchTask(new AsyncTaskCallbackInterface() {
+        final CatalogNumFetchTask catalogNumFetchTask = new CatalogNumFetchTask(mSubject, new AsyncTaskCallbackInterface() {
             @Override
             public void onOperationComplete(Bundle bundle) {
-                mSubject_arraylist = bundle.getStringArrayList("subject_arraylist");
+                mCatalogNum_arraylist = bundle.getStringArrayList("CatalogNum_arraylist");
                 setListAdapter(new ArrayAdapter<>(getActivity(),
-                        R.layout.fragment_select_list, R.id.select_list_text, mSubject_arraylist));
+                        R.layout.fragment_select_list, R.id.select_list_text, mCatalogNum_arraylist));
             }
         });
-        subjectFetchTask.execute();
+        catalogNumFetchTask.execute();
 
 
         //ArrayList<String> Subject_arraylist = subjectFetchTask.getSubject_arraylist();
@@ -96,12 +100,8 @@ public class SubjectsFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Log.d("SubjectsFragment", "item click: " + mSubject_arraylist.get(position));
+        Log.d("CatalogNumFragment", "item click: " + position);
 
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, new CatalogNumFragment(mSubject_arraylist.get(position)))
-                .addToBackStack("5")
-                .commit();
     }
 
     /**
