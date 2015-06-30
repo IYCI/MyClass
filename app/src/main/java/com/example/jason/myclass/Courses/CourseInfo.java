@@ -16,6 +16,11 @@ public class CourseInfo {
     protected String tutLoc;
     protected String tutSec;
     protected boolean isOnline;
+    protected String labName;
+    protected String labNum;
+    protected String labTime;
+    protected String labSec;
+    protected String labLoc;
 
     public CourseInfo(String name){
         courseName = name;
@@ -26,6 +31,11 @@ public class CourseInfo {
         tutTime = null;
         tutLoc = null;
         tutSec = null;
+        labName = null;
+        labNum = null;
+        labSec = null;
+        labTime = null;
+        labLoc = null;
     }
     public void setNum(String number){
         courseNum = number;
@@ -40,7 +50,7 @@ public class CourseInfo {
     }
     public void setSec(String sec){
         courseSec = sec;
-        isOnline = sec.equals("Section081");
+        isOnline = sec.equals("081");
     }
     public void setProf(String prof){
         courseProf = prof;
@@ -60,4 +70,11 @@ public class CourseInfo {
     public void setTutsec(String sec){
         tutSec = sec;
     }
+    public void setlabName(){
+        tutSec = courseName;
+    }
+    public void setlabNum(String num){ labNum = num;}
+    public void setlabTime(String time){ labTime = time;}
+    public void setlabLoc(String loc){ labLoc = loc;}
+    public void setlabSec(String sec){ labSec = sec;}
 }

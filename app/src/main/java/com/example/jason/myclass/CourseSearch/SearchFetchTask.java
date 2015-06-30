@@ -67,6 +67,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             JSONObject jsonObject = new JSONObject(entityStringBuilder.toString());
             JSONObject data = jsonObject.getJSONObject("data");
 
+
             String title = data.getString("title");
             String description = data.getString("description");
             String units = data.getString("units");
@@ -75,6 +76,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             String termsOffered = data.getJSONArray("terms_offered").toString().replaceAll("\\p{P}", "");
             boolean online = data.getJSONObject("offerings").getBoolean("online");
 
+            bundle.putString("courseName", input);
             bundle.putString("title", title);
             bundle.putString("description", description);
             bundle.putString("units", units);
@@ -94,6 +96,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
     @Override
     protected void onPostExecute(Bundle bundle) {
+        TextView courseName = (TextView) mActivity.findViewById(R.id.course_name);
         TextView title = (TextView) mActivity.findViewById(R.id.title);
         TextView description = (TextView) mActivity.findViewById(R.id.description);
         TextView units = (TextView) mActivity.findViewById(R.id.units);
@@ -102,6 +105,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
         TextView termsOffered = (TextView) mActivity.findViewById(R.id.termsOffered);
         TextView online = (TextView) mActivity.findViewById(R.id.online);
 
+        courseName.setText(bundle.getString("courseName"));
         title.setText(bundle.getString("title"));
         description.setText(bundle.getString("description"));
         units.setText(bundle.getString("units"));

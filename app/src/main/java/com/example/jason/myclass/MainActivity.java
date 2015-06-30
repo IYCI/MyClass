@@ -294,7 +294,7 @@ public class MainActivity extends AppCompatActivity
         // TODO: Need to intergrate with search interface
         if (id == R.id.Search_setting) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new SearchFragment())
+                    .replace(R.id.container, new SearchFragment("CS446"))
                     .addToBackStack("5")
                     .commit();
             return true;

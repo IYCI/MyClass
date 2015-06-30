@@ -11,6 +11,11 @@ import com.example.jason.myclass.R;
  * Created by Danny on 2015/6/27.
  */
 public class SearchFragment extends Fragment {
+    private String mCourse;
+
+    public SearchFragment(String course){
+        mCourse = course;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -24,7 +29,7 @@ public class SearchFragment extends Fragment {
         super.onStart();
 
         SearchFetchTask searchFetchTask = new SearchFetchTask(getActivity());
-        searchFetchTask.execute("CS116");
+        searchFetchTask.execute(mCourse);
 
     }
 

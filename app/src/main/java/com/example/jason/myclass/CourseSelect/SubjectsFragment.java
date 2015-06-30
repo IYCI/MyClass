@@ -100,7 +100,7 @@ public class SubjectsFragment extends ListFragment {
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, new CatalogNumFragment(mSubject_arraylist.get(position)))
-                .addToBackStack("5")
+                .addToBackStack("6")
                 .commit();
     }
 

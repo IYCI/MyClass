@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.jason.myclass.CourseSearch.SearchFragment;
 import com.example.jason.myclass.CourseSelect.ShowList.AsyncTaskCallbackInterface;
 import com.example.jason.myclass.CourseSelect.ShowList.CatalogNumFetchTask;
 import com.example.jason.myclass.R;
@@ -100,8 +101,11 @@ public class CatalogNumFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Log.d("CatalogNumFragment", "item click: " + position);
-
+        Log.d("CatalogNumFragment", "item click: " + mCatalogNum_arraylist.get(position));
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, new SearchFragment(mCatalogNum_arraylist.get(position)))
+                .addToBackStack("7")
+                .commit();
     }
 
     /**
