@@ -58,6 +58,8 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
+
+
         // show snackBar Event updated
         Snackbar.make(mView, "Event Removed", Snackbar.LENGTH_SHORT)
                 .show();

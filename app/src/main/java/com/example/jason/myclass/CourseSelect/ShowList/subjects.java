@@ -1,4 +1,4 @@
-package com.example.jason.myclass.CourseSelect.dummy;
+package com.example.jason.myclass.CourseSelect.ShowList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,15 +11,15 @@ import java.util.Map;
  * <p/>
  * TODO: Replace all uses of this class before publishing your app.
  */
-public class DummyContent {
+public class subjects {
 
     /**
-     * An array of sample (dummy) items.
+     * An array of subject items.
      */
     public static List<DummyItem> ITEMS = new ArrayList<DummyItem>();
 
     /**
-     * A map of sample (dummy) items, by ID.
+     * A map of sample (ShowList) items, by ID.
      */
     public static Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
 
@@ -36,7 +36,7 @@ public class DummyContent {
     }
 
     /**
-     * A dummy item representing a piece of content.
+     * A ShowList item representing a piece of content.
      */
     public static class DummyItem {
         public String id;

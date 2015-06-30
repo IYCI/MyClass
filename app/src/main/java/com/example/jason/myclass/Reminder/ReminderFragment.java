@@ -73,7 +73,6 @@ public class ReminderFragment extends Fragment {
         ReminderDBHandler db = new ReminderDBHandler(getActivity());
         List<Reminder_item> myDataset = db.getAllReminders();
 
-        //String[] myDataset = {"123\nsdfsdf","345\n123","456\n123"};
 
         // specify an adapter (see also next example)
         mAdapter = new Reminder_Adapter(myDataset, getActivity());

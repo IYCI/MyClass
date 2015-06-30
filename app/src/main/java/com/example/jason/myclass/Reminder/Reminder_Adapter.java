@@ -109,8 +109,9 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
 
 
 
-        Log.d("onBindViewHolder", "event_time is : " + event_time);
-        Log.d("onBindViewHolder", "now_time is : " + now_time);
+        //Log.d("onBindViewHolder", "event_time is : " + event_time);
+        //Log.d("onBindViewHolder", "now_time is : " + now_time);
+        //Log.d("onBindViewHolder", "now_time is : " + now_time);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -143,8 +144,10 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
         db.removeReminder(mUUID_string);
     }
 
+
     @Override
     public void onItemDismiss(int position) {
+        dbItemRemove(position);
         mDataset.remove(position);
         notifyItemRemoved(position);
     }

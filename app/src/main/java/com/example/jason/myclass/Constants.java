@@ -23,4 +23,10 @@ public class Constants {
 
         return UWAPIRoot + "courses/" + subject + "/" + cataNum + ".json?key=" + key;
     }
+
+    public static String getSubjectsOffering() {
+        return UWAPIRoot + "codes/subjects" + ".json?key=" + key;
+    }
+
+
 }
