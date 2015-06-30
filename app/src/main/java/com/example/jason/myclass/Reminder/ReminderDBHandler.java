@@ -111,7 +111,7 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                Log.d("getAllReminders", "uuid is " + cursor.getString(0));
+                //Log.d("getAllReminders", "uuid is " + cursor.getString(0));
                 Reminder_item reminder = new Reminder_item(
                         cursor.getString(0),
                         cursor.getString(1),
@@ -122,7 +122,7 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
                 reminderList.add(reminder);
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
         // return contact list
         return reminderList;
     }

@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.jason.myclass.CourseSearch.SearchFragment;
-import com.example.jason.myclass.CourseSelect.SubjectitemFragment;
+import com.example.jason.myclass.CourseSelect.SubjectsFragment;
 import com.example.jason.myclass.Courses.CoursesDBHandler;
 import com.example.jason.myclass.Courses.CoursesFragment;
 import com.example.jason.myclass.Courses.Schedule;
@@ -28,7 +28,7 @@ import com.example.jason.myclass.Reminder.ReminderFragment;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationDrawerCallbacks {
+        implements NavigationDrawerCallbacks{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity
             mTitle = getString(R.string.title_Course_Select);
 
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new SubjectitemFragment())
+                    .replace(R.id.container, new SubjectsFragment())
                     .addToBackStack("2")
                     .commit();
             if (null != mToolbar) {
