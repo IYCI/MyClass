@@ -77,4 +77,9 @@ public class CourseInfo {
     public void setlabTime(String time){ labTime = time;}
     public void setlabLoc(String loc){ labLoc = loc;}
     public void setlabSec(String sec){ labSec = sec;}
+
+    public String getCourseTime() {
+        return courseTime;
+    }
+    public String getCourseName() { return courseName; }
 }
