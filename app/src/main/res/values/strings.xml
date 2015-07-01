@@ -6,6 +6,8 @@
     <!-- for action overflow -->
     <string name="Import_Courses_setting">Import</string>
     <string name="Search_setting">Search</string>
+    <string name="action_day_view">Day view</string>
+    <string name="action_five_day_view">5 day view</string>
 
     <!-- for title -->
     <string name="title_MyClass">MyClass</string>
