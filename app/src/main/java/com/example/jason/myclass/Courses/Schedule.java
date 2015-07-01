@@ -19,6 +19,7 @@ public class Schedule {
     public Schedule(String input) {
         valid = true;
         String[] input_array = input.split("\\s+");
+        int[] index_array = new int[9];
 
         List<String> input_list = Arrays.asList(input_array);
        /* for(int i = 0; i < 100; i += 1){
@@ -39,62 +40,56 @@ public class Schedule {
         courses = new CourseInfo[10];
         int i = 0;
         while (length > 1) {
-            if (i != 0) {
-                course = input_list.get(0) + " " + input_list.get(1);
-            }
-            courses[i] = new CourseInfo(course);
             int index = input_list.indexOf("ComponentLEC");
-            if (index == -1) {
-                index = input_list.indexOf("ComponentSTU");
-                if (index == -1) {
-                    index = input_list.indexOf("ComponentSEM");
-                    if (index == -1) {
-                        index = input_list.indexOf("ComponentPRJ");
-                        if (index == -1) {
-                            index = input_list.indexOf("ComponentRDG");
-                            if (index == -1) {
-                                index = input_list.indexOf("ComponentFLT");
-                                if (index == -1) {
-                                    index = input_list.indexOf("ComponentPRA");
-                                    //if (index == -1) {
-                                    //    index = input_list.indexOf("ComponentLAB");
-                                    //}
-                                }
-
-                            }
-                        }
-                    }
+            index_array[0] = index;
+            index_array[1] = input_list.indexOf("ComponentSTU");
+            index_array[2] = input_list.indexOf("ComponentSEM");
+            index_array[3] = input_list.indexOf("ComponentPRJ");
+            index_array[4] = input_list.indexOf("ComponentRDG");
+            index_array[5] = input_list.indexOf("ComponentFLT");
+            index_array[6] = input_list.indexOf("ComponentPRA");
+            index_array[7] = input_list.indexOf("ComponentLAB");
+            for(int j = 0; j < 8; j++){
+                if (index == -1 && index_array[j] > 0) {
+                    index = index_array[j];
+                } else if (index_array[j] != -1 && index_array[j] < index) {
+                    index = index_array[j];
                 }
             }
-            if(index == -1){
+            if (index == -1) {
                 index = input_list.indexOf("Information");
                 int index2 = input_list.indexOf("Materials");
-                if(index2 < index){
+                if ((index2 < index || index == -1) && index2 != -1){
                     index = index2;
                 }
                 input_list = input_list.subList(index + 1, length);
                 length = input_list.size();
+
                 continue;
-            }else{
-                /*int index2 = input_list.indexOf("Information");
-                if (index2 < index){
+            } else {
+                int index2 = input_list.indexOf("Information");
+                if (index2 < index && index2 != -1){
                     index = index2;
                     input_list = input_list.subList(index + 1, length);
                     length = input_list.size();
                     continue;
-                }*/
+                }
+                if (i != 0) {
+                    course = input_list.get(0) + " " + input_list.get(1);
+                }
+                courses[i] = new CourseInfo(course);
 
             }
             String num = input_list.get(index - 2);
-            if(num.length() > 3){
+            if (num.length() > 3){
                 num = num.substring(3,num.length());
             }
             courses[i].setNum(num);
             // Log.d("we want this is nbr", input_list.get(index + 2));
             String sec = input_list.get(index - 1);
-            if(sec.length() > 7) {
+            if (sec.length() > 7) {
                 sec = sec.substring(7, sec.length());
-            }else {
+            } else {
                 sec = "";
             }
             courses[i].setSec(sec);
@@ -102,7 +97,7 @@ public class Schedule {
                 index = input_list.indexOf("RoomTBA");
                 String prof = input_list.get(index + 1);
                 int stringlen = prof.length();
-                if(stringlen > 10) {
+                if (stringlen > 10) {
                     prof = prof.substring(10, stringlen);
                     if (prof.equals("Staff")) {
                     } else {
@@ -121,13 +116,12 @@ public class Schedule {
                 length = input_list.size();
                 //Log.d("sub string length is", Integer.toString(length));
             } else {
-                //index = input_list.indexOf("Days");
                 String time = input_list.get(index + 3);
                 int timelen = time.length();
-                if(timelen >5) {
+                if (timelen >5) {
                     time = time.substring(5, timelen);
                     time = time + " " + input_list.get(index + 4) + input_list.get(index + 5) + input_list.get(index + 6);
-                }else {
+                } else {
                     time = "";
                 }
                 courses[i].setTime(time);
@@ -151,10 +145,10 @@ public class Schedule {
                     courses[i].setProf(prof);
                 } else {
                     int roomlen = room.length();
-                    if(roomlen > 4) {
+                    if (roomlen > 4) {
                         room = room.substring(4, roomlen);
                         room = room + input_list.get(index + 8);
-                    }else{
+                    } else {
                         room = "";
                     }
                     courses[i].setLoc(room);
@@ -185,38 +179,38 @@ public class Schedule {
                     }
                     courses[i].setTutnum(tutnum);
                     String tutsec = input_list.get(index - 1);
-                    if(tutsec.length() > 7) {
+                    if (tutsec.length() > 7) {
                         tutsec = tutsec.substring(7, tutsec.length());
-                    }else {
+                    } else {
                         tutsec = "";
                     }
                     courses[i].setTutsec(tutsec);
                     time = input_list.get(index + 3);
                     timelen = time.length();
-                    if(timelen > 5) {
+                    if (timelen > 5) {
                         time = time.substring(5, timelen);
                         time = time + " " + input_list.get(index + 4) + input_list.get(index + 5) + input_list.get(index + 6);
-                    }else {
+                    } else {
                         time = "";
                     }
                     courses[i].setTutTime(time);
                     room = input_list.get(index + 7);
                     int roomlen = room.length();
-                    if(roomlen > 4) {
+                    if (roomlen > 4) {
                         room = room.substring(4, roomlen);
                         room = room + input_list.get(index + 8);
-                    }else{
+                    } else {
                         room = "";
                     }
                     courses[i].setTutLoc(room);
                 }
                 index = input_list.indexOf("ComponentLAB");
 
-                if(index == -1){
-                }else{
+                if (index == -1) {
+                } else {
                     int index2 = input_list.indexOf("Information");
-                    if(index > index2){
-                    }else{
+                    if (index > index2) {
+                    } else {
                         courses[i].setlabName();
                         String labnum = input_list.get(index - 2);
                         if(labnum.length() > 3){
@@ -224,18 +218,18 @@ public class Schedule {
                         }
                         courses[i].setlabNum(labnum);
                         String labsec = input_list.get(index - 1);
-                        if(labsec.length() > 7) {
+                        if (labsec.length() > 7) {
                             labsec = labsec.substring(7, labsec.length());
-                        }else {
+                        } else {
                             labsec = "";
                         }
                         courses[i].setlabSec(labsec);
                         time = input_list.get(index + 3);
                         timelen = time.length();
-                        if(timelen > 5) {
+                        if (timelen > 5) {
                             time = time.substring(5, timelen);
                             time = time + " " + input_list.get(index + 4) + input_list.get(index + 5) + input_list.get(index + 6);
-                        }else {
+                        } else {
                             time = "";
                         }
                         courses[i].setlabTime(time);
@@ -244,7 +238,7 @@ public class Schedule {
                         if(roomlen > 4) {
                             room = room.substring(4, roomlen);
                             room = room + input_list.get(index + 8);
-                        }else{
+                        } else {
                             room = "";
                         }
                         courses[i].setlabLoc(room);

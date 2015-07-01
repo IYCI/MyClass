@@ -103,7 +103,7 @@ public class Reminder_Adapter extends RecyclerView.Adapter<Reminder_Adapter.View
 
         if(days_left < 2){
                 holder.mdaysLeft_Symbol.setText("Day Left");
-                holder.mdaysLeft.setTextColor(Color.parseColor("#ff5252"));
+                holder.mdaysLeft.setTextColor(mContext.getResources().getColor(R.color.fab_color_1));
         }
         holder.mdaysLeft.setText(Long.toString(days_left));
 

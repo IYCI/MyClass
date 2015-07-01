@@ -46,7 +46,7 @@ public class SubjectFetchTask extends AsyncTask<String, Void, Bundle> {
 
 
         try{
-            String url = Constants.getSubjectsOffering();
+            String url = Constants.getSubjectsOfferingURL();
             HttpGet httpGet = new HttpGet(url);
 
             HttpResponse httpResponse = httpClient.execute(httpGet);

@@ -46,7 +46,7 @@ public class CatalogNumFetchTask extends AsyncTask<String, Void, Bundle> {
 
 
         try{
-            String url = Constants.getCatalogNum(mSubject);
+            String url = Constants.getCatalogNumURL(mSubject);
             HttpGet httpGet = new HttpGet(url);
 
             HttpResponse httpResponse = httpClient.execute(httpGet);

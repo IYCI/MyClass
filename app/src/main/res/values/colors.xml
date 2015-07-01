@@ -16,7 +16,7 @@
     <color name="myTextPrimaryColor">#212121</color>
     <color name="myNavigationColor">#509ddd</color>
     <color name="dialog_text_color">#2599F3</color>
-
+    <color name="light_green">#8BC34A</color>
     <drawable name="pressed_gray">#0c000000</drawable>
     <drawable name="selected_gray">#2c000000</drawable>
 

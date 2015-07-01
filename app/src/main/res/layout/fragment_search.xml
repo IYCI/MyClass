@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:orientation="vertical">
+
 
     <TextView
         android:layout_width="match_parent"
@@ -17,35 +22,59 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:id="@+id/title" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="LEC:"
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:paddingTop="8dp"
+        android:id="@+id/lec" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:headerDividersEnabled="true"
+        android:footerDividersEnabled="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lec_list">
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:id="@+id/description" />
+        android:text="TUT:"
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:paddingTop="8dp"
+        android:id="@+id/tut" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:headerDividersEnabled="true"
+        android:footerDividersEnabled="true"
+        android:id="@+id/tut_list">
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/units" />
-
-    <TextView
+        android:layout_height="match_parent"
+        android:text="TST:"
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:paddingTop="8dp"
+        android:id="@+id/tst" />
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/preReq" />
+        android:layout_height="match_parent"
+        android:headerDividersEnabled="true"
+        android:footerDividersEnabled="true"
+        android:id="@+id/tst_list">
+    </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/antiReq" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/termsOffered" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/online" />
 </LinearLayout>
+</ScrollView>
