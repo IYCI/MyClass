@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
+import com.example.jason.myclass.CourseSearch.SearchFragment;
 import com.example.jason.myclass.Courses.CourseInfo;
 import com.example.jason.myclass.Courses.CoursesDBHandler;
 
@@ -27,6 +28,7 @@ import java.util.Locale;
 /**
  * Created by Jason on 2015-05-25.
  */
+
 public class CalendarFragment extends Fragment implements WeekView.MonthChangeListener,
         WeekView.EventClickListener, WeekView.EventLongPressListener {
     private WeekView mWeekView;
@@ -147,6 +149,10 @@ public class CalendarFragment extends Fragment implements WeekView.MonthChangeLi
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
         Toast.makeText(getActivity(), "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, new SearchFragment(event.getName().split(System.getProperty("line.separator"))[0]))
+                .addToBackStack("7")
+                .commit();
     }
 
     @Override

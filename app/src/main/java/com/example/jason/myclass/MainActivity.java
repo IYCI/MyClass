@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity
                 mToolbar.setTitle(mTitle);
             }
         }
-        if (position == 2 && !mTitle.equals(getString(R.string.title_Settings))) {
+        if (position == 2 && !mTitle.equals(getString(R.string.title_Course_Select))) {
             mTitle = getString(R.string.title_Course_Select);
 
             getFragmentManager().beginTransaction()

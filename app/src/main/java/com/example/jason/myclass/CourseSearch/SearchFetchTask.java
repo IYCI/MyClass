@@ -1,6 +1,7 @@
 package com.example.jason.myclass.CourseSearch;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,6 +56,19 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
     private ArrayList<String> TST_TIME = new ArrayList<>();
     private ArrayList<String> TST_CAPACITY = new ArrayList<>();
     private ArrayList<String> TST_TOTAL = new ArrayList<>();
+
+    ProgressDialog progDailog;
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progDailog = new ProgressDialog(mActivity);
+        progDailog.setMessage("Loading...");
+        progDailog.setIndeterminate(false);
+        progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progDailog.setCancelable(true);
+        progDailog.show();
+    }
 
     @Override
     protected Bundle doInBackground(String...params) {
@@ -179,23 +193,29 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
     @Override
     protected void onPostExecute(Bundle bundle) {
+        progDailog.dismiss();
+
         TextView courseName = (TextView) mActivity.findViewById(R.id.course_name);
         if(!bundle.getBoolean("valid_return", true)){
-            courseName.setText("Not available this term");
+            if(courseName != null)
+                courseName.setText("Not available this term");
             return;
         }
 
         TextView lec = (TextView) mActivity.findViewById(R.id.lec);
-        lec.setVisibility(View.VISIBLE);
+        if(lec != null)
+            lec.setVisibility(View.VISIBLE);
 
         if(bundle.getBoolean("has_tst", false)) {
             TextView tst = (TextView) mActivity.findViewById(R.id.tst);
-            tst.setVisibility(View.VISIBLE);
+            if (tst != null)
+                tst.setVisibility(View.VISIBLE);
         }
 
         if(bundle.getBoolean("has_tut", false)) {
             TextView tut = (TextView) mActivity.findViewById(R.id.tut);
-            tut.setVisibility(View.VISIBLE);
+            if (tut != null)
+                tut.setVisibility(View.VISIBLE);
         }
 
         TextView title = (TextView) mActivity.findViewById(R.id.title);

@@ -2,6 +2,7 @@ package com.example.jason.myclass.CourseSelect;
 
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -34,6 +35,7 @@ public class CatalogNumFragment extends ListFragment {
     private String mSubject;
 
     ArrayList<String> mCatalogNum_arraylist;
+    AlertDialog.Builder mBuilder;
 
     private OnFragmentInteractionListener mListener;
 
@@ -68,8 +70,24 @@ public class CatalogNumFragment extends ListFragment {
             @Override
             public void onOperationComplete(Bundle bundle) {
                 mCatalogNum_arraylist = bundle.getStringArrayList("CatalogNum_arraylist");
-                setListAdapter(new ArrayAdapter<>(getActivity(),
-                        R.layout.fragment_select_list, R.id.select_list_text, mCatalogNum_arraylist));
+                if(mCatalogNum_arraylist.size() == 0) {
+                    mBuilder = new AlertDialog.Builder(getActivity());
+                    mBuilder.setMessage("Courses not available");
+                    mBuilder.setPositiveButton("OK", null);
+                    mBuilder.create().show();
+
+                    // should pop the fragment actually
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.container, new SubjectsFragment())
+                            .addToBackStack("2")
+                            .commit();
+                    Log.d("SubjectFragment", "dialog is shown");
+                }
+                else {
+                    Log.d("SubjectFragment", "going to set up the list");
+                    setListAdapter(new ArrayAdapter<>(getActivity(),
+                            R.layout.fragment_select_list, R.id.select_list_text, mCatalogNum_arraylist));
+                }
             }
         });
         catalogNumFetchTask.execute();
@@ -81,7 +99,7 @@ public class CatalogNumFragment extends ListFragment {
     }
 
 
-    /*@Override
+/*@Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
