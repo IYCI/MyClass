@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -84,6 +86,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
 
         try{
+            bundle.putBoolean("valid_return", false);
             String url = Constants.getScheduleURL(input);
             Log.d("SearchFetchTask","URL is " + url);
             HttpGet httpGet = new HttpGet(url);
@@ -112,9 +115,9 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             // check valid data return
             if(!jsonObject.getJSONObject("meta").getString("message").equals("Request successful")) {
                 Log.d("SearchFetchTask",jsonObject.toString());
-                bundle.putBoolean("valid_return", false);
                 return bundle;
             }
+            bundle.putBoolean("valid_return", true);
             JSONArray sections_array = jsonObject.getJSONArray("data");
             //Log.d("SearchFetchTask",sections_array.toString());
             for(int i = 0; i < sections_array.length(); i++){
@@ -164,7 +167,8 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
             //String title = data.getString("title");
             bundle.putString("title", sections_array.getJSONObject(0).getString("title"));
-            bundle.putString("courseName", input);
+            bundle.putString("courseName", sections_array.getJSONObject(0).getString("subject") +
+                                            sections_array.getJSONObject(0).getString("catalog_number"));
             bundle.putStringArrayList("LEC_SEC", LEC_SEC);
             bundle.putStringArrayList("LEC_TIME", LEC_TIME);
             bundle.putStringArrayList("LEC_PROF", LEC_PROF);
@@ -199,9 +203,13 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
         TextView courseName = (TextView) mActivity.findViewById(R.id.course_name);
         if(!bundle.getBoolean("valid_return", true)){
-            if(courseName != null)
-                courseName.setText("Not available this term");
-            return;
+            if(courseName != null) {
+                String errorMsg = "Oops! \nCourse is not available this term or it may not exist";
+                SpannableString ss = new SpannableString(errorMsg);
+                ss.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.fab_color_1)), 0, 5, 0);// set color
+                courseName.setText(ss);
+                return;
+            }
         }
 
         TextView lec = (TextView) mActivity.findViewById(R.id.lec);

@@ -5,8 +5,10 @@ import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.util.Log;
@@ -271,7 +273,30 @@ public class MainActivity extends AppCompatActivity
 
             if(mNavigationDrawerFragment.getPositionSelected() == 0) {
                 getMenuInflater().inflate(R.menu.calender_action_overflow, menu);
+
+                // search button
+                getMenuInflater().inflate(R.menu.main_activity_actions, menu);
+                MenuItem searchItem = menu.findItem(R.id.action_search);
+                SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        Log.d("MainActivity", "Text Submitted");
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new SearchFragment(query))
+                                .addToBackStack("5")
+                                .commit();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        return false;
+                    }
+                });
             }
+
+
             return true;
         }
         return super.onCreateOptionsMenu(menu);
@@ -291,14 +316,7 @@ public class MainActivity extends AppCompatActivity
             showImportDialog();
             return true;
         }
-        // TODO: Need to intergrate with search interface
-        if (id == R.id.Search_setting) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new SearchFragment("CS 246"))
-                    .addToBackStack("5")
-                    .commit();
-            return true;
-        }
+
 
 
         return super.onOptionsItemSelected(item);

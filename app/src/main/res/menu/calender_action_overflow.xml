@@ -5,9 +5,6 @@
         android:icon="@drawable/ic_search_white_24dp"
         android:actionViewClass="android.widget.SearchView" /> -->
     <item
-        android:id="@+id/Search_setting"
-        android:title="@string/Search_setting" />
-    <item
         android:id="@+id/Import_Courses_setting"
         android:title="@string/Import_Courses_setting" />
 

@@ -3,6 +3,9 @@
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
 
+    <!-- for action bar -->
+    <string name="action_search">Search</string>
+
     <!-- for action overflow -->
     <string name="Import_Courses_setting">Import</string>
     <string name="Search_setting">Search</string>
@@ -28,4 +31,7 @@
     <!-- editEvent dialog -->
     <string name="edit_Event_dialog_title">Edit Event</string>
     <string name="delete">Delete</string>
+
+    <!-- Search Hint dialog -->
+    <string name="Search_hint">Search courses</string>
 </resources>
