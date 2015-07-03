@@ -10,14 +10,23 @@ public class Constants {
     public static String getCourseInfoURL(String input) {
         String subject = "";
         String cataNum = "";
+        boolean isCoursePrefix = true;
 
         input = input.replaceAll("\\s+","");
 
         for (int i = 0; i < input.length(); i++) {
-            if (Character.isDigit(input.charAt(i))) {
+            /*if (Character.isDigit(input.charAt(i))) {
                 cataNum += input.charAt(i);
             } else {
                 subject += input.charAt(i);
+            }*/
+            if(isCoursePrefix && Character.isDigit(input.charAt(i)))
+                isCoursePrefix = false;
+            if(isCoursePrefix){
+                subject += input.charAt(i);
+            }
+            else{
+                cataNum += input.charAt(i);
             }
         }
 
@@ -27,16 +36,20 @@ public class Constants {
     public static String getScheduleURL(String input) {
         String subject = "";
         String cataNum = "";
-
+        boolean isCoursePrefix = true;
         input = input.replaceAll("\\s+","");
 
         for (int i = 0; i < input.length(); i++) {
-            if (Character.isDigit(input.charAt(i))) {
-                cataNum += input.charAt(i);
-            } else {
+            if(isCoursePrefix && Character.isDigit(input.charAt(i)))
+                isCoursePrefix = false;
+            if(isCoursePrefix){
                 subject += input.charAt(i);
             }
+            else{
+                cataNum += input.charAt(i);
+            }
         }
+
 
         return UWAPIRoot + "courses/" + subject + "/" + cataNum + "/schedule.json?key=" + key;
     }

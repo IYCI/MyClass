@@ -85,6 +85,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
         try{
             String url = Constants.getScheduleURL(input);
+            Log.d("SearchFetchTask","URL is " + url);
             HttpGet httpGet = new HttpGet(url);
 
             HttpResponse httpResponse = httpClient.execute(httpGet);
@@ -110,6 +111,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
             // check valid data return
             if(!jsonObject.getJSONObject("meta").getString("message").equals("Request successful")) {
+                Log.d("SearchFetchTask",jsonObject.toString());
                 bundle.putBoolean("valid_return", false);
                 return bundle;
             }
