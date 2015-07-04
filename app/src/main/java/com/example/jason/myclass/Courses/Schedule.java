@@ -17,7 +17,7 @@ public class Schedule {
     public int getNumofCourse(){return NumofCourse;}
     public boolean getValidity(){return valid;}
     public Schedule(String input) {
-        valid = true;
+        valid = false;
         String[] input_array = input.split("\\s+");
         int[] index_array = new int[9];
 
@@ -29,10 +29,10 @@ public class Schedule {
         int start = input_list.indexOf("Waterloo");
         int length = input_list.size();
         if (start != -1) {
+            valid = true;
             start += 1;
         } else {
             /** cant find the target string */
-            valid = false;
             return;
 
         }

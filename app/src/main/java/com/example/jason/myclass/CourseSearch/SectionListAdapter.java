@@ -40,6 +40,7 @@ public class SectionListAdapter extends BaseAdapter {
     }
 
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //Log.d("SectionListAdapter", "enter getView");

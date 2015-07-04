@@ -101,7 +101,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             }
 
             BufferedReader in = new BufferedReader(new InputStreamReader(httpEntity.getContent(), "UTF-8"));
-
+    
             String inputLine;
             StringBuilder entityStringBuilder = new StringBuilder();
 
@@ -167,7 +167,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
             //String title = data.getString("title");
             bundle.putString("title", sections_array.getJSONObject(0).getString("title"));
-            bundle.putString("courseName", sections_array.getJSONObject(0).getString("subject") +
+            bundle.putString("courseName", sections_array.getJSONObject(0).getString("subject") + " " +
                                             sections_array.getJSONObject(0).getString("catalog_number"));
             bundle.putStringArrayList("LEC_SEC", LEC_SEC);
             bundle.putStringArrayList("LEC_TIME", LEC_TIME);
@@ -204,9 +204,9 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
         TextView courseName = (TextView) mActivity.findViewById(R.id.course_name);
         if(!bundle.getBoolean("valid_return", true)){
             if(courseName != null) {
-                String errorMsg = "Oops! \nCourse is not available this term or it may not exist";
+                String errorMsg = "Oops!      (ﾉﾟ0ﾟ)ﾉ~\nCourse is not available this term or it may not exist";
                 SpannableString ss = new SpannableString(errorMsg);
-                ss.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.fab_color_1)), 0, 5, 0);// set color
+                ss.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.fab_color_1)), 0, 19, 0);// set color
                 courseName.setText(ss);
                 return;
             }

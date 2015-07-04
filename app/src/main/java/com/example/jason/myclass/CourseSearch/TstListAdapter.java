@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jason.myclass.R;
@@ -55,7 +56,7 @@ public class TstListAdapter extends BaseAdapter {
         TextView loc = (TextView) v.findViewById(R.id.section_item_loc);
         TextView time = (TextView) v.findViewById(R.id.section_item_time);
         TextView prof = (TextView) v.findViewById(R.id.section_item_prof);
-        TextView star = (TextView) v.findViewById(R.id.section_item_add);
+        ImageView star = (ImageView) v.findViewById(R.id.section_item_add);
 
         loc.setVisibility(View.GONE);
         prof.setVisibility(View.GONE);

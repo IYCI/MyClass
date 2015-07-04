@@ -248,8 +248,10 @@ public class MainActivity extends AppCompatActivity
                 }
                 else{
                     // show snackBar
-                    Snackbar.make(v, "Invalid input, please follow the instruction and try again", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(findViewById(R.id.course_fragment), "Invalid input, please follow the instruction and try again", Snackbar.LENGTH_LONG)
                             .show();
+                    d.dismiss();
+                    return;
                 }
 
                 d.dismiss();
