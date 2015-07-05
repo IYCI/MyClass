@@ -6,6 +6,7 @@
     android:id="@+id/reminder_view"
     android:background="@color/cardview_light_background">
 
+
     <!-- A RecyclerView with some commonly used attributes -->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/reminder_recycler_view"

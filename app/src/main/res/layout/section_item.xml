@@ -62,14 +62,7 @@
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/section_item_add" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_add"
-            android:layout_gravity="center"
-            android:id="@+id/section_item_add"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+
 
 
     </RelativeLayout>

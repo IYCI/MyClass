@@ -101,6 +101,28 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
+    // Adding new course
+    public void addCourse(CourseInfo mCourse) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NUM, mCourse.courseNum);
+        values.put(KEY_NAME, mCourse.courseName);
+        values.put(KEY_SECTION, mCourse.courseSec);
+        values.put(KEY_TIME, mCourse.courseTime);
+        values.put(KEY_LOC, mCourse.courseLoc);
+        values.put(KEY_PROF, mCourse.courseProf);
+        values.put(KEY_NAME_TUT, mCourse.tutName);
+        values.put(KEY_NUM_TUT, mCourse.tutNum);
+        values.put(KEY_SEC_TUT, mCourse.tutSec);
+        values.put(KEY_TIME_TUT, mCourse.tutTime);
+        values.put(KEY_LOC_TUT, mCourse.tutLoc);
+
+        // Inserting Row
+        db.insert(TABLE_COURSES, null, values);
+        db.close(); // Closing database connection
+    }
+
     // remove a course
     public void removeCourse(String courseNum){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -120,7 +142,21 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
         return (int)count;
     }
 
-    // Get All Reminder
+
+    // check if course exist
+    public boolean IsInDB(String courseID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String Query = "Select * from " + TABLE_COURSES + " where " + KEY_NUM + " = " + courseID;
+        Cursor cursor = db.rawQuery(Query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+    // Get All Courses
     public List<CourseInfo> getAllCourses() {
         List<CourseInfo> CoursesList = new ArrayList<>();
 

@@ -14,11 +14,18 @@
 
     <!-- for title -->
     <string name="title_MyClass">MyClass</string>
-    <string name="title_Courses">Courses</string>
+    <string name="title_Courses">My Courses</string>
     <string name="title_Course_Select">Course Select</string>
     <string name="title_Reminder">Reminder</string>
     <string name="title_Settings">Settings</string>
     <string name="hello_blank_fragment">this is settings</string>
+
+    <!-- navigation drawer -->
+    <string name="drawer_Calender">Calender</string>
+    <string name="drawer_Courses">My Courses</string>
+    <string name="drawer_Course_Select">Course Select</string>
+    <string name="drawer_Reminder">Reminder</string>
+    <string name="drawer_Settings">Settings</string>
 
     <!-- import dialog -->
     <string name="import_dialog_title">Import Calender</string>

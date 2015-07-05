@@ -35,8 +35,10 @@
             android:elevation="50dp"
             android:translationZ="4dp"
             android:text="Take"
+
             android:textAllCaps="true"
             android:minWidth="88dp"
+            android:visibility="gone"
             android:gravity="center"
             android:textColor="@android:color/white"
             android:backgroundTint="@color/dialog_text_color"

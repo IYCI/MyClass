@@ -2,16 +2,21 @@ package com.example.jason.myclass.CourseSearch;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.jason.myclass.Constants;
 import com.example.jason.myclass.CourseSelect.ShowList.AsyncTaskCallbackInterface;
+import com.example.jason.myclass.Courses.CourseInfo;
+import com.example.jason.myclass.Courses.CoursesDBHandler;
 import com.example.jason.myclass.R;
 
 import org.apache.http.HttpEntity;
@@ -39,6 +44,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
     }
 
     // for LEC
+    private ArrayList<String> LEC_NUM = new ArrayList<>();
     private ArrayList<String> LEC_SEC = new ArrayList<>();
     private ArrayList<String> LEC_TIME = new ArrayList<>();
     private ArrayList<String> LEC_PROF = new ArrayList<>();
@@ -47,6 +53,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
     private ArrayList<String> LEC_TOTAL = new ArrayList<>();
 
     // for TUT
+    private ArrayList<String> TUT_NUM = new ArrayList<>();
     private ArrayList<String> TUT_SEC = new ArrayList<>();
     private ArrayList<String> TUT_TIME = new ArrayList<>();
     private ArrayList<String> TUT_LOC = new ArrayList<>();
@@ -118,10 +125,10 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                 return bundle;
             }
             bundle.putBoolean("valid_return", true);
-            JSONArray sections_array = jsonObject.getJSONArray("data");
+            JSONArray data = jsonObject.getJSONArray("data");
             //Log.d("SearchFetchTask",sections_array.toString());
-            for(int i = 0; i < sections_array.length(); i++){
-                JSONObject section = sections_array.getJSONObject(i);
+            for(int i = 0; i < data.length(); i++){
+                JSONObject section = data.getJSONObject(i);
                 JSONObject first_class = section.getJSONArray("classes").getJSONObject(0);
                 //Log.d("SearchFetchTask",first_class.toString());
                 JSONObject date = first_class.getJSONObject("date");
@@ -131,8 +138,16 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                 String section_str = section.getString("section");
                 String section_type = section_str.substring(0,3);
                 Log.d("SearchFetchTask", "section_type is <" + section_type + ">");
+                CoursesDBHandler db = new CoursesDBHandler(mActivity);
                 if(section_type.equals("LEC")){
                     String prof = first_class.getJSONArray("instructors").getString(0);
+
+                    // check if is in db
+                    if(db.IsInDB(section.getString("class_number"))){
+                        bundle.putBoolean("course_taken", true);
+                        bundle.putString("course_taken_num",section.getString("class_number"));
+                    }
+                    LEC_NUM.add(section.getString("class_number"));
                     LEC_SEC.add(section_str.substring(4));
                     LEC_TIME.add(date.getString("weekdays") + " " +
                             date.getString("start_time") + "-" + date.getString("end_time"));
@@ -151,6 +166,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                 }
                 else if(section_type.equals("TUT")){
                     bundle.putBoolean("has_tut", true);
+                    TUT_NUM.add(section.getString("class_number"));
                     TUT_SEC.add(section_str.substring(4));
                     TUT_TIME.add(date.getString("weekdays") + " " +
                                     date.getString("start_time") + "-" + date.getString("end_time"));
@@ -166,9 +182,10 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
 
             //String title = data.getString("title");
-            bundle.putString("title", sections_array.getJSONObject(0).getString("title"));
-            bundle.putString("courseName", sections_array.getJSONObject(0).getString("subject") + " " +
-                                            sections_array.getJSONObject(0).getString("catalog_number"));
+            bundle.putString("title", data.getJSONObject(0).getString("title"));
+            bundle.putString("courseName", data.getJSONObject(0).getString("subject") + " " +
+                                             data.getJSONObject(0).getString("catalog_number"));
+            bundle.putStringArrayList("LEC_NUM", LEC_NUM);
             bundle.putStringArrayList("LEC_SEC", LEC_SEC);
             bundle.putStringArrayList("LEC_TIME", LEC_TIME);
             bundle.putStringArrayList("LEC_PROF", LEC_PROF);
@@ -176,6 +193,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             bundle.putStringArrayList("LEC_CAPACITY", LEC_CAPACITY);
             bundle.putStringArrayList("LEC_TOTAL", LEC_TOTAL);
 
+            bundle.putStringArrayList("TUT_NUM", TUT_NUM);
             bundle.putStringArrayList("TUT_SEC", TUT_SEC);
             bundle.putStringArrayList("TUT_TIME", TUT_TIME);
             bundle.putStringArrayList("TUT_LOC", TUT_LOC);
@@ -198,7 +216,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
     }
 
     @Override
-    protected void onPostExecute(Bundle bundle) {
+    protected void onPostExecute(final Bundle bundle) {
         progDailog.dismiss();
 
         TextView courseName = (TextView) mActivity.findViewById(R.id.course_name);
@@ -228,12 +246,55 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                 tut.setVisibility(View.VISIBLE);
         }
 
+        Button add_button = (Button) mActivity.findViewById(R.id.add_course_button);
+
+        if (add_button != null) {
+            if(bundle.getBoolean("course_taken")) {
+                add_button.setText("drop");
+                add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.fab_color_1)));
+            }
+            add_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // need to implement snackBar
+                    Button add_button = (Button) mActivity.findViewById(R.id.add_course_button);
+                    if(add_button.getText().equals("take")){ //TODO need to change to ask if in db
+                        // add to db
+
+                        CourseInfo mCrouse = new CourseInfo(bundle.getString("courseName"));
+
+
+                        add_button.setText("drop");
+                        add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.fab_color_1)));
+
+                        // show snackBar
+                        Snackbar.make(view, "Course Added", Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                    else{
+                        // remove from db
+                        CoursesDBHandler db = new CoursesDBHandler(mActivity);
+                        db.removeCourse(bundle.getString("course_taken_num"));
+
+                        add_button.setText("take");
+                        add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.dialog_text_color)));
+
+                        // show snackBar
+                        Snackbar.make(view, "Course Dropped", Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+            });
+            add_button.setVisibility(View.VISIBLE);
+        }
         TextView title = (TextView) mActivity.findViewById(R.id.title);
         if(courseName != null)
             courseName.setText(bundle.getString("courseName"));
         if(title != null)
             title.setText(bundle.getString("title"));
+
         mAsyncTaskCallbackInterface.onOperationComplete(bundle);
+
         /*TextView description = (TextView) mActivity.findViewById(R.id.description);
         TextView units = (TextView) mActivity.findViewById(R.id.units);
         TextView preReq = (TextView) mActivity.findViewById(R.id.preReq);
