@@ -1,7 +1,9 @@
 package com.example.jason.myclass.CourseSearch;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.jason.myclass.Constants;
@@ -215,6 +218,8 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
         return bundle;
     }
 
+
+
     @Override
     protected void onPostExecute(final Bundle bundle) {
         progDailog.dismiss();
@@ -255,25 +260,68 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             }
             add_button.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    // need to implement snackBar
+                public void onClick(final View view) {
                     Button add_button = (Button) mActivity.findViewById(R.id.add_course_button);
-                    if(add_button.getText().equals("take")){ //TODO need to change to ask if in db
-                        // add to db
+                    final CoursesDBHandler db = new CoursesDBHandler(mActivity);
 
-                        CourseInfo mCrouse = new CourseInfo(bundle.getString("courseName"));
+                    boolean courseTaken = false;
+                    for(int i = 0; i < bundle.getStringArrayList("LEC_NUM").size(); i++){
+                        if(db.IsInDB(bundle.getStringArrayList("LEC_NUM").get(i))){
+                            courseTaken = true;
+                            break;
+                        }
+                    }
+
+                    if(!courseTaken){
+                        // pur sec info into a list of string
+                        CharSequence[] mLecSecList = new CharSequence[bundle.getStringArrayList("LEC_SEC").size()];
+                        for(int i = 0; i < bundle.getStringArrayList("LEC_SEC").size(); i++){
+                            mLecSecList[i] = bundle.getStringArrayList("LEC_SEC").get(i);
+                        }
+
+                        // show dialog to choose sections
+                        AlertDialog ad = new AlertDialog.Builder(mActivity)
+                                .setTitle("Choose a section")
+                                .setSingleChoiceItems(mLecSecList, 0, null)
+                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        ListView lw = ((AlertDialog) dialog).getListView();
+                                        Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+                                        int index = bundle.getStringArrayList("LEC_SEC").indexOf(checkedItem.toString());
+
+                                        // add to db
+                                        CourseInfo mCourse = new CourseInfo(bundle.getString("courseName"));
+                                        mCourse.setSec(checkedItem.toString());
+                                        mCourse.setNum(bundle.getStringArrayList("LEC_NUM").get(index));
+                                        mCourse.setLoc(bundle.getStringArrayList("LEC_LOC").get(index));
+                                        mCourse.setTime(bundle.getStringArrayList("LEC_TIME").get(index));
+                                        mCourse.setProf(bundle.getStringArrayList("LEC_PROF").get(index));
 
 
-                        add_button.setText("drop");
-                        add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.fab_color_1)));
+                                        db.addCourse(mCourse);
 
-                        // show snackBar
-                        Snackbar.make(view, "Course Added", Snackbar.LENGTH_SHORT)
-                                .show();
+
+                                        // change button
+                                        Button add_button = (Button) mActivity.findViewById(R.id.add_course_button);
+                                        add_button.setText("drop");
+                                        add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.fab_color_1)));
+
+                                        // show snackBar
+                                        Snackbar.make(view, "Course Added", Snackbar.LENGTH_SHORT)
+                                                .show();
+
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .create();
+                        ad.show();
+
+
+
+
                     }
                     else{
                         // remove from db
-                        CoursesDBHandler db = new CoursesDBHandler(mActivity);
                         db.removeCourse(bundle.getString("course_taken_num"));
 
                         add_button.setText("take");
@@ -283,6 +331,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                         Snackbar.make(view, "Course Dropped", Snackbar.LENGTH_SHORT)
                                 .show();
                     }
+                    db.close();
                 }
             });
             add_button.setVisibility(View.VISIBLE);

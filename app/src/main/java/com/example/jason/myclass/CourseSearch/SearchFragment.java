@@ -31,6 +31,8 @@ public class SearchFragment extends Fragment {
         return rootView;
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
