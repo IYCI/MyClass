@@ -86,7 +86,7 @@ public class CatalogNumFragment extends ListFragment {
                 else {
                     Log.d("SubjectFragment", "going to set up the list");
                     setListAdapter(new ArrayAdapter<>(getActivity(),
-                            R.layout.fragment_select_list, R.id.select_list_text, mCatalogNum_arraylist));
+                            R.layout.fragment_select_item, R.id.select_list_text, mCatalogNum_arraylist));
                 }
             }
         });

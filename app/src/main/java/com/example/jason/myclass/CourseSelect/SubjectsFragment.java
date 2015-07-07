@@ -3,7 +3,9 @@ package com.example.jason.myclass.CourseSelect;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -51,6 +53,12 @@ public class SubjectsFragment extends ListFragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_select_list, null);
+        return view;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -64,7 +72,7 @@ public class SubjectsFragment extends ListFragment {
             public void onOperationComplete(Bundle bundle) {
                 mSubject_arraylist = bundle.getStringArrayList("subject_arraylist");
                 setListAdapter(new ArrayAdapter<>(getActivity(),
-                        R.layout.fragment_select_list, R.id.select_list_text, mSubject_arraylist));
+                        R.layout.fragment_select_item, R.id.select_list_text, mSubject_arraylist));
             }
         });
         subjectFetchTask.execute();
