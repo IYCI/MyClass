@@ -148,7 +148,7 @@ public class CalendarFragment extends Fragment implements WeekView.MonthChangeLi
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
-        Toast.makeText(getActivity(), "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, new SearchFragment(event.getName().split(System.getProperty("line.separator"))[0]))
                 .addToBackStack("7")

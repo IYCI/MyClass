@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.jason.myclass.CourseSearch.SearchFragment;
 import com.example.jason.myclass.R;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public class CoursesFragment extends Fragment {
 
         // get Courses from db
         CoursesDBHandler db = new CoursesDBHandler(getActivity());
-        List<CourseInfo> myDataset = db.getAllCourses();
+        final List<CourseInfo> myDataset = db.getAllCourses();
 
 
         // specify an adapter (see also next example)
@@ -69,7 +70,10 @@ public class CoursesFragment extends Fragment {
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), mRecyclerView, new ClickListener() {
             @Override
             public void onClick(View view, final int position) {
-
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new SearchFragment(myDataset.get(position).getCourseName()))
+                        .addToBackStack("7")
+                        .commit();
             }
 
             @Override

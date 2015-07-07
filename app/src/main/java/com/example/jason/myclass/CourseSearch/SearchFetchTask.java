@@ -264,16 +264,18 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                     Button add_button = (Button) mActivity.findViewById(R.id.add_course_button);
                     final CoursesDBHandler db = new CoursesDBHandler(mActivity);
 
+                    String course_taken_num = null;
                     boolean courseTaken = false;
                     for(int i = 0; i < bundle.getStringArrayList("LEC_NUM").size(); i++){
                         if(db.IsInDB(bundle.getStringArrayList("LEC_NUM").get(i))){
                             courseTaken = true;
+                            course_taken_num = bundle.getStringArrayList("LEC_NUM").get(i);
                             break;
                         }
                     }
 
                     if(!courseTaken){
-                        // pur sec info into a list of string
+                       // put sec info into a list of string
                         CharSequence[] mLecSecList = new CharSequence[bundle.getStringArrayList("LEC_SEC").size()];
                         for(int i = 0; i < bundle.getStringArrayList("LEC_SEC").size(); i++){
                             mLecSecList[i] = bundle.getStringArrayList("LEC_SEC").get(i);
@@ -288,13 +290,13 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                                         ListView lw = ((AlertDialog) dialog).getListView();
                                         Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
                                         int index = bundle.getStringArrayList("LEC_SEC").indexOf(checkedItem.toString());
-
+                                        Log.d("SearchFetchTask", "choose " + checkedItem.toString());
                                         // add to db
                                         CourseInfo mCourse = new CourseInfo(bundle.getString("courseName"));
                                         mCourse.setSec(checkedItem.toString());
                                         mCourse.setNum(bundle.getStringArrayList("LEC_NUM").get(index));
                                         mCourse.setLoc(bundle.getStringArrayList("LEC_LOC").get(index));
-                                        mCourse.setTime(bundle.getStringArrayList("LEC_TIME").get(index));
+                                        mCourse.setTimeAPM(bundle.getStringArrayList("LEC_TIME").get(index));
                                         mCourse.setProf(bundle.getStringArrayList("LEC_PROF").get(index));
 
 
@@ -322,7 +324,8 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                     }
                     else{
                         // remove from db
-                        db.removeCourse(bundle.getString("course_taken_num"));
+                        if(course_taken_num != null)
+                            db.removeCourse(course_taken_num);
 
                         add_button.setText("take");
                         add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.dialog_text_color)));
