@@ -285,6 +285,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                         AlertDialog ad = new AlertDialog.Builder(mActivity)
                                 .setTitle("Choose a section")
                                 .setSingleChoiceItems(mLecSecList, 0, null)
+                                .setNegativeButton(R.string.cancel, null)
                                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         ListView lw = ((AlertDialog) dialog).getListView();
@@ -317,6 +318,10 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                                 })
                                 .create();
                         ad.show();
+
+                        // change color
+                        ad.getButton(ad.BUTTON_POSITIVE).setTextColor(mActivity.getResources().getColor(R.color.myPrimaryColor));
+                        ad.getButton(ad.BUTTON_NEGATIVE).setTextColor(mActivity.getResources().getColor(R.color.myPrimaryColor));
 
 
 
