@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/title_general"
+        >
+        <SwitchPreference
+            android:key="pref_key_auto_import_final"
+            android:title="@string/title_auto_import_final"
+            android:summary="@string/sum_auto_import_final"
+            android:defaultValue="true" />
+
+        <SwitchPreference
+            android:key="pref_key_sync_FB_event"
+            android:title="@string/title_sync_fb_event"
+            android:summary="@string/sum_sync_fb_event"
+            android:defaultValue="true" />
+
+        <SwitchPreference
+            android:key="pref_key_exam_warning"
+            android:title="@string/title_event_warning"
+            android:summary="@string/sum_event_warning"
+            android:defaultValue="true" />
+
+        <Preference
+            android:key="pref_key_clean_course_db"
+            android:title="@string/title_clean_course_db"/>
+
+        <Preference
+            android:key="pref_key_clean_reminder_db"
+            android:title="@string/title_clean_reminder_db"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/title_developer"
+        >
+        <Preference
+            android:key="pref_key_import_reminders"
+            android:title="@string/title_import_sample_reminders"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/title_about"
+        >
+        <Preference
+            android:key="pref_key_Version"
+            android:title="@string/title_Version"
+            android:summary="1.0"/>
+        <Preference
+            android:key="pref_key_Credit"
+            android:title="Credit"
+            android:summary=""/>
+    </PreferenceCategory>
+</PreferenceScreen>
