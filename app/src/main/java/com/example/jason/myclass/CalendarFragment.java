@@ -228,7 +228,8 @@ public class CalendarFragment extends Fragment implements WeekView.MonthChangeLi
                     WeekViewEvent event = new WeekViewEvent(eventCount++, name + "\n" + formattedTime, startTime, endTime);
 
                     // Change display color of courses
-                    switch (k) {
+                    // what if exceed 5 courses?
+                    switch (k % 5) {
                         case 0:
                             event.setColor(getResources().getColor(R.color.event_color_01));
                             break;

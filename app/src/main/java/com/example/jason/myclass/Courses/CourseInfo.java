@@ -55,7 +55,7 @@ public class CourseInfo {
     }
     public void setTimeAPM(String time){
         int i = 0;
-        for(; time.charAt(i) <= 48 || time.charAt(i) >= 57; i++);
+        for(; time.charAt(i) < 48 || time.charAt(i) > 57; i++);
         String days = time.substring(0,i);
         String realtime = time.substring(i);
         String starttime = realtime.substring(0,5);
