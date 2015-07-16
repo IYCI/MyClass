@@ -52,6 +52,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="18dp"
+        android:visibility="gone"
+        android:id="@+id/section_item_prof_layout"
         android:layout_gravity="center_horizontal">
 
         <TextView

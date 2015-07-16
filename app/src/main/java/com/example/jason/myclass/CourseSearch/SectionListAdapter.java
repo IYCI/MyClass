@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.jason.myclass.R;
@@ -56,6 +57,8 @@ public class SectionListAdapter extends BaseAdapter {
         TextView loc = (TextView) v.findViewById(R.id.section_item_loc);
         TextView time = (TextView) v.findViewById(R.id.section_item_time);
         TextView prof = (TextView) v.findViewById(R.id.section_item_prof);
+        RelativeLayout section_item_prof_layout = (RelativeLayout) v.findViewById((R.id.section_item_prof_layout));
+        section_item_prof_layout.setVisibility(View.VISIBLE);
 
         lec.setText(mBundle.getStringArrayList("LEC_SEC").get(position));
         time.setText(mBundle.getStringArrayList("LEC_TIME").get(position));

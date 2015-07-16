@@ -72,6 +72,15 @@ public class SearchFragment extends Fragment {
                     mTutLinearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE | LinearLayout.SHOW_DIVIDER_BEGINNING);
                     mTutLinearLayout.setDividerDrawable(divider);
                 }
+
+                LinearLayout mFinalLinearLayout = (LinearLayout) getActivity().findViewById(R.id.finals_list);
+                FinalsListAdapter FinalsAdapter = new FinalsListAdapter(getActivity(), R.layout.section_item, bundle);
+                for (int i = 0; i < FinalsAdapter.getCount(); i++) {
+                    View view = FinalsAdapter.getView(i, null, mFinalLinearLayout);
+                    mFinalLinearLayout.addView(view);
+                    mFinalLinearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE | LinearLayout.SHOW_DIVIDER_BEGINNING);
+                    mFinalLinearLayout.setDividerDrawable(divider);
+                }
             }
         });
         searchFetchTask.execute(mCourse);
