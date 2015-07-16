@@ -227,7 +227,12 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
         TextView courseName = (TextView) mActivity.findViewById(R.id.course_name);
         if(!bundle.getBoolean("valid_return", true)){
             if(courseName != null) {
-                String errorMsg = "Oops!      (ﾉﾟ0ﾟ)ﾉ~\nCourse is not available this term or it may not exist";
+                String errorMsg;
+                if(!Constants.isNetworkAvailable(mActivity)){
+                    errorMsg = "Oops!      (´ﾟдﾟ`)\nNo network connection";
+                }
+                else
+                    errorMsg = "Oops!      (ﾉﾟ0ﾟ)ﾉ~\nCourse is not available this term or it may not exist";
                 SpannableString ss = new SpannableString(errorMsg);
                 ss.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.fab_color_1)), 0, 19, 0);// set color
                 courseName.setText(ss);

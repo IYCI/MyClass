@@ -51,7 +51,7 @@
         <string name="sum_sync_fb_event">Auto import Facebook event that you are interested in</string>
 
         <string name="title_event_warning">Event warning</string>
-        <string name="sum_event_warning">Show warning when close-exam-event is created</string>
+        <string name="sum_event_warning">Creating event will show warning if it is close to an exam</string>
 
         <string name="title_clean_course_db">Remove all courses</string>
         <string name="title_clean_reminder_db">Remove all reminders</string>

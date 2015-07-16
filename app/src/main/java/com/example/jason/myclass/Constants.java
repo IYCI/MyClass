@@ -1,5 +1,9 @@
 package com.example.jason.myclass;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 /**
  * Created by Danny on 2015/6/27.
  */
@@ -31,6 +35,13 @@ public class Constants {
         }
 
         return UWAPIRoot + "courses/" + subject + "/" + cataNum + ".json?key=" + key;
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public static String getScheduleURL(String input) {

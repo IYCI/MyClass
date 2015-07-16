@@ -6,9 +6,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.jason.myclass.CourseSelect.ShowList.AsyncTaskCallbackInterface;
 import com.example.jason.myclass.CourseSelect.ShowList.SubjectFetchTask;
+import com.example.jason.myclass.Constants;
 import com.example.jason.myclass.R;
 
 import java.util.ArrayList;
@@ -62,6 +64,11 @@ public class SubjectsFragment extends ListFragment {
         final SubjectFetchTask subjectFetchTask = new SubjectFetchTask(new AsyncTaskCallbackInterface() {
             @Override
             public void onOperationComplete(Bundle bundle) {
+                if(!Constants.isNetworkAvailable(getActivity())){
+                    Toast.makeText(getActivity().getApplicationContext(), "No network connection, sorry", Toast.LENGTH_LONG).show();
+                    // pop fragment stack or something else
+                    return;
+                }
                 mSubject_arraylist = bundle.getStringArrayList("subject_arraylist");
                 setListAdapter(new ArrayAdapter<>(getActivity(),
                         R.layout.fragment_select_list, R.id.select_list_text, mSubject_arraylist));
