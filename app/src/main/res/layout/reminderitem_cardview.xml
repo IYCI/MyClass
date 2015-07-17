@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:id="@+id/card_view_Layout"
     android:layout_marginLeft="8dp"
@@ -28,14 +28,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
+                android:padding="16dp"
                 >
                 <RelativeLayout
-                    android:layout_width="223dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/left_relative_Layout"
-                    android:orientation="vertical"
-                    android:padding="16dp"
+                    android:orientation="horizontal"
+
                     >
                     <TextView
                         android:id="@+id/TitleInCardView"
@@ -45,7 +46,29 @@
                         android:textColor="#7f7f7f"
                         android:gravity="center_vertical"
                         android:textSize="24sp"
-                        android:layout_alignParentTop="true" />
+                        android:layout_marginEnd="8dp"
+                        android:layout_toStartOf="@+id/NumberofDaysLeftInCardView"
+                        />
+
+                    <TextView
+                        android:id="@+id/NumberofDaysLeftInCardView"
+                        android:gravity="end"
+                        android:textColor="#7f7f7f"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
                     <TextView
                         android:id="@+id/LocationInCardView"
                         android:gravity="bottom"
@@ -54,38 +77,18 @@
                         android:layout_height="wrap_content"
                         android:text="LocaTion"
                         android:textSize="14sp"
-                        android:layout_below="@id/TitleInCardView"
                         />
-                </RelativeLayout>
 
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    >
-
-                    <TextView
-                        android:id="@+id/NumberofDaysLeftInCardView"
-                        android:gravity="right|top"
-                        android:textColor="#7f7f7f"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentTop="true" />
                     <TextView
                         android:id="@+id/DaysLeftInCardView"
                         android:text="Days Left"
-                        android:gravity="right|bottom"
+                        android:gravity="right"
                         android:textColor="#7f7f7f"
                         android:textSize="14sp"
                         android:fontFamily="sans-serif-light"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/NumberofDaysLeftInCardView" />
+                        android:layout_alignParentEnd="true" />
                 </RelativeLayout>
 
 

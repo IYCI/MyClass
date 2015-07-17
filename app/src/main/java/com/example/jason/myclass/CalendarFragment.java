@@ -17,6 +17,7 @@ import com.alamkanak.weekview.WeekViewEvent;
 import com.example.jason.myclass.CourseSearch.SearchFragment;
 import com.example.jason.myclass.Courses.CourseInfo;
 import com.example.jason.myclass.Courses.CoursesDBHandler;
+import com.example.jason.myclass.NavigationBar.NavigationDrawerFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,11 +37,15 @@ public class CalendarFragment extends Fragment implements WeekView.MonthChangeLi
     private static final int TYPE_FIVE_DAY_VIEW = 2;
     private static final int TYPE_WEEK_VIEW = 3;
     private int mWeekViewType = TYPE_FIVE_DAY_VIEW;
+    private NavigationDrawerFragment mNavigationDrawerFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.fragment_drawer);
     }
 
     @Override
@@ -69,8 +74,10 @@ public class CalendarFragment extends Fragment implements WeekView.MonthChangeLi
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.calendar_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+            inflater.inflate(R.menu.calendar_menu, menu);
+            super.onCreateOptionsMenu(menu, inflater);
+        }
     }
 
     @Override

@@ -112,4 +112,5 @@ public class CourseInfo {
         return courseTime;
     }
     public String getCourseName() { return courseName; }
+    public String getCourseSec(){return courseSec;}
 }

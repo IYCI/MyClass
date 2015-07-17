@@ -273,29 +273,29 @@ public class MainActivity extends AppCompatActivity
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
 
+            // search button
+            getMenuInflater().inflate(R.menu.main_activity_actions, menu);
+            MenuItem searchItem = menu.findItem(R.id.action_search);
+            SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    Log.d("MainActivity", "Text Submitted");
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.container, new SearchFragment(query))
+                            .addToBackStack("5")
+                            .commit();
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
+
             if(mNavigationDrawerFragment.getPositionSelected() == 0) {
                 getMenuInflater().inflate(R.menu.calender_action_overflow, menu);
-
-                // search button
-                getMenuInflater().inflate(R.menu.main_activity_actions, menu);
-                MenuItem searchItem = menu.findItem(R.id.action_search);
-                SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        Log.d("MainActivity", "Text Submitted");
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.container, new SearchFragment(query))
-                                .addToBackStack("5")
-                                .commit();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        return false;
-                    }
-                });
             }
 
 

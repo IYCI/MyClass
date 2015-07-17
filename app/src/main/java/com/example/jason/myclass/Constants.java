@@ -92,7 +92,7 @@ public class Constants {
         JSONObject jsonObject;
 
         try {
-            Log.d("SearchFetchTask", "URL is " + url);
+            Log.d("getJSONObject", "URL is " + url);
             HttpGet httpGet = new HttpGet(url);
 
             HttpResponse httpResponse = httpClient.execute(httpGet);

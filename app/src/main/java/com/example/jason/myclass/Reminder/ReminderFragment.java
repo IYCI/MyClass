@@ -15,6 +15,9 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +27,16 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.example.jason.myclass.CourseSelect.ShowList.AsyncTaskCallbackInterface;
+import com.example.jason.myclass.Courses.CourseInfo;
+import com.example.jason.myclass.Courses.CoursesDBHandler;
 import com.example.jason.myclass.MainActivity;
+import com.example.jason.myclass.NavigationBar.NavigationDrawerFragment;
 import com.example.jason.myclass.R;
 import com.example.jason.myclass.Reminder.helpers.ItemTouchHelperAdapter;
 import com.example.jason.myclass.Reminder.helpers.SimpleItemTouchHelperCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,8 +48,16 @@ public class ReminderFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ItemTouchHelper mItemTouchHelper;
+    private NavigationDrawerFragment mNavigationDrawerFragment;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.fragment_drawer);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,8 +71,6 @@ public class ReminderFragment extends Fragment {
         // Make this {@link Fragment} listen for changes in both FABs.
         //FloatingActionButton fab1 = (FloatingActionButton) rootView.findViewById(R.id.fab_1);
         //fab1.setOnCheckedChangeListener(this);
-
-
 
         // RecyclerView:
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.reminder_recycler_view);
@@ -399,5 +413,62 @@ public class ReminderFragment extends Fragment {
         @Override
         public void onRequestDisallowInterceptTouchEvent(boolean bool) {
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+            // Only show items in the action bar relevant to this screen
+            // if the drawer is not showing. Otherwise, let the drawer
+            // decide what to show in the action bar.
+
+            getActivity().getMenuInflater().inflate(R.menu.reminder_menu, menu);
+
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.Import_final_setting){
+            try {
+                // get courses
+                CoursesDBHandler db = new CoursesDBHandler(getActivity());
+                List<CourseInfo> myCourses = db.getAllCourses();
+                db.close();
+                List <String> course_names = new ArrayList<>();
+                List <String> course_secs = new ArrayList<>();
+                for (int i = 0; i < myCourses.size(); i++) {
+                    course_names.add(myCourses.get(i).getCourseName());
+                    course_secs.add(myCourses.get(i).getCourseSec());
+                }
+
+                FinalsFetchTask finalsFetchTask = new FinalsFetchTask(getActivity(), new AsyncTaskCallbackInterface() {
+                    @Override
+                    public void onOperationComplete(Bundle bundle) {
+                        RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.reminder_recycler_view);
+                        if (recyclerView != null) {
+                            Reminder_Adapter adapter = (Reminder_Adapter) recyclerView.getAdapter();
+                            adapter.updateView();
+                        }
+
+                        // show snackBar
+                        Snackbar.make(getView(), "Final exams imported", Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+                finalsFetchTask.execute(course_names, course_secs);
+
+
+
+
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

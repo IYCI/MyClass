@@ -11,6 +11,7 @@
     <string name="Search_setting">Search</string>
     <string name="action_day_view">Day view</string>
     <string name="action_five_day_view">5 day view</string>
+    <string name="import_finals">Update final exams</string>
 
     <!-- for title -->
     <string name="title_MyClass">MyClass</string>
