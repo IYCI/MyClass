@@ -8,4 +8,8 @@
         android:id="@+id/Import_Courses_setting"
         android:title="@string/Import_Courses_setting" />
 
+    <item
+        android:id="@+id/Login_FB_setting"
+        android:title="@string/login_to_FB" />
+
 </menu>

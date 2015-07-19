@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +36,12 @@ import com.example.jason.myclass.NavigationBar.NavigationDrawerFragment;
 import com.example.jason.myclass.R;
 import com.example.jason.myclass.Reminder.helpers.ItemTouchHelperAdapter;
 import com.example.jason.myclass.Reminder.helpers.SimpleItemTouchHelperCallback;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +57,7 @@ public class ReminderFragment extends Fragment {
     private ItemTouchHelper mItemTouchHelper;
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +65,11 @@ public class ReminderFragment extends Fragment {
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_drawer);
+
+
+        //LoginButton loginButton = (LoginButton) getActivity().findViewById(R.id.login_button);
+        //loginButton.registerCallback(callbackManager, null);
+
     }
 
     @Override
@@ -469,6 +482,9 @@ public class ReminderFragment extends Fragment {
             }
         }
 
+
         return super.onOptionsItemSelected(item);
     }
+
+
 }

@@ -1,6 +1,8 @@
 package com.example.jason.myclass;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -26,7 +28,36 @@ import com.example.jason.myclass.Courses.CoursesFragment;
 import com.example.jason.myclass.Courses.Schedule;
 import com.example.jason.myclass.NavigationBar.NavigationDrawerCallbacks;
 import com.example.jason.myclass.NavigationBar.NavigationDrawerFragment;
+import com.example.jason.myclass.Reminder.ReminderDBHandler;
 import com.example.jason.myclass.Reminder.ReminderFragment;
+import com.example.jason.myclass.Reminder.Reminder_item;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity
@@ -39,6 +70,10 @@ public class MainActivity extends AppCompatActivity
     private Toolbar mToolbar;
     private CharSequence mTitle;
     private CharSequence currentTitle;
+    CallbackManager callbackManager;
+    AccessTokenTracker accessTokenTracker;
+    AccessToken accessToken;
+    ProfileTracker profileTracker;
 
     private static final String TITLE_KEY = "title key";
 
@@ -78,6 +113,34 @@ public class MainActivity extends AppCompatActivity
         //}
 
         checkFirstRun();
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(
+                    AccessToken oldAccessToken,
+                    AccessToken currentAccessToken) {
+                // Set the access token using
+                // currentAccessToken when it's loaded or set.
+            }
+        };
+        // If the access token is available already assign it.
+        accessToken = AccessToken.getCurrentAccessToken();
+
+
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(
+                    Profile oldProfile,
+                    Profile currentProfile) {
+                // App code
+            }
+        };
+
+
+
     }
 
     @Override
@@ -97,9 +160,26 @@ public class MainActivity extends AppCompatActivity
                 .remove(mNavigationDrawerFragment)
                 .commit();*/
 
+        accessTokenTracker.stopTracking();
+        profileTracker.stopTracking();
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        // Logs 'install' and 'app activate' App Events.
+        AppEventsLogger.activateApp(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -318,12 +398,131 @@ public class MainActivity extends AppCompatActivity
             showImportDialog();
             return true;
         }
+        else if(id == R.id.Login_FB_setting){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle("Log in to Facebook");
+            builder.setView(R.layout.facebook_login_dialog);
+
+            AlertDialog login_dialog = builder.create();
+            login_dialog.show();
+
+            LoginButton loginButton = (LoginButton) login_dialog.findViewById(R.id.login_button);
+            List<String> permissions = new ArrayList<String>();
+            permissions.add("user_friends");
+
+            LoginManager.getInstance().logInWithReadPermissions(
+                    this,
+                    Arrays.asList("user_events"));
+
+            loginButton.setReadPermissions(permissions);
+            // If using in a fragment
+            //loginButton.setFragment(new NativeFragmentWrapper(this));
+            // Other app specific specialization
+
+
+
+            // Callback registration
+            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    Log.d("MainActivity", "success");
+                    // App code
+                }
+
+                @Override
+                public void onCancel() {
+                    Log.d("MainActivity", "cancel");
+                    // App code
+                }
+
+                @Override
+                public void onError(FacebookException exception) {
+                    Log.d("MainActivity", "error");
+                    // App code
+                }
+            });
+
+            Profile profile = Profile.getCurrentProfile();
+            // change username
+            Log.d("MainActivity", "got id is " + profile.getId() + " " + profile.getFirstName() +
+                    " " + profile.getLastName());
+
+            String userID = profile.getId();
+
+
+            new GraphRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    "/" + userID + "/events",
+                    null,
+                    HttpMethod.GET,
+                    new GraphRequest.Callback() {
+                        public void onCompleted(GraphResponse response) {
+                            /* handle the result */
+                            try {
+                                Log.d("MainActivity", response.toString());
+                                JSONArray eventsArray = response.getJSONObject().getJSONArray("data");
+                                final ReminderDBHandler reminder_db = new ReminderDBHandler(getApplicationContext());
+                                Bundle parameters = new Bundle();
+                                parameters.putString("fields", "id,name,start_time,place");
+                                for(int i = 0; i < eventsArray.length(); i++){
+                                    JSONObject mEvent = eventsArray.getJSONObject(i);
+                                    String eid = mEvent.getString("id");
+                                    /* make the API call */
+                                    GraphRequest request = new GraphRequest(
+                                            AccessToken.getCurrentAccessToken(),
+                                            "/" + eid,
+                                            null,
+                                            HttpMethod.GET,
+                                            new GraphRequest.Callback() {
+                                                public void onCompleted(GraphResponse response) {
+                                                    /* handle the result */
+                                                    try {
+                                                        //Log.d("MainActivity", response.toString());
+                                                        JSONObject event = response.getJSONObject();
+                                                        String loc = event.getJSONObject("place").getString("name");
+                                                        //String loc = "";
+                                                        String title = event.getString("name");
+                                                        String start_time = event.getString("start_time");
+                                                        DateFormat f1 = new SimpleDateFormat("yyyy-MM-dd'T'h:mm:ssZ", Locale.CANADA);
+                                                        Date d = f1.parse(start_time);
+                                                        Reminder_item new_exam = new Reminder_item(UUID.randomUUID().toString(), title, loc, d.getTime());
+                                                        reminder_db.addReminder(new_exam);
+                                                    }
+                                                    catch (org.json.JSONException e){
+                                                        e.printStackTrace();
+                                                    }
+                                                    catch (java.text.ParseException p){
+                                                        p.printStackTrace();
+                                                    }
+                                                }
+                                            }
+                                    );
+                                    request.setParameters(parameters);
+                                    request.executeAsync();
+                                }
+                                reminder_db.close();
+                            }
+                            catch (org.json.JSONException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            ).executeAsync();
+
+            login_dialog.dismiss();
+        }
 
 
 
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("MainActivity", "got result");
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
 
 }
