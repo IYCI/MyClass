@@ -136,16 +136,16 @@ public class Constants {
     public static List<Reminder_item> get_sample_reminder(){
         sample_reminder = new ArrayList<>();
         Reminder_item tmp = new Reminder_item(UUID.randomUUID().toString(),
-                "final end","", 2015, 8, 15, "d");
+                "Final end","", 2015, 7, 15, "d");
         sample_reminder.add(tmp);
         tmp = new Reminder_item(UUID.randomUUID().toString(),
-                "Next term start","", 2015, 9, 14, "d");
+                "Next term start","", 2015, 8, 14, "d");
         sample_reminder.add(tmp);
         tmp = new Reminder_item(UUID.randomUUID().toString(),
-                "first penalty end","", 2015, 10, 3, "d");
+                "First penalty end","", 2015, 9, 3, "d");
         sample_reminder.add(tmp);
         tmp = new Reminder_item(UUID.randomUUID().toString(),
-                "late fee for fall","", 2015, 8, 28, "d");
+                "Late fee for fall","", 2015, 7, 28, "d");
         sample_reminder.add(tmp);
 
         return sample_reminder;
@@ -154,20 +154,20 @@ public class Constants {
     public static List<Reminder_item> get_holidays(){
         holiday_2015 = new ArrayList<>();
         Reminder_item tmp = new Reminder_item(UUID.randomUUID().toString(),
-                "Civic Holiday","", 2015, 8, 3, "d");
+                "Civic Holiday","", 2015, 7, 3, "d");
         holiday_2015.add(tmp);
         tmp = new Reminder_item(UUID.randomUUID().toString(),
-                "Labour Day","", 2015, 9, 7, "d");
+                "Labour Day","", 2015, 8, 7, "d");
         holiday_2015.add(tmp);
         tmp = new Reminder_item(UUID.randomUUID().toString(),
-                "Thanksgiving","", 2015, 10, 12, "d");
+                "Thanksgiving","", 2015, 9, 12, "d");
         holiday_2015.add(tmp);
         tmp = new Reminder_item(UUID.randomUUID().toString(),
-                "Christmas","", 2015, 12, 25, "d");
+                "Christmas","", 2015, 11, 25, "d");
         holiday_2015.add(tmp);
 
         tmp = new Reminder_item(UUID.randomUUID().toString(),
-                "Boxing Day","", 2015, 12, 28, "d");
+                "Boxing Day","", 2015, 11, 28, "d");
         holiday_2015.add(tmp);
 
         return holiday_2015;

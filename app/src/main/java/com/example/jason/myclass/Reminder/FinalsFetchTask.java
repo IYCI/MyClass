@@ -75,6 +75,8 @@ public class FinalsFetchTask extends AsyncTask<List<String>, Void, Bundle> {
             JSONArray examData = Constants.getJSONObject(exam_url).getJSONArray("data");
 
             // get final info from courses
+            ReminderDBHandler reminder_db = new ReminderDBHandler(mActivity);
+            reminder_db.removeAll("e");
             for (int i = 0; i < course_names.size(); i++) {
                 String course_name = course_names.get(i);
                 String course_sec = course_secs.get(i);
@@ -109,8 +111,7 @@ public class FinalsFetchTask extends AsyncTask<List<String>, Void, Bundle> {
                     Date d = f1.parse(start_time);
 
                     Reminder_item new_exam = new Reminder_item(UUID.randomUUID().toString(), title, loc, d.getTime(), "e");
-                    ReminderDBHandler reminder_db = new ReminderDBHandler(mActivity);
-                    reminder_db.removeAll("e");
+
                     reminder_db.addReminder(new_exam);
                     reminder_db.close();
                 }
