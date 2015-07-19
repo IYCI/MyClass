@@ -133,6 +133,15 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
+    public void removeAll(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // deleting Row
+        int affected_rows = db.delete(TABLE_COURSES, null,null);
+        Log.d("removeReminder", affected_rows + " rows deleted");
+        db.close(); // Closing database connection
+    }
+
     // get reminder count
     public int CountCourses(){
         SQLiteDatabase db = this.getReadableDatabase();

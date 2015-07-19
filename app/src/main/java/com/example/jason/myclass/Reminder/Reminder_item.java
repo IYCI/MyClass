@@ -17,6 +17,7 @@ public class Reminder_item {
     // "c"      customized
     // "e"      exams
     // "fb"     facebook events
+    // "d"      important dates
 
     // constructor
     public Reminder_item(){

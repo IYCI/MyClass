@@ -4,7 +4,15 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.design.widget.Snackbar;
+
+import com.example.jason.myclass.Courses.CoursesDBHandler;
+import com.example.jason.myclass.Reminder.ReminderDBHandler;
+import com.example.jason.myclass.Reminder.Reminder_item;
+
+import java.util.List;
 
 /**
  * Created by Jason on 2015-05-26.
@@ -62,6 +70,61 @@ public class SettingFragment extends PreferenceFragment {
         }
 
         addPreferencesFromResource(R.xml.preferences);
+
+        Preference clean_reminder_pref = (Preference) findPreference("pref_key_clean_reminder_db");
+        clean_reminder_pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                //open browser or intent here
+                // should show an alert dialog
+                ReminderDBHandler reminder_db = new ReminderDBHandler(getActivity());
+                reminder_db.removeAll();
+                reminder_db.close();
+
+                // show snackBar
+                Snackbar.make(getView(), "All reminders removed", Snackbar.LENGTH_SHORT)
+                        .show();
+                return true;
+            }
+        });
+
+        Preference import_sample_pref = (Preference) findPreference("pref_key_import_reminders");
+        import_sample_pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                //open browser or intent here
+                ReminderDBHandler reminder_db = new ReminderDBHandler(getActivity());
+                reminder_db.removeAll("d");
+                List<Reminder_item> holiday_2015 = Constants.get_holidays();
+                List<Reminder_item> sample_reminder = Constants.get_sample_reminder();
+                for(int i = 0; i < holiday_2015.size(); i++){
+                    reminder_db.addReminder(holiday_2015.get(i));
+                }
+                for(int i = 0; i < sample_reminder.size(); i++){
+                    reminder_db.addReminder(sample_reminder.get(i));
+                }
+
+                // show snackBar
+                Snackbar.make(getView(), "Sample reminders added", Snackbar.LENGTH_SHORT)
+                        .show();
+                return true;
+            }
+        });
+
+        Preference clean_course_pref = (Preference) findPreference("pref_key_clean_course_db");
+        clean_course_pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                //open browser or intent here
+                // should show an alert dialog
+                CoursesDBHandler courses_db = new CoursesDBHandler(getActivity());
+                courses_db.removeAll();
+                courses_db.close();
+
+                // show snackBar
+                Snackbar.make(getView(), "All courses removed", Snackbar.LENGTH_SHORT)
+                        .show();
+                return true;
+            }
+        });
+
     }
 
     /*@Override

@@ -5,6 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.example.jason.myclass.Reminder.Reminder_item;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -17,9 +19,15 @@ import java.io.InputStreamReader;
 /**
  * Created by Danny on 2015/6/27.
  */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class Constants {
     public static String UWAPIRoot = "https://api.uwaterloo.ca/v2/";
     public static String key = "93071c27c200c7b41e22f12902dabdef";
+    public static List<Reminder_item> holiday_2015;
+    public static List<Reminder_item> sample_reminder;
 
     public static String getCourseInfoURL(String input) {
         String subject = "";
@@ -123,5 +131,47 @@ public class Constants {
             return null;
         }
         return jsonObject;
+    }
+
+    public static List<Reminder_item> get_sample_reminder(){
+        sample_reminder = new ArrayList<>();
+        Reminder_item tmp = new Reminder_item(UUID.randomUUID().toString(),
+                "final end","", 2015, 8, 15, "d");
+        sample_reminder.add(tmp);
+        tmp = new Reminder_item(UUID.randomUUID().toString(),
+                "Next term start","", 2015, 9, 14, "d");
+        sample_reminder.add(tmp);
+        tmp = new Reminder_item(UUID.randomUUID().toString(),
+                "first penalty end","", 2015, 10, 3, "d");
+        sample_reminder.add(tmp);
+        tmp = new Reminder_item(UUID.randomUUID().toString(),
+                "late fee for fall","", 2015, 8, 28, "d");
+        sample_reminder.add(tmp);
+
+        return sample_reminder;
+    }
+
+    public static List<Reminder_item> get_holidays(){
+        holiday_2015 = new ArrayList<>();
+        Reminder_item tmp = new Reminder_item(UUID.randomUUID().toString(),
+                "Civic Holiday","", 2015, 8, 3, "d");
+        holiday_2015.add(tmp);
+        tmp = new Reminder_item(UUID.randomUUID().toString(),
+                "Labour Day","", 2015, 9, 7, "d");
+        holiday_2015.add(tmp);
+        tmp = new Reminder_item(UUID.randomUUID().toString(),
+                "Thanksgiving","", 2015, 10, 12, "d");
+        holiday_2015.add(tmp);
+        tmp = new Reminder_item(UUID.randomUUID().toString(),
+                "Christmas","", 2015, 12, 25, "d");
+        holiday_2015.add(tmp);
+
+        tmp = new Reminder_item(UUID.randomUUID().toString(),
+                "Boxing Day","", 2015, 12, 28, "d");
+        holiday_2015.add(tmp);
+
+        return holiday_2015;
+
+
     }
 }
