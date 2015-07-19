@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,12 +35,6 @@ import com.example.jason.myclass.NavigationBar.NavigationDrawerFragment;
 import com.example.jason.myclass.R;
 import com.example.jason.myclass.Reminder.helpers.ItemTouchHelperAdapter;
 import com.example.jason.myclass.Reminder.helpers.SimpleItemTouchHelperCallback;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -301,7 +294,8 @@ public class ReminderFragment extends Fragment {
                                 new_event_dialog_buffer.getInt("month", 0),
                                 new_event_dialog_buffer.getInt("day", 0),
                                 new_event_dialog_buffer.getInt("hour", 0),
-                                new_event_dialog_buffer.getInt("minute", 0)
+                                new_event_dialog_buffer.getInt("minute", 0),
+                                "c"
                         ));
                         buffer_editor.clear().apply();
 

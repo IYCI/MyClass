@@ -253,7 +253,8 @@ public class FloatingActionButton extends FrameLayout {
                         new_event_dialog_buffer.getInt("month", 0),
                         new_event_dialog_buffer.getInt("day", 0),
                         new_event_dialog_buffer.getInt("hour", 0),
-                        new_event_dialog_buffer.getInt("minute", 0)
+                        new_event_dialog_buffer.getInt("minute", 0),
+                        "c"
                 ));
                 buffer_editor.clear().apply();
 

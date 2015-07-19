@@ -428,6 +428,70 @@ public class MainActivity extends AppCompatActivity
                 public void onSuccess(LoginResult loginResult) {
                     Log.d("MainActivity", "success");
                     // App code
+                    Profile profile = Profile.getCurrentProfile();
+                    // change username
+                    Log.d("MainActivity", "got id is " + profile.getId() + " " + profile.getFirstName() +
+                            " " + profile.getLastName());
+
+                    String userID = profile.getId();
+
+
+                    new GraphRequest(
+                            AccessToken.getCurrentAccessToken(),
+                            "/" + userID + "/events",
+                            null,
+                            HttpMethod.GET,
+                            new GraphRequest.Callback() {
+                                public void onCompleted(GraphResponse response) {
+                            /* handle the result */
+                                    try {
+                                        Log.d("MainActivity", response.toString());
+                                        JSONArray eventsArray = response.getJSONObject().getJSONArray("data");
+                                        final ReminderDBHandler reminder_db = new ReminderDBHandler(getApplicationContext());
+                                        reminder_db.removeAll("fb");
+                                        Bundle parameters = new Bundle();
+                                        parameters.putString("fields", "id,name,start_time,place");
+                                        for (int i = 0; i < eventsArray.length(); i++) {
+                                            JSONObject mEvent = eventsArray.getJSONObject(i);
+                                            String eid = mEvent.getString("id");
+                                    /* make the API call */
+                                            GraphRequest request = new GraphRequest(
+                                                    AccessToken.getCurrentAccessToken(),
+                                                    "/" + eid,
+                                                    null,
+                                                    HttpMethod.GET,
+                                                    new GraphRequest.Callback() {
+                                                        public void onCompleted(GraphResponse response) {
+                                                    /* handle the result */
+                                                            try {
+                                                                //Log.d("MainActivity", response.toString());
+                                                                JSONObject event = response.getJSONObject();
+                                                                String loc = event.getJSONObject("place").getString("name");
+                                                                //String loc = "";
+                                                                String title = event.getString("name");
+                                                                String start_time = event.getString("start_time");
+                                                                DateFormat f1 = new SimpleDateFormat("yyyy-MM-dd'T'h:mm:ssZ", Locale.CANADA);
+                                                                Date d = f1.parse(start_time);
+                                                                Reminder_item new_fb_events = new Reminder_item(UUID.randomUUID().toString(), title, loc, d.getTime(), "fb");
+                                                                reminder_db.addReminder(new_fb_events);
+                                                            } catch (org.json.JSONException e) {
+                                                                e.printStackTrace();
+                                                            } catch (java.text.ParseException p) {
+                                                                p.printStackTrace();
+                                                            }
+                                                        }
+                                                    }
+                                            );
+                                            request.setParameters(parameters);
+                                            request.executeAsync();
+                                        }
+                                        reminder_db.close();
+                                    } catch (org.json.JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                    ).executeAsync();
                 }
 
                 @Override
@@ -443,72 +507,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
-            Profile profile = Profile.getCurrentProfile();
-            // change username
-            Log.d("MainActivity", "got id is " + profile.getId() + " " + profile.getFirstName() +
-                    " " + profile.getLastName());
 
-            String userID = profile.getId();
-
-
-            new GraphRequest(
-                    AccessToken.getCurrentAccessToken(),
-                    "/" + userID + "/events",
-                    null,
-                    HttpMethod.GET,
-                    new GraphRequest.Callback() {
-                        public void onCompleted(GraphResponse response) {
-                            /* handle the result */
-                            try {
-                                Log.d("MainActivity", response.toString());
-                                JSONArray eventsArray = response.getJSONObject().getJSONArray("data");
-                                final ReminderDBHandler reminder_db = new ReminderDBHandler(getApplicationContext());
-                                Bundle parameters = new Bundle();
-                                parameters.putString("fields", "id,name,start_time,place");
-                                for(int i = 0; i < eventsArray.length(); i++){
-                                    JSONObject mEvent = eventsArray.getJSONObject(i);
-                                    String eid = mEvent.getString("id");
-                                    /* make the API call */
-                                    GraphRequest request = new GraphRequest(
-                                            AccessToken.getCurrentAccessToken(),
-                                            "/" + eid,
-                                            null,
-                                            HttpMethod.GET,
-                                            new GraphRequest.Callback() {
-                                                public void onCompleted(GraphResponse response) {
-                                                    /* handle the result */
-                                                    try {
-                                                        //Log.d("MainActivity", response.toString());
-                                                        JSONObject event = response.getJSONObject();
-                                                        String loc = event.getJSONObject("place").getString("name");
-                                                        //String loc = "";
-                                                        String title = event.getString("name");
-                                                        String start_time = event.getString("start_time");
-                                                        DateFormat f1 = new SimpleDateFormat("yyyy-MM-dd'T'h:mm:ssZ", Locale.CANADA);
-                                                        Date d = f1.parse(start_time);
-                                                        Reminder_item new_exam = new Reminder_item(UUID.randomUUID().toString(), title, loc, d.getTime());
-                                                        reminder_db.addReminder(new_exam);
-                                                    }
-                                                    catch (org.json.JSONException e){
-                                                        e.printStackTrace();
-                                                    }
-                                                    catch (java.text.ParseException p){
-                                                        p.printStackTrace();
-                                                    }
-                                                }
-                                            }
-                                    );
-                                    request.setParameters(parameters);
-                                    request.executeAsync();
-                                }
-                                reminder_db.close();
-                            }
-                            catch (org.json.JSONException e){
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-            ).executeAsync();
 
             login_dialog.dismiss();
         }

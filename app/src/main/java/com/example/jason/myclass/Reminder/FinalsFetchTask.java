@@ -56,6 +56,7 @@ public class FinalsFetchTask extends AsyncTask<List<String>, Void, Bundle> {
         try{
             bundle.putBoolean("valid_return", false);
             // get schedule JSONBObject
+            // TODO: what if no course exist???
             String schedule_url = Constants.getScheduleURL(course_names.get(0));
             JSONObject schedulesObject = Constants.getJSONObject(schedule_url);
 
@@ -107,8 +108,9 @@ public class FinalsFetchTask extends AsyncTask<List<String>, Void, Bundle> {
                     DateFormat f1 = new SimpleDateFormat("yyyy-MM-dd h:mm a");
                     Date d = f1.parse(start_time);
 
-                    Reminder_item new_exam = new Reminder_item(UUID.randomUUID().toString(), title, loc, d.getTime());
+                    Reminder_item new_exam = new Reminder_item(UUID.randomUUID().toString(), title, loc, d.getTime(), "e");
                     ReminderDBHandler reminder_db = new ReminderDBHandler(mActivity);
+                    reminder_db.removeAll("e");
                     reminder_db.addReminder(new_exam);
                     reminder_db.close();
                 }

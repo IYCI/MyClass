@@ -30,6 +30,7 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
     private static final String KEY_TITLE = "title";            //      1
     private static final String KEY_LOCATION = "location";      //      2
     private static final String KEY_UNIX_TIME = "Unix_time";    //      3
+    private static final String KEY_TYPE = "type";              //      4
 
     public ReminderDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -40,7 +41,8 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
         Log.d("ReminderDBHandler", "onCreate");
         String CREATE_TABLE = "CREATE TABLE " + TABLE_REMINDERS + "("
                 + KEY_ID + " STRING PRIMARY KEY," + KEY_TITLE + " TEXT,"
-                + KEY_LOCATION + " TEXT," + KEY_UNIX_TIME + " TEXT" + ")";
+                + KEY_LOCATION + " TEXT," + KEY_UNIX_TIME + " TEXT,"
+                + KEY_TYPE + " TEXT" + ")";
         db.execSQL(CREATE_TABLE);
     }
 
@@ -67,6 +69,7 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
         values.put(KEY_TITLE, reminder.get_title());
         values.put(KEY_LOCATION, reminder.get_location());
         values.put(KEY_UNIX_TIME, reminder.get_unix_time());
+        values.put(KEY_TYPE, reminder.get_type());
 
         // Inserting Row
         db.insert(TABLE_REMINDERS, null, values);
@@ -80,6 +83,25 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
         // deleting Row
         int affected_rows = db.delete(TABLE_REMINDERS, KEY_ID + " = ?", new String[]{uuid_string});
         Log.d("uuid", "uuid is " + uuid_string);
+        Log.d("removeReminder", affected_rows + " rows deleted");
+        db.close(); // Closing database connection
+    }
+
+    // remove a reminder
+    public void removeAll(String type){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // deleting Row
+        int affected_rows = db.delete(TABLE_REMINDERS, KEY_TYPE + " = ?", new String[]{type});
+        Log.d("removeReminder", affected_rows + " rows deleted");
+        db.close(); // Closing database connection
+    }
+
+    public void removeAll(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // deleting Row
+        int affected_rows = db.delete(TABLE_REMINDERS, null,null);
         Log.d("removeReminder", affected_rows + " rows deleted");
         db.close(); // Closing database connection
     }
@@ -116,7 +138,8 @@ public class ReminderDBHandler extends SQLiteOpenHelper {
                         cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
-                        Long.parseLong(cursor.getString(3)));
+                        Long.parseLong(cursor.getString(3)),
+                        cursor.getString(4));
 
                 // Adding reminder to list
                 reminderList.add(reminder);
