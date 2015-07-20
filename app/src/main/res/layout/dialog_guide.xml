@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/import_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView_guide_1"
+
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/guide_01" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView_guide_2"
+
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/guide_02" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView_guide_3"
+
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/guide_03" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView_guide_4"
+
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/guide_04" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView_guide_5"
+
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/guide_5" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView_guide_6"
+
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/guide_6" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView_guide_7"
+
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/guide_7" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:id="@+id/dialog_guide_ok_btn"/>
+
+</LinearLayout>
+
+</ScrollView>
+

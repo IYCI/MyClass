@@ -290,7 +290,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                 add_button.setVisibility(View.GONE);
             else {
                 if (bundle.getBoolean("course_taken")) {
-                    add_button.setText("drop");
+                    add_button.setText("remove");
                     add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.fab_color_1)));
                 }
                 add_button.setOnClickListener(new View.OnClickListener() {
@@ -341,7 +341,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
                                             // change button
                                             Button add_button = (Button) mActivity.findViewById(R.id.add_course_button);
-                                            add_button.setText("drop");
+                                            add_button.setText("remove");
                                             add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.fab_color_1)));
 
                                             // show snackBar
@@ -364,7 +364,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                             if (course_taken_num != null)
                                 db.removeCourse(course_taken_num);
 
-                            add_button.setText("take");
+                            add_button.setText("add");
                             add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.dialog_text_color)));
 
                             // show snackBar

@@ -289,12 +289,33 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sp = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
         boolean isFirstRun = sp.getBoolean("isFirstRun", true);
         if (isFirstRun){
+            // displat tut dialog
+            showGuideDialog();
+
             // display the dialog
-            showImportDialog();
+            //showImportDialog();
+
             sp.edit()
                     .putBoolean("isFirstRun", false)
                     .apply();
         }
+    }
+    public void showGuideDialog() {
+        final Dialog d = new Dialog(MainActivity.this);
+        //d.setTitle(R.string.import_dialog_title);
+        d.setContentView(R.layout.dialog_guide);
+        d.setTitle("Import guide");
+        Button dialog_guide_ok_btn = (Button) d.findViewById(R.id.dialog_guide_ok_btn);
+        dialog_guide_ok_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                d.dismiss();
+                showImportDialog();
+            }
+        });
+        d.show();
+
+
     }
 
     public void showImportDialog() {

@@ -29,6 +29,10 @@
             android:key="pref_key_clean_reminder_db"
             android:title="@string/title_clean_reminder_db"/>
 
+        <Preference
+            android:key="pref_key_import_guide"
+            android:title="Show import course guide"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
