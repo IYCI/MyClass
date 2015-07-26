@@ -1,2 +1,2 @@
 # MyClass
-blah
+https://play.google.com/store/apps/details?id=com.YC2010.jason.myclass
