@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.YC2010.jason.myclass.CourseSelect.ShowList.AsyncTaskCallbackInterface;
 import com.YC2010.jason.myclass.R;
@@ -19,10 +20,6 @@ public class SearchFragment extends Fragment {
     private String mCourse;
 
     public SearchFragment(){}
-
-    public void setCourse(String course){
-        mCourse = course;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,6 +33,11 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String course = getArguments().getString("COURSE");
+        if(course == null)
+            Toast.makeText(getActivity(), "course string not found", Toast.LENGTH_SHORT).show();
+        mCourse = course;
+
 
         SearchFetchTask searchFetchTask = new SearchFetchTask(getActivity(), new AsyncTaskCallbackInterface() {
             @Override

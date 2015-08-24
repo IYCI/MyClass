@@ -30,6 +30,8 @@ public class CoursesFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_SUBJECT = "SUBJECT";
 
 
     @Override
@@ -71,7 +73,10 @@ public class CoursesFragment extends Fragment {
             @Override
             public void onClick(View view, final int position) {
                 SearchFragment mSearchFragment = new SearchFragment();
-                mSearchFragment.setCourse(myDataset.get(position).getCourseName());
+                Bundle args = new Bundle();
+                String course_name = myDataset.get(position).getCourseName();
+                args.putString(ARG_SUBJECT, course_name);
+                mSearchFragment.setArguments(args);
                 getFragmentManager().beginTransaction()
                         .replace(R.id.container, mSearchFragment)
                         .addToBackStack("7")

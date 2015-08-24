@@ -49,7 +49,7 @@
         <Preference
             android:key="pref_key_Version"
             android:title="@string/title_Version"
-            android:summary="1.0"/>
+            android:summary="@string/version_name"/>
         <Preference
             android:key="pref_key_Credit"
             android:title="Credit"

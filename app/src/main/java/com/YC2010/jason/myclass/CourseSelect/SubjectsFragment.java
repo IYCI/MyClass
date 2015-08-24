@@ -105,7 +105,10 @@ public class SubjectsFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
         Log.d("SubjectsFragment", "item click: " + mSubject_arraylist.get(position));
         CatalogNumFragment mCatalogNumFragment = new CatalogNumFragment();
-        mCatalogNumFragment.setSubject(mSubject_arraylist.get(position));
+        Bundle args = new Bundle();
+        String subject_name = mSubject_arraylist.get(position);
+        args.putString("SUBJECT", subject_name);
+        mCatalogNumFragment.setArguments(args);
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, mCatalogNumFragment)
                 .addToBackStack("6")

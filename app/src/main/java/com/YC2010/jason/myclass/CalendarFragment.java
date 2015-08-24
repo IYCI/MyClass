@@ -157,7 +157,10 @@ public class CalendarFragment extends Fragment implements WeekView.MonthChangeLi
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
         //Toast.makeText(getActivity(), "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
         SearchFragment mSearchFragment = new SearchFragment();
-        mSearchFragment.setCourse(event.getName().split(System.getProperty("line.separator"))[0]);
+        Bundle args = new Bundle();
+        String course_name = event.getName().split(System.getProperty("line.separator"))[0];
+        args.putString("COURSE", course_name);
+        mSearchFragment.setArguments(args);
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, mSearchFragment)
                 .addToBackStack("7")

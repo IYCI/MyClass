@@ -401,8 +401,11 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.d("MainActivity", "Text Submitted");
+                    // pass query into the fragment through a bundle
                     SearchFragment mSearchFragment = new SearchFragment();
-                    mSearchFragment.setCourse(query);
+                    Bundle args = new Bundle();
+                    args.putString("COURSE", query);
+                    mSearchFragment.setArguments(args);
                     getFragmentManager().beginTransaction()
                             .replace(R.id.container, mSearchFragment)
                             .addToBackStack("7")

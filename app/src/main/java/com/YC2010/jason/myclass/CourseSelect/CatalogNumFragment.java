@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.YC2010.jason.myclass.CourseSearch.SearchFragment;
 import com.YC2010.jason.myclass.CourseSelect.ShowList.AsyncTaskCallbackInterface;
@@ -26,8 +27,7 @@ public class CatalogNumFragment extends ListFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_SUBJECT = "SUBJECT";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -65,10 +65,10 @@ public class CatalogNumFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        String subject = getArguments().getString(ARG_SUBJECT);
+        if(subject == null)
+            Toast.makeText(getActivity(), "subject string not found", Toast.LENGTH_SHORT).show();
+        mSubject = subject;
 
         final CatalogNumFetchTask catalogNumFetchTask = new CatalogNumFetchTask(mSubject, new AsyncTaskCallbackInterface() {
             @Override
@@ -126,7 +126,10 @@ public class CatalogNumFragment extends ListFragment {
         Log.d("CatalogNumFragment", "item click: " + mCatalogNum_arraylist.get(position));
 
         SearchFragment mSearchFragment = new SearchFragment();
-        mSearchFragment.setCourse(mCatalogNum_arraylist.get(position));
+        Bundle args = new Bundle();
+        String course_name = mCatalogNum_arraylist.get(position);
+        args.putString("COURSE", course_name);
+        mSearchFragment.setArguments(args);
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, mSearchFragment)
                 .addToBackStack("7")
