@@ -58,7 +58,7 @@ public class FinalsFetchTask extends AsyncTask<List<String>, Void, Bundle> {
             // get schedule JSONBObject
             // TODO: what if no course exist???
             String schedule_url = Constants.getScheduleURL(course_names.get(0));
-            JSONObject schedulesObject = Constants.getJSONObject(schedule_url);
+            JSONObject schedulesObject = Constants.getJSON_from_url(schedule_url);
 
             // check valid data return
             if(!schedulesObject.getJSONObject("meta").getString("message").equals("Request successful")) {
@@ -66,13 +66,11 @@ public class FinalsFetchTask extends AsyncTask<List<String>, Void, Bundle> {
                 return bundle;
             }
             bundle.putBoolean("valid_return", true);
-            JSONArray data = schedulesObject.getJSONArray("data");
 
-            // knowing at least a lec, can fetch term now
-            String term = data.getJSONObject(0).getString("term");
+            String current_term = (String) Constants.getTerms().get(1);
             // get exam JSONBObject
-            String exam_url = Constants.getExamsURL(term);
-            JSONArray examData = Constants.getJSONObject(exam_url).getJSONArray("data");
+            String exam_url = Constants.getExamsURL(current_term);
+            JSONArray examData = Constants.getJSON_from_url(exam_url).getJSONArray("data");
 
             // get final info from courses
             ReminderDBHandler reminder_db = new ReminderDBHandler(mActivity);

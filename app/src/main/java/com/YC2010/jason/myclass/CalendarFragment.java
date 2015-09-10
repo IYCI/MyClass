@@ -39,6 +39,9 @@ public class CalendarFragment extends Fragment implements WeekView.MonthChangeLi
     private int mWeekViewType = TYPE_FIVE_DAY_VIEW;
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_COURSE = "COURSE";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,7 +162,7 @@ public class CalendarFragment extends Fragment implements WeekView.MonthChangeLi
         SearchFragment mSearchFragment = new SearchFragment();
         Bundle args = new Bundle();
         String course_name = event.getName().split(System.getProperty("line.separator"))[0];
-        args.putString("COURSE", course_name);
+        args.putString(ARG_COURSE, course_name);
         mSearchFragment.setArguments(args);
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, mSearchFragment)

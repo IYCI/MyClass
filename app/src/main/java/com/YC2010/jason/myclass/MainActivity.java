@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity
     AccessToken accessToken;
     ProfileTracker profileTracker;
 
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_COURSE = "COURSE";
     private static final String TITLE_KEY = "title key";
 
     @Override
@@ -404,7 +406,7 @@ public class MainActivity extends AppCompatActivity
                     // pass query into the fragment through a bundle
                     SearchFragment mSearchFragment = new SearchFragment();
                     Bundle args = new Bundle();
-                    args.putString("COURSE", query);
+                    args.putString(ARG_COURSE, query);
                     mSearchFragment.setArguments(args);
                     getFragmentManager().beginTransaction()
                             .replace(R.id.container, mSearchFragment)

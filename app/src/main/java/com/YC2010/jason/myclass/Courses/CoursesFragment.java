@@ -31,7 +31,7 @@ public class CoursesFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_SUBJECT = "SUBJECT";
+    private static final String ARG_COURSE = "COURSE";
 
 
     @Override
@@ -75,7 +75,7 @@ public class CoursesFragment extends Fragment {
                 SearchFragment mSearchFragment = new SearchFragment();
                 Bundle args = new Bundle();
                 String course_name = myDataset.get(position).getCourseName();
-                args.putString(ARG_SUBJECT, course_name);
+                args.putString(ARG_COURSE, course_name);
                 mSearchFragment.setArguments(args);
                 getFragmentManager().beginTransaction()
                         .replace(R.id.container, mSearchFragment)

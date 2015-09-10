@@ -11,6 +11,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -20,6 +21,7 @@ import java.io.InputStreamReader;
  * Created by Danny on 2015/6/27.
  */
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +31,8 @@ public class Constants {
     public static List<Reminder_item> holiday_2015;
     public static List<Reminder_item> sample_reminder;
 
+
+    // /courses/{subject}/{catalog_number}
     public static String getCourseInfoURL(String input) {
         String subject = "";
         String cataNum = "";
@@ -62,6 +66,8 @@ public class Constants {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+
+    // /courses/{subject}/{catalog_number}/schedule
     public static String getScheduleURL(String input) {
         String subject = "";
         String cataNum = "";
@@ -83,6 +89,64 @@ public class Constants {
         return UWAPIRoot + "courses/" + subject + "/" + cataNum + "/schedule.json?key=" + key;
     }
 
+    public static String getCurrentTerm() {
+        String term;
+        String termList_url = UWAPIRoot + "terms/list.json?key=" + key;
+        JSONObject termList = getJSON_from_url(termList_url);
+        try {
+            term = termList.getJSONObject("data").getString("current_term");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return term;
+    }
+
+
+    /*      return a list     */
+    /* index 0: previous term */
+    /* index 1: current term  */
+    /* index 2: next term     */
+    public static ArrayList getTerms() {
+        ArrayList<String> term_list = new ArrayList<>();
+        String termList_url = UWAPIRoot + "terms/list.json?key=" + key;
+        try {
+            JSONObject termData = getJSON_from_url(termList_url).getJSONObject("data");
+            term_list.add(0, termData.getString("previous_term"));
+            term_list.add(1, termData.getString("current_term"));
+            term_list.add(2,termData.getString("next_term"));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return term_list;
+    }
+
+    public static String getTermName(String term){
+        String termList_url = UWAPIRoot + "terms/list.json?key=" + key;
+        try {
+            JSONObject terms_listing = getJSON_from_url(termList_url).getJSONObject("data").getJSONObject("listings");
+            Iterator i = terms_listing.keys();
+            while(i.hasNext()){
+                String key = (String) i.next();
+                JSONArray year = (JSONArray) terms_listing.get(key);
+                for(int j = 0; j < year.length(); j++){
+                    if (year.getJSONObject(j).getString("id").equals(term)) {
+                        Log.d("Constants", year.getJSONObject(j).getString("name"));
+                        return year.getJSONObject(j).getString("name");
+                    }
+                }
+            }
+            return null;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static String getExamsURL(String term) {
         return UWAPIRoot + "terms/" + term + "/examschedule" + ".json?key=" + key;
     }
@@ -95,7 +159,7 @@ public class Constants {
         return UWAPIRoot + "courses/" + subject + ".json?key=" + key;
     }
 
-    public static JSONObject getJSONObject(String url){
+    public static JSONObject getJSON_from_url(String url){
         DefaultHttpClient httpClient = new DefaultHttpClient();
         JSONObject jsonObject;
 

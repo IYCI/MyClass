@@ -26,8 +26,7 @@ public class SubjectsFragment extends ListFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_SUBJECT = "SUBJECT";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -39,8 +38,6 @@ public class SubjectsFragment extends ListFragment {
     public static SubjectsFragment newInstance(String param1, String param2) {
         SubjectsFragment fragment = new SubjectsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,10 +53,6 @@ public class SubjectsFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
         final SubjectFetchTask subjectFetchTask = new SubjectFetchTask(new AsyncTaskCallbackInterface() {
             @Override
@@ -107,7 +100,7 @@ public class SubjectsFragment extends ListFragment {
         CatalogNumFragment mCatalogNumFragment = new CatalogNumFragment();
         Bundle args = new Bundle();
         String subject_name = mSubject_arraylist.get(position);
-        args.putString("SUBJECT", subject_name);
+        args.putString(ARG_SUBJECT, subject_name);
         mCatalogNumFragment.setArguments(args);
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, mCatalogNumFragment)

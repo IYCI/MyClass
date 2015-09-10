@@ -18,6 +18,8 @@ import com.YC2010.jason.myclass.R;
  */
 public class SearchFragment extends Fragment {
     private String mCourse;
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_COURSE = "COURSE";
 
     public SearchFragment(){}
 
@@ -33,7 +35,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String course = getArguments().getString("COURSE");
+        String course = getArguments().getString(ARG_COURSE);
         if(course == null)
             Toast.makeText(getActivity(), "course string not found", Toast.LENGTH_SHORT).show();
         mCourse = course;

@@ -101,7 +101,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
             // get schedule JSONBObject
             String schedule_url = Constants.getScheduleURL(input);
-            JSONObject schedulesObject = Constants.getJSONObject(schedule_url);
+            JSONObject schedulesObject = Constants.getJSON_from_url(schedule_url);
 
 
 
@@ -202,11 +202,11 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             bundle.putStringArrayList("TST_TOTAL", TST_TOTAL);
 
 
-            // knowing at least a lec, can fetch term now
-            String term = data.getJSONObject(0).getString("term");
+            String current_term = (String) Constants.getTerms().get(1);
+
             // get exam JSONBObject
-            String exam_url = Constants.getExamsURL(term);
-            JSONArray examData = Constants.getJSONObject(exam_url).getJSONArray("data");
+            String exam_url = Constants.getExamsURL(current_term);
+            JSONArray examData = Constants.getJSON_from_url(exam_url).getJSONArray("data");
             for(int i = 0; i < examData.length(); i++){
                 if(examData.getJSONObject(i).getString("course").equals(bundle.getString("courseName"))){
                     bundle.putBoolean("has_finals", true);

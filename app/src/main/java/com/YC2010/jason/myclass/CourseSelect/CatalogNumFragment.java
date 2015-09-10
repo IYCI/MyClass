@@ -25,7 +25,6 @@ import java.util.ArrayList;
  */
 public class CatalogNumFragment extends ListFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SUBJECT = "SUBJECT";
 
