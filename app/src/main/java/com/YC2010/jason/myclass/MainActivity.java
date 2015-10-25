@@ -91,9 +91,6 @@ public class MainActivity extends AppCompatActivity
             // get title out
             mTitle = savedInstanceState.getCharSequence(TITLE_KEY);
         }
-        // push MyClass into mTitleStack
-        //mTitle = getString(R.string.app_name);
-        //mTitleStack.push(mTitle);
 
         setContentView(R.layout.activity_main);
 
@@ -107,8 +104,6 @@ public class MainActivity extends AppCompatActivity
 
             mNavigationDrawerFragment = (NavigationDrawerFragment)
                     getFragmentManager().findFragmentById(R.id.fragment_drawer);
-
-
 
             // Set up the drawer.
             mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
@@ -144,8 +139,6 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
-
-
     }
 
     @Override
@@ -159,11 +152,7 @@ public class MainActivity extends AppCompatActivity
         Log.d("MainActivity", "enter onDestroy");
         Toast.makeText(getApplicationContext(), "onDestroy", Toast.LENGTH_LONG)
                 .show();
-        //getFragmentManager().beginTransaction().remove(mNavigationDrawerFragment).commit();
         super.onDestroy();
-        /*getFragmentManager().beginTransaction()
-                .remove(mNavigationDrawerFragment)
-                .commit();*/
 
         accessTokenTracker.stopTracking();
         profileTracker.stopTracking();
@@ -253,39 +242,12 @@ public class MainActivity extends AppCompatActivity
                 mToolbar.setTitle(mTitle);
             }
         }
-
-
-
     }
 
 
     @Override
     public void onBackPressed() {
         // pop title and fragment stack
-
-        // there is an ERROR --->
-        /*CharSequence currentTitle = mTitleStack.peek();
-        if (mNavigationDrawerFragment.isDrawerOpen())
-            mNavigationDrawerFragment.closeDrawer();
-        else if(mTitleStack.peek().toString().equals(getString(R.string.title_MyClass)))
-            super.onBackPressed();
-        else if (getFragmentManager().getBackStackEntryCount() > 1 ){
-            getFragmentManager().popBackStack();
-            mTitleStack.pop();
-
-            mToolbar.setTitle(currentTitle);
-        } else {
-            super.onBackPressed();
-        }
-
-        // change navigation drawer selected
-        if (currentTitle.toString().equals(getString(R.string.title_MyClass))) {
-            onNavigationDrawerItemSelected(0);
-        } else if (currentTitle.toString().equals(getString(R.string.title_Reminder))) {
-            onNavigationDrawerItemSelected(1);
-        } else {
-            onNavigationDrawerItemSelected(2);
-        }*/
 
         Log.d("MainActivity", "stack count is " + getFragmentManager().getBackStackEntryCount());
         if (mNavigationDrawerFragment.isDrawerOpen()) {
@@ -310,33 +272,10 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sp = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
         boolean isFirstRun = sp.getBoolean("isFirstRun", true);
         if (isFirstRun){
-            // displat tut dialog
-            showGuideDialog();
-
-            // display the dialog
-            //showImportDialog();
-
             sp.edit()
                     .putBoolean("isFirstRun", false)
                     .apply();
         }
-    }
-    public void showGuideDialog() {
-        final Dialog d = new Dialog(MainActivity.this);
-        //d.setTitle(R.string.import_dialog_title);
-        d.setContentView(R.layout.dialog_guide);
-        d.setTitle("Import guide");
-        Button dialog_guide_ok_btn = (Button) d.findViewById(R.id.dialog_guide_ok_btn);
-        dialog_guide_ok_btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                d.dismiss();
-                showImportDialog();
-            }
-        });
-        d.show();
-
-
     }
 
     public void showImportDialog() {
@@ -346,8 +285,6 @@ public class MainActivity extends AppCompatActivity
         Button import_cal_btn = (Button) d.findViewById(R.id.import_cal_btn);
 
         final EditText editText = (EditText) d.findViewById(R.id.editText);
-
-
 
         import_cal_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -383,7 +320,6 @@ public class MainActivity extends AppCompatActivity
                         .show();
             }
         });
-
 
         d.show();
     }
@@ -431,8 +367,6 @@ public class MainActivity extends AppCompatActivity
         return super.onCreateOptionsMenu(menu);
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -467,8 +401,6 @@ public class MainActivity extends AppCompatActivity
             //loginButton.setFragment(new NativeFragmentWrapper(this));
             // Other app specific specialization
 
-
-
             // Callback registration
             loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                 @Override
@@ -481,7 +413,6 @@ public class MainActivity extends AppCompatActivity
                             " " + profile.getLastName());
 
                     String userID = profile.getId();
-
 
                     new GraphRequest(
                             AccessToken.getCurrentAccessToken(),
@@ -577,12 +508,8 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
-
-
             login_dialog.dismiss();
         }
-
-
 
         return super.onOptionsItemSelected(item);
     }

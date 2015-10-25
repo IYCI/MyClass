@@ -128,28 +128,6 @@ public class SettingFragment extends PreferenceFragment {
             }
         });
 
-
-        Preference show_guide_pref = (Preference) findPreference("pref_key_import_guide");
-        show_guide_pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
-                //open browser or intent here
-                // should show an alert dialog
-                final Dialog d = new Dialog(getActivity());
-                //d.setTitle(R.string.import_dialog_title);
-                d.setContentView(R.layout.dialog_guide);
-                d.setTitle("Import guide");
-                Button dialog_guide_ok_btn = (Button) d.findViewById(R.id.dialog_guide_ok_btn);
-                dialog_guide_ok_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        d.dismiss();
-                    }
-                });
-                d.show();
-
-                return true;
-            }
-        });
     }
 
     /*@Override
