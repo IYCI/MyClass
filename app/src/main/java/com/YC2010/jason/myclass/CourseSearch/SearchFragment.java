@@ -26,11 +26,8 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.fragment_search, container, false);
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +36,6 @@ public class SearchFragment extends Fragment {
         if(course == null)
             Toast.makeText(getActivity(), "course string not found", Toast.LENGTH_SHORT).show();
         mCourse = course;
-
 
         SearchFetchTask searchFetchTask = new SearchFetchTask(getActivity(), new AsyncTaskCallbackInterface() {
             @Override

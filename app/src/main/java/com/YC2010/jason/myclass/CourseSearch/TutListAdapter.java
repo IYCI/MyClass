@@ -9,36 +9,39 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.YC2010.jason.myclass.Constants;
+import com.YC2010.jason.myclass.DataObjects.TutorialObject;
 import com.YC2010.jason.myclass.R;
 
+import java.util.ArrayList;
+
 public class TutListAdapter extends BaseAdapter {
-    Bundle mBundle;
+    ArrayList<TutorialObject> mArrayList;
     Context mContext;
     LayoutInflater mLayoutInflater;
+
     public TutListAdapter(Context context, int textViewResourceId, Bundle bundle) {
         mLayoutInflater = LayoutInflater.from(context);
-        mBundle = bundle;
+        mArrayList = bundle.getParcelableArrayList(Constants.tutorialObjectListKey);
         mContext = context;
         Log.d("SectionListAdapter", "Course name is " + bundle.getString("courseName"));
     }
 
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public TutorialObject getItem(int i) {
+        return mArrayList.get(i);
     }
 
     @Override
     public int getCount() {
-        if(mBundle.getStringArrayList("TUT_SEC") == null) return 0;
-        return mBundle.getStringArrayList("TUT_SEC").size();
+        return mArrayList != null ? mArrayList.size() : 0;
     }
 
     @Override
     public long getItemId(int arg0) {
         return 0;
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -55,19 +58,20 @@ public class TutListAdapter extends BaseAdapter {
         TextView loc = (TextView) v.findViewById(R.id.section_item_loc);
         TextView time = (TextView) v.findViewById(R.id.section_item_time);
 
-        lec.setText(mBundle.getStringArrayList("TUT_SEC").get(position));
-        time.setText(mBundle.getStringArrayList("TUT_TIME").get(position));
-        loc.setText(mBundle.getStringArrayList("TUT_LOC").get(position));
+        TutorialObject tutorialInfo = getItem(position);
 
-        int enroll_total = Integer.parseInt(mBundle.getStringArrayList("TUT_TOTAL").get(position));
-        int enroll_cap = Integer.parseInt(mBundle.getStringArrayList("TUT_CAPACITY").get(position));
+        lec.setText(tutorialInfo.getSection());
+        time.setText(tutorialInfo.getTime());
+        loc.setText(tutorialInfo.getLocation());
+
+        int enroll_total = Integer.parseInt(tutorialInfo.getTotal());
+        int enroll_cap = Integer.parseInt(tutorialInfo.getCapacity());
+
         if(enroll_total/enroll_cap >= 1)
             capacity.setTextColor(mContext.getResources().getColor(R.color.fab_color_1));
         else
             capacity.setTextColor(mContext.getResources().getColor(R.color.light_green));
-        capacity.setText(mBundle.getStringArrayList("TUT_TOTAL").get(position) + "/" +
-                         mBundle.getStringArrayList("TUT_CAPACITY").get(position));
-
+        capacity.setText(enroll_total + "/" + enroll_cap);
 
         return v;
     }

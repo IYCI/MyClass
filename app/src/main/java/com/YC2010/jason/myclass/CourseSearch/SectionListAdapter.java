@@ -10,29 +10,32 @@ import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.YC2010.jason.myclass.Constants;
+import com.YC2010.jason.myclass.DataObjects.LectureSectionObject;
 import com.YC2010.jason.myclass.R;
 
+import java.util.ArrayList;
+
 public class SectionListAdapter extends BaseAdapter {
-    Bundle mBundle;
+    ArrayList<LectureSectionObject> mArrayList;
     Context mContext;
     LayoutInflater mLayoutInflater;
+
     public SectionListAdapter(Context context, int textViewResourceId, Bundle bundle) {
         mLayoutInflater = LayoutInflater.from(context);
-        mBundle = bundle;
+        mArrayList = bundle.getParcelableArrayList(Constants.lectureSectionObjectListKey);
         mContext = context;
         Log.d("SectionListAdapter", "Course name is " + bundle.getString("courseName"));
     }
 
-
     @Override
-    public Object getItem(int i) {
-        return null;
+    public LectureSectionObject getItem(int i) {
+        return mArrayList.get(i);
     }
 
     @Override
     public int getCount() {
-        if(mBundle.getStringArrayList("LEC_SEC") == null) return 0;
-        return mBundle.getStringArrayList("LEC_SEC").size();
+        return mArrayList != null ? mArrayList.size() : 0;
     }
 
     @Override
@@ -40,15 +43,12 @@ public class SectionListAdapter extends BaseAdapter {
         return 0;
     }
 
-
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //Log.d("SectionListAdapter", "enter getView");
         View v = convertView;
 
         v = mLayoutInflater.inflate(R.layout.section_item, null);
-
 
         Log.d("SectionListAdapter", "position is " + position);
 
@@ -60,21 +60,24 @@ public class SectionListAdapter extends BaseAdapter {
         RelativeLayout section_item_prof_layout = (RelativeLayout) v.findViewById((R.id.section_item_prof_layout));
         section_item_prof_layout.setVisibility(View.VISIBLE);
 
-        lec.setText(mBundle.getStringArrayList("LEC_SEC").get(position));
-        time.setText(mBundle.getStringArrayList("LEC_TIME").get(position));
-        prof.setText(mBundle.getStringArrayList("LEC_PROF").get(position));
-        loc.setText(mBundle.getStringArrayList("LEC_LOC").get(position));
+        LectureSectionObject sectionInfo = getItem(position);
 
-        int enroll_total = Integer.parseInt(mBundle.getStringArrayList("LEC_TOTAL").get(position));
-        int enroll_cap = Integer.parseInt(mBundle.getStringArrayList("LEC_CAPACITY").get(position));
+        lec.setText(sectionInfo.getSection());
+        time.setText(sectionInfo.getTime());
+        prof.setText(sectionInfo.getProfessor());
+        loc.setText(sectionInfo.getLocation());
+
+        int enroll_total = Integer.parseInt(sectionInfo.getTotal());
+        int enroll_cap = Integer.parseInt(sectionInfo.getCapacity());
+
         if(enroll_total/enroll_cap >= 1)
             capacity.setTextColor(mContext.getResources().getColor(R.color.fab_color_1));
         else
             capacity.setTextColor(mContext.getResources().getColor(R.color.light_green));
-        Log.d("SectionListAdapter", "rate is " + enroll_total/enroll_cap);
-        capacity.setText(mBundle.getStringArrayList("LEC_TOTAL").get(position) + "/" +
-        mBundle.getStringArrayList("LEC_CAPACITY").get(position));
 
+        Log.d("SectionListAdapter", "rate is " + enroll_total/enroll_cap);
+
+        capacity.setText(enroll_total + "/" + enroll_cap);
 
         return v;
     }

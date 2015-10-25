@@ -31,6 +31,11 @@ public class Constants {
     public static List<Reminder_item> holiday_2015;
     public static List<Reminder_item> sample_reminder;
 
+    public static String lectureSectionObjectListKey = "LEC_OBJECTS";
+    public static String testObjectListKey = "TST_OBJECTS";
+    public static String tutorialObjectListKey = "TUT_OBJECTS";
+    public static String finalObjectListKey = "FINAL_OBJECTS";
+
 
     // /courses/{subject}/{catalog_number}
     public static String getCourseInfoURL(String input) {

@@ -20,9 +20,12 @@ import com.YC2010.jason.myclass.Constants;
 import com.YC2010.jason.myclass.CourseSelect.ShowList.AsyncTaskCallbackInterface;
 import com.YC2010.jason.myclass.Courses.CourseInfo;
 import com.YC2010.jason.myclass.Courses.CoursesDBHandler;
+import com.YC2010.jason.myclass.DataObjects.FinalObject;
+import com.YC2010.jason.myclass.DataObjects.LectureSectionObject;
+import com.YC2010.jason.myclass.DataObjects.TestObject;
+import com.YC2010.jason.myclass.DataObjects.TutorialObject;
 import com.YC2010.jason.myclass.R;
 
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -41,34 +44,10 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
         mAsyncTaskCallbackInterface = asyncTaskCallbackInterface;
     }
 
-    // for LEC
-    private ArrayList<String> LEC_NUM = new ArrayList<>();
-    private ArrayList<String> LEC_SEC = new ArrayList<>();
-    private ArrayList<String> LEC_TIME = new ArrayList<>();
-    private ArrayList<String> LEC_PROF = new ArrayList<>();
-    private ArrayList<String> LEC_LOC = new ArrayList<>();
-    private ArrayList<String> LEC_CAPACITY = new ArrayList<>();
-    private ArrayList<String> LEC_TOTAL = new ArrayList<>();
-
-    // for TUT
-    private ArrayList<String> TUT_NUM = new ArrayList<>();
-    private ArrayList<String> TUT_SEC = new ArrayList<>();
-    private ArrayList<String> TUT_TIME = new ArrayList<>();
-    private ArrayList<String> TUT_LOC = new ArrayList<>();
-    private ArrayList<String> TUT_CAPACITY = new ArrayList<>();
-    private ArrayList<String> TUT_TOTAL = new ArrayList<>();
-
-    // for TST
-    private ArrayList<String> TST_SEC = new ArrayList<>();
-    private ArrayList<String> TST_TIME = new ArrayList<>();
-    private ArrayList<String> TST_CAPACITY = new ArrayList<>();
-    private ArrayList<String> TST_TOTAL = new ArrayList<>();
-
-    // for FINALS
-    private ArrayList<String> FINAL_SEC = new ArrayList<>();
-    private ArrayList<String> FINAL_TIME = new ArrayList<>();
-    private ArrayList<String> FINAL_DATE = new ArrayList<>();
-    private ArrayList<String> FINAL_LOC = new ArrayList<>();
+    private ArrayList<LectureSectionObject> lectures = new ArrayList<>();
+    private ArrayList<TutorialObject> tutorials = new ArrayList<>();
+    private ArrayList<TestObject> tests = new ArrayList<>();
+    private ArrayList<FinalObject> finals = new ArrayList<>();
 
     ProgressDialog progDailog;
 
@@ -93,8 +72,6 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
     }
 
     private Bundle fetchCourse(Bundle bundle, String input) {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-
 
         try{
             bundle.putBoolean("valid_return", false);
@@ -102,8 +79,6 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             // get schedule JSONBObject
             String schedule_url = Constants.getScheduleURL(input);
             JSONObject schedulesObject = Constants.getJSON_from_url(schedule_url);
-
-
 
             // check valid data return
             if(!schedulesObject.getJSONObject("meta").getString("message").equals("Request successful")) {
@@ -113,18 +88,12 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             bundle.putBoolean("valid_return", true);
             JSONArray data = schedulesObject.getJSONArray("data");
 
-
-
-
-
-
             for(int i = 0; i < data.length(); i++){
                 JSONObject section = data.getJSONObject(i);
                 JSONObject first_class = section.getJSONArray("classes").getJSONObject(0);
                 //Log.d("SearchFetchTask",first_class.toString());
                 JSONObject date = first_class.getJSONObject("date");
                 JSONObject loc = first_class.getJSONObject("location");
-
 
                 String section_str = section.getString("section");
                 String section_type = section_str.substring(0, 3);
@@ -133,74 +102,74 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                     bundle.putBoolean("isOnline", true);
                 Log.d("SearchFetchTask", "section_type is <" + section_type + ">");
                 CoursesDBHandler db = new CoursesDBHandler(mActivity);
-                if(section_type.equals("LEC")){
-                    String prof = first_class.getJSONArray("instructors").getString(0);
 
-                    // check if is in db
-                    if(db.IsInDB(section.getString("class_number"))){
-                        bundle.putBoolean("course_taken", true);
-                        bundle.putString("course_taken_num",section.getString("class_number"));
-                    }
-                    LEC_NUM.add(section.getString("class_number"));
-                    LEC_SEC.add(section_str.substring(4));
-                    LEC_TIME.add(date.getString("weekdays") + " " +
-                            date.getString("start_time") + "-" + date.getString("end_time"));
-                    LEC_PROF.add(prof);
-                    LEC_LOC.add(loc.getString("building") + " " + loc.getString("room"));
-                    LEC_CAPACITY.add(section.getString("enrollment_capacity"));
-                    LEC_TOTAL.add(section.getString("enrollment_total"));
+                switch (section_type) {
+                    case "LEC":
+                        String prof = first_class.getJSONArray("instructors").getString(0);
+
+                        // check if is in db
+                        if(db.IsInDB(section.getString("class_number"))){
+                            bundle.putBoolean("course_taken", true);
+                            bundle.putString("course_taken_num",section.getString("class_number"));
+                        }
+
+                        LectureSectionObject lecture = new LectureSectionObject();
+
+                        lecture.setNumber(section.getString("class_number"));
+                        lecture.setSection(section_str.substring(4));
+                        lecture.setTime(date.getString("weekdays") + " " +
+                                date.getString("start_time") + "-" + date.getString("end_time"));
+                        lecture.setProfessor(prof);
+                        lecture.setLocation(loc.getString("building") + " " + loc.getString("room"));
+                        lecture.setCapacity(section.getString("enrollment_capacity"));
+                        lecture.setTotal(section.getString("enrollment_total"));
+
+                        lectures.add(lecture);
+                        break;
+
+                    case "TST":
+                        bundle.putBoolean("has_tst", true);
+
+                        TestObject test = new TestObject();
+
+                        test.setSection(section_str.substring(4));
+                        test.setTime(date.getString("start_date") + " " +
+                                date.getString("start_time") + "-" + date.getString("end_time"));
+                        test.setCapacity(section.getString("enrollment_capacity"));
+                        test.setTotal(section.getString("enrollment_total"));
+
+                        tests.add(test);
+                        break;
+
+                    case "TUT":
+                        bundle.putBoolean("has_tut", true);
+
+                        TutorialObject tutorial = new TutorialObject();
+
+                        tutorial.setNumber(section.getString("class_number"));
+                        tutorial.setSection(section_str.substring(4));
+                        tutorial.setTime(date.getString("weekdays") + " " +
+                                date.getString("start_time") + "-" + date.getString("end_time"));
+                        tutorial.setLocation(loc.getString("building") + " " + loc.getString("room"));
+                        tutorial.setCapacity(section.getString("enrollment_capacity"));
+                        tutorial.setTotal(section.getString("enrollment_total"));
+
+                        tutorials.add(tutorial);
+                        break;
+                    case "LAB":
+                        bundle.putBoolean("has_lab", true);
+                        break;
                 }
-                else if(section_type.equals("TST")){
-                    bundle.putBoolean("has_tst", true);
-                    TST_SEC.add(section_str.substring(4));
-                    TST_TIME.add(date.getString("start_date") + " " +
-                            date.getString("start_time") + "-" + date.getString("end_time"));
-                    TST_CAPACITY.add(section.getString("enrollment_capacity"));
-                    TST_TOTAL.add(section.getString("enrollment_total"));
-                }
-                else if(section_type.equals("TUT")){
-                    bundle.putBoolean("has_tut", true);
-                    TUT_NUM.add(section.getString("class_number"));
-                    TUT_SEC.add(section_str.substring(4));
-                    TUT_TIME.add(date.getString("weekdays") + " " +
-                                    date.getString("start_time") + "-" + date.getString("end_time"));
-                    TUT_LOC.add(loc.getString("building") + " " + loc.getString("room"));
-                    TUT_CAPACITY.add(section.getString("enrollment_capacity"));
-                    TUT_TOTAL.add(section.getString("enrollment_total"));
-                }
-                else if(section_type.equals("LAB")){
-                    bundle.putBoolean("has_lab", true);
-                }
-                //Log.d("SubjectFetchTask", "miao");
             }
-
-
-
 
             //String title = data.getString("title");
             bundle.putString("title", data.getJSONObject(0).getString("title"));
             bundle.putString("courseName", data.getJSONObject(0).getString("subject") + " " +
-                                             data.getJSONObject(0).getString("catalog_number"));
-            bundle.putStringArrayList("LEC_NUM", LEC_NUM);
-            bundle.putStringArrayList("LEC_SEC", LEC_SEC);
-            bundle.putStringArrayList("LEC_TIME", LEC_TIME);
-            bundle.putStringArrayList("LEC_PROF", LEC_PROF);
-            bundle.putStringArrayList("LEC_LOC", LEC_LOC);
-            bundle.putStringArrayList("LEC_CAPACITY", LEC_CAPACITY);
-            bundle.putStringArrayList("LEC_TOTAL", LEC_TOTAL);
+                    data.getJSONObject(0).getString("catalog_number"));
 
-            bundle.putStringArrayList("TUT_NUM", TUT_NUM);
-            bundle.putStringArrayList("TUT_SEC", TUT_SEC);
-            bundle.putStringArrayList("TUT_TIME", TUT_TIME);
-            bundle.putStringArrayList("TUT_LOC", TUT_LOC);
-            bundle.putStringArrayList("TUT_CAPACITY", TUT_CAPACITY);
-            bundle.putStringArrayList("TUT_TOTAL", TUT_TOTAL);
-
-            bundle.putStringArrayList("TST_SEC", TST_SEC);
-            bundle.putStringArrayList("TST_TIME", TST_TIME);
-            bundle.putStringArrayList("TST_CAPACITY", TST_CAPACITY);
-            bundle.putStringArrayList("TST_TOTAL", TST_TOTAL);
-
+            bundle.putParcelableArrayList(Constants.lectureSectionObjectListKey, lectures);
+            bundle.putParcelableArrayList(Constants.tutorialObjectListKey, tutorials);
+            bundle.putParcelableArrayList(Constants.testObjectListKey, tests);
 
             String current_term = (String) Constants.getTerms().get(1);
 
@@ -212,18 +181,19 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                     bundle.putBoolean("has_finals", true);
                     JSONArray exam_sections = examData.getJSONObject(i).getJSONArray("sections");
                     for(int j = 0; j < exam_sections.length(); j++){
-                        FINAL_SEC.add(exam_sections.getJSONObject(j).getString("section"));
-                        FINAL_TIME.add(exam_sections.getJSONObject(j).getString("start_time") + "-" +
+                        FinalObject finalObject = new FinalObject();
+
+                        finalObject.setSection(exam_sections.getJSONObject(j).getString("section"));
+                        finalObject.setTime(exam_sections.getJSONObject(j).getString("start_time") + "-" +
                                         exam_sections.getJSONObject(j).getString("end_time"));
-                        FINAL_LOC.add(exam_sections.getJSONObject(j).getString("location"));
-                        FINAL_DATE.add(exam_sections.getJSONObject(j).getString("date"));
+                        finalObject.setLocation(exam_sections.getJSONObject(j).getString("location"));
+                        finalObject.setDate(exam_sections.getJSONObject(j).getString("date"));
+
+                        finals.add(finalObject);
                     }
                 }
             }
-            bundle.putStringArrayList("FINAL_SEC", FINAL_SEC);
-            bundle.putStringArrayList("FINAL_LOC", FINAL_LOC);
-            bundle.putStringArrayList("FINAL_TIME", FINAL_TIME);
-            bundle.putStringArrayList("FINAL_DATE", FINAL_DATE);
+            bundle.putParcelableArrayList(Constants.finalObjectListKey, finals);
 
             return bundle;
 
@@ -233,8 +203,6 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
         return bundle;
     }
-
-
 
     @Override
     protected void onPostExecute(final Bundle bundle) {
@@ -256,14 +224,13 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             }
         }
 
-        TextView lec = (TextView) mActivity.findViewById(R.id.lec);
+        final TextView lec = (TextView) mActivity.findViewById(R.id.lec);
         if(lec != null){
             lec.setVisibility(View.VISIBLE);
             if(bundle.getBoolean("isOnline", false)){
                 lec.setText("Online");
             }
         }
-
 
         if(bundle.getBoolean("has_tst", false)) {
             TextView tst = (TextView) mActivity.findViewById(R.id.tst);
@@ -301,19 +268,22 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
                         String course_taken_num = null;
                         boolean courseTaken = false;
-                        for (int i = 0; i < bundle.getStringArrayList("LEC_NUM").size(); i++) {
-                            if (db.IsInDB(bundle.getStringArrayList("LEC_NUM").get(i))) {
+
+                        final ArrayList<LectureSectionObject> lectureSections = bundle.getParcelableArrayList(Constants.lectureSectionObjectListKey);
+
+                        for (int i = 0; i < lectureSections.size(); i++) {
+                            if (db.IsInDB(lectureSections.get(i).getNumber())) {
                                 courseTaken = true;
-                                course_taken_num = bundle.getStringArrayList("LEC_NUM").get(i);
+                                course_taken_num = lectureSections.get(i).getNumber();
                                 break;
                             }
                         }
 
                         if (!courseTaken) {
                             // put sec info into a list of string
-                            CharSequence[] mLecSecList = new CharSequence[bundle.getStringArrayList("LEC_SEC").size()];
-                            for (int i = 0; i < bundle.getStringArrayList("LEC_SEC").size(); i++) {
-                                mLecSecList[i] = bundle.getStringArrayList("LEC_SEC").get(i);
+                            CharSequence[] mLecSecList = new CharSequence[lectureSections.size()];
+                            for (int i = 0; i < lectureSections.size(); i++) {
+                                mLecSecList[i] = lectureSections.get(i).getSection();
                             }
 
                             // show dialog to choose sections
@@ -323,21 +293,20 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                                     .setNegativeButton(R.string.cancel, null)
                                     .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int whichButton) {
-                                            ListView lw = ((AlertDialog) dialog).getListView();
-                                            Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
-                                            int index = bundle.getStringArrayList("LEC_SEC").indexOf(checkedItem.toString());
-                                            Log.d("SearchFetchTask", "choose " + checkedItem.toString());
+                                            int index = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                            ArrayList<LectureSectionObject> lectures =
+                                                    bundle.getParcelableArrayList(Constants.lectureSectionObjectListKey);
+                                            LectureSectionObject selectedSection = lectures.get(index);
+
                                             // add to db
                                             CourseInfo mCourse = new CourseInfo(bundle.getString("courseName"));
-                                            mCourse.setSec(checkedItem.toString());
-                                            mCourse.setNum(bundle.getStringArrayList("LEC_NUM").get(index));
-                                            mCourse.setLoc(bundle.getStringArrayList("LEC_LOC").get(index));
-                                            mCourse.setTimeAPM(bundle.getStringArrayList("LEC_TIME").get(index));
-                                            mCourse.setProf(bundle.getStringArrayList("LEC_PROF").get(index));
-
+                                            mCourse.setSec(selectedSection.getSection());
+                                            mCourse.setNum(selectedSection.getNumber());
+                                            mCourse.setLoc(selectedSection.getLocation());
+                                            mCourse.setTimeAPM(selectedSection.getTime());
+                                            mCourse.setProf(selectedSection.getProfessor());
 
                                             db.addCourse(mCourse);
-
 
                                             // change button
                                             Button add_button = (Button) mActivity.findViewById(R.id.add_course_button);

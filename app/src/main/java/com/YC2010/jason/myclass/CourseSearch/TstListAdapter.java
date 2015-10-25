@@ -9,29 +9,33 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.YC2010.jason.myclass.Constants;
+import com.YC2010.jason.myclass.DataObjects.TestObject;
 import com.YC2010.jason.myclass.R;
 
+import java.util.ArrayList;
+
 public class TstListAdapter extends BaseAdapter {
-    Bundle mBundle;
+    ArrayList<TestObject> mArrayList;
     Context mContext;
     LayoutInflater mLayoutInflater;
+
     public TstListAdapter(Context context, int textViewResourceId, Bundle bundle) {
         mLayoutInflater = LayoutInflater.from(context);
-        mBundle = bundle;
+        mArrayList = bundle.getParcelableArrayList(Constants.testObjectListKey);
         mContext = context;
         Log.d("SectionListAdapter", "Course name is " + bundle.getString("courseName"));
     }
 
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public TestObject getItem(int i) {
+        return mArrayList.get(i);
     }
 
     @Override
     public int getCount() {
-        if(mBundle.getStringArrayList("TST_SEC") == null) return 0;
-        return mBundle.getStringArrayList("TST_SEC").size();
+        return mArrayList != null ? mArrayList.size() : 0;
     }
 
     @Override
@@ -47,7 +51,6 @@ public class TstListAdapter extends BaseAdapter {
 
         v = mLayoutInflater.inflate(R.layout.section_item, null);
 
-
         Log.d("SectionListAdapter", "position is " + position);
 
         TextView capacity = (TextView) v.findViewById(R.id.section_item_capacity);
@@ -59,14 +62,14 @@ public class TstListAdapter extends BaseAdapter {
         loc.setVisibility(View.GONE);
         prof.setVisibility(View.GONE);
 
-        lec.setText(mBundle.getStringArrayList("TST_SEC").get(position));
-        time.setText(mBundle.getStringArrayList("TST_TIME").get(position));
+        TestObject testInfo = getItem(position);
+
+        lec.setText(testInfo.getSection());
+        time.setText(testInfo.getTime());
         //prof.setText(mBundle.getStringArrayList("LEC_PROF").get(position));
         //loc.setText(mBundle.getStringArrayList("LEC_LOC").get(position));
 
-        capacity.setText(mBundle.getStringArrayList("TST_TOTAL").get(position) + "/" +
-                         mBundle.getStringArrayList("TST_CAPACITY").get(position));
-
+        capacity.setText(testInfo.getTotal() + "/" + testInfo.getCapacity());
 
         return v;
     }
