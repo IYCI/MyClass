@@ -1,7 +1,6 @@
 package com.YC2010.jason.myclass;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,26 +8,19 @@ import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.YC2010.jason.myclass.CourseSearch.SearchFragment;
 import com.YC2010.jason.myclass.CourseSelect.SubjectsFragment;
-import com.YC2010.jason.myclass.Courses.CoursesDBHandler;
 import com.YC2010.jason.myclass.Courses.CoursesFragment;
-import com.YC2010.jason.myclass.Courses.Schedule;
 import com.YC2010.jason.myclass.NavigationBar.NavigationDrawerCallbacks;
 import com.YC2010.jason.myclass.NavigationBar.NavigationDrawerFragment;
 import com.YC2010.jason.myclass.Reminder.ReminderDBHandler;
@@ -278,52 +270,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void showImportDialog() {
-        final Dialog d = new Dialog(MainActivity.this);
-        d.setTitle(R.string.import_dialog_title);
-        d.setContentView(R.layout.dialog_import);
-        Button import_cal_btn = (Button) d.findViewById(R.id.import_cal_btn);
-
-        final EditText editText = (EditText) d.findViewById(R.id.editText);
-
-        import_cal_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // set the text display the same as editText
-                //  test with whatever value u want
-                //  just replace editText.getText() with your charsequence
-                Editable QuestData = editText.getText();
-                Log.d("try to print this", QuestData.toString());
-
-                /** constructor of Schedule*/
-                Schedule schedule = new Schedule(QuestData.toString());
-                /** need to check valid of class Schedule then decide to raise exception
-                 *  or go on displaying */
-                Log.d("after making schedule","");
-                // insert into db
-                if(schedule.getValidity()) {
-                    Log.d("set onlcick", "input is valid");
-                    final CoursesDBHandler db = new CoursesDBHandler(getApplicationContext());
-                    db.addSchedule(schedule);
-                }
-                else{
-                    // show snackBar
-                    Snackbar.make(v, "Invalid input, please follow the instruction and try again", Snackbar.LENGTH_SHORT)
-                            .show();
-                }
-
-                d.dismiss();
-                // show snackBar
-                final View CalenderView = findViewById(R.id.course_fragment);
-                Snackbar.make(CalenderView, "Courses Updated", Snackbar.LENGTH_SHORT)
-                        .show();
-            }
-        });
-
-        d.show();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
@@ -374,12 +320,7 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.Import_Courses_setting) {
-            showImportDialog();
-            return true;
-        }
-        else if(id == R.id.Login_FB_setting){
+        if (id == R.id.Login_FB_setting){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
             builder.setTitle("Log in to Facebook");

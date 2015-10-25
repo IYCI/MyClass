@@ -72,36 +72,6 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
      */
 
     // Adding new course
-    public void addSchedule(Schedule schedule) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_COURSES);
-
-        // Create tables again
-        onCreate(db);
-
-        for(int i = 0; i < schedule.NumofCourse; i++){
-            ContentValues values = new ContentValues();
-            values.put(KEY_NUM, schedule.courses[i].courseNum);
-            values.put(KEY_NAME, schedule.courses[i].courseName);
-            values.put(KEY_SECTION, schedule.courses[i].courseSec);
-            values.put(KEY_TIME, schedule.courses[i].courseTime);
-            values.put(KEY_LOC, schedule.courses[i].courseLoc);
-            values.put(KEY_PROF, schedule.courses[i].courseProf);
-            values.put(KEY_NAME_TUT, schedule.courses[i].tutName);
-            values.put(KEY_NUM_TUT, schedule.courses[i].tutNum);
-            values.put(KEY_SEC_TUT, schedule.courses[i].tutSec);
-            values.put(KEY_TIME_TUT, schedule.courses[i].tutTime);
-            values.put(KEY_LOC_TUT, schedule.courses[i].tutLoc);
-
-            // Inserting Row
-            db.insert(TABLE_COURSES, null, values);
-        }
-
-        db.close(); // Closing database connection
-    }
-
-    // Adding new course
     public void addCourse(CourseInfo mCourse) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -150,7 +120,6 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
         long count = s.simpleQueryForLong();
         return (int)count;
     }
-
 
     // check if course exist
     public boolean IsInDB(String courseID) {

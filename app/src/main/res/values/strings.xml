@@ -7,7 +7,6 @@
     <string name="action_search">Search</string>
 
     <!-- for action overflow -->
-    <string name="Import_Courses_setting">Import</string>
     <string name="Search_setting">Search</string>
     <string name="action_day_view">Day view</string>
     <string name="action_five_day_view">5 day view</string>
@@ -28,9 +27,6 @@
     <string name="drawer_Course_Select">Course Select</string>
     <string name="drawer_Reminder">Reminder</string>
     <string name="drawer_Settings">Settings</string>
-
-    <!-- import dialog -->
-    <string name="import_dialog_title">Import Calender</string>
 
     <!-- newEvent_dialog -->
     <string name="newEvent_dialog_title">New Event</string>
