@@ -126,9 +126,9 @@ public class CoursesFragment extends Fragment {
     }
 
     public static interface ClickListener {
-        public void onClick(View view, int position);
+        void onClick(View view, int position);
 
-        public void onLongClick(View view, int position);
+        void onLongClick(View view, int position);
     }
 
     static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {

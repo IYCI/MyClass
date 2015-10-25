@@ -77,8 +77,8 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             bundle.putBoolean("valid_return", false);
 
             // get schedule JSONBObject
-            String schedule_url = Constants.getScheduleURL(input);
-            JSONObject schedulesObject = Constants.getJSON_from_url(schedule_url);
+            String schedule_url = Connections.getScheduleURL(input);
+            JSONObject schedulesObject = Connections.getJSON_from_url(schedule_url);
 
             // check valid data return
             if(!schedulesObject.getJSONObject("meta").getString("message").equals("Request successful")) {
@@ -98,9 +98,12 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                 String section_str = section.getString("section");
                 String section_type = section_str.substring(0, 3);
                 String section_num = section_str.substring(section_str.length() - 3);
+
                 if(section_num.equals("081"))
                     bundle.putBoolean("isOnline", true);
+
                 Log.d("SearchFetchTask", "section_type is <" + section_type + ">");
+
                 CoursesDBHandler db = new CoursesDBHandler(mActivity);
 
                 switch (section_type) {
@@ -171,11 +174,11 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             bundle.putParcelableArrayList(Constants.tutorialObjectListKey, tutorials);
             bundle.putParcelableArrayList(Constants.testObjectListKey, tests);
 
-            String current_term = (String) Constants.getTerms().get(1);
+            String current_term = (String) Connections.getTerms().get(1);
 
             // get exam JSONBObject
-            String exam_url = Constants.getExamsURL(current_term);
-            JSONArray examData = Constants.getJSON_from_url(exam_url).getJSONArray("data");
+            String exam_url = Connections.getExamsURL(current_term);
+            JSONArray examData = Connections.getJSON_from_url(exam_url).getJSONArray("data");
             for(int i = 0; i < examData.length(); i++){
                 if(examData.getJSONObject(i).getString("course").equals(bundle.getString("courseName"))){
                     bundle.putBoolean("has_finals", true);
@@ -207,150 +210,6 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
     @Override
     protected void onPostExecute(final Bundle bundle) {
         progDailog.dismiss();
-
-        TextView courseName = (TextView) mActivity.findViewById(R.id.course_name);
-        if(!bundle.getBoolean("valid_return", true)){
-            if(courseName != null) {
-                String errorMsg;
-                if(!Constants.isNetworkAvailable(mActivity)){
-                    errorMsg = "Oops!      (´ﾟдﾟ`)\nNo network connection";
-                }
-                else
-                    errorMsg = "Oops!      (ﾉﾟ0ﾟ)ﾉ~\nCourse is not available this term or it may not exist";
-                SpannableString ss = new SpannableString(errorMsg);
-                ss.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.fab_color_1)), 0, 19, 0);// set color
-                courseName.setText(ss);
-                return;
-            }
-        }
-
-        final TextView lec = (TextView) mActivity.findViewById(R.id.lec);
-        if(lec != null){
-            lec.setVisibility(View.VISIBLE);
-            if(bundle.getBoolean("isOnline", false)){
-                lec.setText("Online");
-            }
-        }
-
-        if(bundle.getBoolean("has_tst", false)) {
-            TextView tst = (TextView) mActivity.findViewById(R.id.tst);
-            if (tst != null)
-                tst.setVisibility(View.VISIBLE);
-        }
-
-        if(bundle.getBoolean("has_tut", false)) {
-            TextView tut = (TextView) mActivity.findViewById(R.id.tut);
-            if (tut != null)
-                tut.setVisibility(View.VISIBLE);
-        }
-
-        if(bundle.getBoolean("has_finals", false)) {
-            TextView finals = (TextView) mActivity.findViewById(R.id.final_exams);
-            if (finals != null)
-                finals.setVisibility(View.VISIBLE);
-        }
-
-        Button add_button = (Button) mActivity.findViewById(R.id.add_course_button);
-
-        if (add_button != null) {
-            if(bundle.getBoolean("isOnline", false))
-                add_button.setVisibility(View.GONE);
-            else {
-                if (bundle.getBoolean("course_taken")) {
-                    add_button.setText("remove");
-                    add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.fab_color_1)));
-                }
-                add_button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View view) {
-                        Button add_button = (Button) mActivity.findViewById(R.id.add_course_button);
-                        final CoursesDBHandler db = new CoursesDBHandler(mActivity);
-
-                        String course_taken_num = null;
-                        boolean courseTaken = false;
-
-                        final ArrayList<LectureSectionObject> lectureSections = bundle.getParcelableArrayList(Constants.lectureSectionObjectListKey);
-
-                        for (int i = 0; i < lectureSections.size(); i++) {
-                            if (db.IsInDB(lectureSections.get(i).getNumber())) {
-                                courseTaken = true;
-                                course_taken_num = lectureSections.get(i).getNumber();
-                                break;
-                            }
-                        }
-
-                        if (!courseTaken) {
-                            // put sec info into a list of string
-                            CharSequence[] mLecSecList = new CharSequence[lectureSections.size()];
-                            for (int i = 0; i < lectureSections.size(); i++) {
-                                mLecSecList[i] = lectureSections.get(i).getSection();
-                            }
-
-                            // show dialog to choose sections
-                            AlertDialog ad = new AlertDialog.Builder(mActivity)
-                                    .setTitle("Choose a section")
-                                    .setSingleChoiceItems(mLecSecList, 0, null)
-                                    .setNegativeButton(R.string.cancel, null)
-                                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                            int index = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                                            ArrayList<LectureSectionObject> lectures =
-                                                    bundle.getParcelableArrayList(Constants.lectureSectionObjectListKey);
-                                            LectureSectionObject selectedSection = lectures.get(index);
-
-                                            // add to db
-                                            CourseInfo mCourse = new CourseInfo(bundle.getString("courseName"));
-                                            mCourse.setSec(selectedSection.getSection());
-                                            mCourse.setNum(selectedSection.getNumber());
-                                            mCourse.setLoc(selectedSection.getLocation());
-                                            mCourse.setTimeAPM(selectedSection.getTime());
-                                            mCourse.setProf(selectedSection.getProfessor());
-
-                                            db.addCourse(mCourse);
-
-                                            // change button
-                                            Button add_button = (Button) mActivity.findViewById(R.id.add_course_button);
-                                            add_button.setText("remove");
-                                            add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.fab_color_1)));
-
-                                            // show snackBar
-                                            Snackbar.make(view, "Course Added", Snackbar.LENGTH_SHORT)
-                                                    .show();
-
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .create();
-                            ad.show();
-
-                            // change color
-                            ad.getButton(ad.BUTTON_POSITIVE).setTextColor(mActivity.getResources().getColor(R.color.myPrimaryColor));
-                            ad.getButton(ad.BUTTON_NEGATIVE).setTextColor(mActivity.getResources().getColor(R.color.myPrimaryColor));
-
-
-                        } else {
-                            // remove from db
-                            if (course_taken_num != null)
-                                db.removeCourse(course_taken_num);
-
-                            add_button.setText("add");
-                            add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.dialog_text_color)));
-
-                            // show snackBar
-                            Snackbar.make(view, "Course Dropped", Snackbar.LENGTH_SHORT)
-                                    .show();
-                        }
-                        db.close();
-                    }
-                });
-                add_button.setVisibility(View.VISIBLE);
-            }
-        }
-        TextView title = (TextView) mActivity.findViewById(R.id.title);
-        if(courseName != null)
-            courseName.setText(bundle.getString("courseName"));
-        if(title != null)
-            title.setText(bundle.getString("title"));
 
         mAsyncTaskCallbackInterface.onOperationComplete(bundle);
 

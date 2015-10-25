@@ -72,8 +72,8 @@ public class CourseInfo {
             endtime = f4.format(d2); // "12:18am"
 
 
-        }catch (ParseException e){
-
+        } catch (ParseException e){
+            e.printStackTrace();
         }
 
         courseTime = days + starttime + "-" + endtime;

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.YC2010.jason.myclass.CourseSearch.Connections;
 import com.YC2010.jason.myclass.CourseSelect.ShowList.AsyncTaskCallbackInterface;
 import com.YC2010.jason.myclass.CourseSelect.ShowList.SubjectFetchTask;
 import com.YC2010.jason.myclass.Constants;
@@ -57,7 +58,7 @@ public class SubjectsFragment extends ListFragment {
         final SubjectFetchTask subjectFetchTask = new SubjectFetchTask(new AsyncTaskCallbackInterface() {
             @Override
             public void onOperationComplete(Bundle bundle) {
-                if(!Constants.isNetworkAvailable(getActivity())){
+                if(!Connections.isNetworkAvailable(getActivity())){
                     Toast.makeText(getActivity().getApplicationContext(), "No network connection, sorry", Toast.LENGTH_LONG).show();
                     // pop fragment stack or something else
                     return;

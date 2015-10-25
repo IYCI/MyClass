@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.YC2010.jason.myclass.Constants;
+import com.YC2010.jason.myclass.CourseSearch.Connections;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -46,7 +47,7 @@ public class CatalogNumFetchTask extends AsyncTask<String, Void, Bundle> {
 
 
         try{
-            String url = Constants.getCatalogNumURL(mSubject);
+            String url = Connections.getCatalogNumURL(mSubject);
             HttpGet httpGet = new HttpGet(url);
 
             HttpResponse httpResponse = httpClient.execute(httpGet);

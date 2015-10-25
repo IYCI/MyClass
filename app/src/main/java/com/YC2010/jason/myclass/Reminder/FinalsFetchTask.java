@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.YC2010.jason.myclass.Constants;
+import com.YC2010.jason.myclass.CourseSearch.Connections;
 import com.YC2010.jason.myclass.CourseSelect.ShowList.AsyncTaskCallbackInterface;
 
 import org.json.JSONArray;
@@ -57,8 +58,8 @@ public class FinalsFetchTask extends AsyncTask<List<String>, Void, Bundle> {
             bundle.putBoolean("valid_return", false);
             // get schedule JSONBObject
             // TODO: what if no course exist???
-            String schedule_url = Constants.getScheduleURL(course_names.get(0));
-            JSONObject schedulesObject = Constants.getJSON_from_url(schedule_url);
+            String schedule_url = Connections.getScheduleURL(course_names.get(0));
+            JSONObject schedulesObject = Connections.getJSON_from_url(schedule_url);
 
             // check valid data return
             if(!schedulesObject.getJSONObject("meta").getString("message").equals("Request successful")) {
@@ -67,10 +68,10 @@ public class FinalsFetchTask extends AsyncTask<List<String>, Void, Bundle> {
             }
             bundle.putBoolean("valid_return", true);
 
-            String current_term = (String) Constants.getTerms().get(1);
+            String current_term = (String) Connections.getTerms().get(1);
             // get exam JSONBObject
-            String exam_url = Constants.getExamsURL(current_term);
-            JSONArray examData = Constants.getJSON_from_url(exam_url).getJSONArray("data");
+            String exam_url = Connections.getExamsURL(current_term);
+            JSONArray examData = Connections.getJSON_from_url(exam_url).getJSONArray("data");
 
             // get final info from courses
             ReminderDBHandler reminder_db = new ReminderDBHandler(mActivity);
