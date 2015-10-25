@@ -64,4 +64,8 @@
     <!-- Facebook -->
     <string name="facebook_app_id">400606413479391</string>
 
+    <!--Course Info-->
+    <string name="prerequisites_title">Prerequisites:</string>
+    <string name="antirequisite_title">Antirequisites:</string>
+
 </resources>

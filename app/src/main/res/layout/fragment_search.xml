@@ -54,6 +54,48 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:id="@+id/title" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/description" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:text="@string/prerequisites_title"
+        android:id="@+id/preReqLabel" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/preReq" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="@string/antirequisite_title"
+        android:visibility="gone"
+        android:id="@+id/antiReqLabel" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/antiReq" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

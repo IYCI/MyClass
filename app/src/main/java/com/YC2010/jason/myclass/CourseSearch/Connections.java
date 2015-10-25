@@ -25,6 +25,7 @@ import java.util.Iterator;
 public class Connections {
 
     // /courses/{subject}/{catalog_number}
+
     public static String getCourseInfoURL(String input) {
         String subject = "";
         String cataNum = "";
@@ -33,11 +34,6 @@ public class Connections {
         input = input.replaceAll("\\s+","");
 
         for (int i = 0; i < input.length(); i++) {
-            /*if (Character.isDigit(input.charAt(i))) {
-                cataNum += input.charAt(i);
-            } else {
-                subject += input.charAt(i);
-            }*/
             if(isCoursePrefix && Character.isDigit(input.charAt(i)))
                 isCoursePrefix = false;
             if(isCoursePrefix){

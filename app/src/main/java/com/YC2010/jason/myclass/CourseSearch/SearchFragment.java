@@ -50,38 +50,48 @@ public class SearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String course = getArguments().getString(ARG_COURSE);
-        if(course == null)
-            Toast.makeText(mActivity, "course string not found", Toast.LENGTH_SHORT).show();
         mCourse = course;
         mActivity = getActivity();
+
+        if (course == null) {
+            Toast.makeText(mActivity, "course string not found", Toast.LENGTH_SHORT).show();
+        }
 
         SearchFetchTask searchFetchTask = new SearchFetchTask(mActivity, new AsyncTaskCallbackInterface() {
             @Override
             public void onOperationComplete(Bundle bundle) {
                 TextView courseName = (TextView) mActivity.findViewById(R.id.course_name);
                 TextView title = (TextView) mActivity.findViewById(R.id.title);
+                TextView description = (TextView) mActivity.findViewById(R.id.description);
 
-                if (courseName != null) {
-                    courseName.setText(bundle.getString("courseName"));
-                }
+                TextView prerequisites = (TextView) mActivity.findViewById(R.id.preReq);
+                TextView antirequisites = (TextView) mActivity.findViewById(R.id.antiReq);
+                TextView prerequisitesLabel = (TextView) mActivity.findViewById(R.id.preReqLabel);
+                TextView antirequisitesLabel = (TextView) mActivity.findViewById(R.id.antiReqLabel);
 
-                if (title != null) {
-                    title.setText(bundle.getString("title"));
-                }
+                courseName.setText(bundle.getString("courseName"));
+                title.setText(bundle.getString("title"));
+                description.setText(bundle.getString("description"));
 
-                if (!bundle.getBoolean("valid_return", true)){
-                    if(courseName != null) {
-                        String errorMsg;
-                        if(!Connections.isNetworkAvailable(mActivity)){
-                            errorMsg = "Oops!      (´ﾟдﾟ`)\nNo network connection";
-                        }
-                        else
-                            errorMsg = "Oops!      (ﾉﾟ0ﾟ)ﾉ~\nCourse is not available this term or it may not exist";
-                        SpannableString ss = new SpannableString(errorMsg);
-                        ss.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.fab_color_1)), 0, 19, 0);// set color
-                        courseName.setText(ss);
-                        return;
+                prerequisites.setText(bundle.getString("prerequisites"));
+                antirequisites.setText(bundle.getString("antirequisites"));
+
+                prerequisitesLabel.setVisibility(View.VISIBLE);
+                antirequisitesLabel.setVisibility(View.VISIBLE);
+
+                if (!bundle.getBoolean("valid_return", true)) {
+                    String errorMsg;
+
+                    if (!Connections.isNetworkAvailable(mActivity)) {
+                        errorMsg = "Oops!      (´ﾟдﾟ`)\nNo network connection";
+                    } else {
+                        errorMsg = "Oops!      (ﾉﾟ0ﾟ)ﾉ~\nCourse is not available this term or it may not exist";
                     }
+
+                    SpannableString ss = new SpannableString(errorMsg);
+                    ss.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.fab_color_1)), 0, 19, 0);// set color
+                    courseName.setText(ss);
+                    return;
                 }
 
                 // Display add course button

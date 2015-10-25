@@ -85,6 +85,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                 Log.d("SearchFetchTask",schedulesObject.toString());
                 return bundle;
             }
+
             bundle.putBoolean("valid_return", true);
             JSONArray data = schedulesObject.getJSONArray("data");
 
@@ -165,11 +166,9 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                 }
             }
 
-            //String title = data.getString("title");
             bundle.putString("title", data.getJSONObject(0).getString("title"));
             bundle.putString("courseName", data.getJSONObject(0).getString("subject") + " " +
                     data.getJSONObject(0).getString("catalog_number"));
-
             bundle.putParcelableArrayList(Constants.lectureSectionObjectListKey, lectures);
             bundle.putParcelableArrayList(Constants.tutorialObjectListKey, tutorials);
             bundle.putParcelableArrayList(Constants.testObjectListKey, tests);
@@ -179,6 +178,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             // get exam JSONBObject
             String exam_url = Connections.getExamsURL(current_term);
             JSONArray examData = Connections.getJSON_from_url(exam_url).getJSONArray("data");
+
             for(int i = 0; i < examData.length(); i++){
                 if(examData.getJSONObject(i).getString("course").equals(bundle.getString("courseName"))){
                     bundle.putBoolean("has_finals", true);
@@ -197,6 +197,13 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                 }
             }
             bundle.putParcelableArrayList(Constants.finalObjectListKey, finals);
+
+            // Fetch course information (description, etc)
+            JSONObject courseInfoObject = Connections.getJSON_from_url(Connections.getCourseInfoURL(input));
+            JSONObject courseObject = courseInfoObject.getJSONObject("data");
+            bundle.putString("description", courseObject.getString("description"));
+            bundle.putString("prerequisites", courseObject.getString("prerequisites"));
+            bundle.putString("antirequisites", courseObject.getString("antirequisites"));
 
             return bundle;
 
