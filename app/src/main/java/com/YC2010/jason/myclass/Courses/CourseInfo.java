@@ -29,30 +29,20 @@ public class CourseInfo {
 
     public CourseInfo(String name){
         courseName = name;
-        courseTime = null;
-        courseLoc = null;
-        tutName = null;
-        tutNum = null;
-        tutTime = null;
-        tutLoc = null;
-        tutSec = null;
-        labName = null;
-        labNum = null;
-        labSec = null;
-        labTime = null;
-        labLoc = null;
     }
+
     public void setNum(String number){
         courseNum = number;
     }
 
-
     public void setLoc(String loc){
         courseLoc = loc;
     }
+
     public void setTime(String time){
         courseTime = time;
     }
+
     public void setTimeAPM(String time){
         int i = 0;
         for(; time.charAt(i) < 48 || time.charAt(i) > 57; i++);
@@ -82,35 +72,48 @@ public class CourseInfo {
         courseSec = sec;
         isOnline = sec.equals("081");
     }
+
     public void setProf(String prof){
         courseProf = prof;
     }
+
     public void setTutname(){
         tutName = courseName;
     }
+
     public void setTutnum(String num){
         tutNum = num;
     }
+
     public void setTutTime(String time){
         tutTime = time;
     }
+
     public void setTutLoc(String loc) {
         tutLoc = loc;
     }
+
     public void setTutsec(String sec){
         tutSec = sec;
     }
+
     public void setlabName(){
         tutSec = courseName;
     }
+
     public void setlabNum(String num){ labNum = num;}
+
     public void setlabTime(String time){ labTime = time;}
+
     public void setlabLoc(String loc){ labLoc = loc;}
+
     public void setlabSec(String sec){ labSec = sec;}
 
     public String getCourseTime() {
         return courseTime;
     }
+
     public String getCourseName() { return courseName; }
+
     public String getCourseSec(){return courseSec;}
 }

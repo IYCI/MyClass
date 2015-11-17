@@ -179,9 +179,9 @@ public class SearchFragment extends Fragment {
         Button add_button = (Button) mActivity.findViewById(R.id.add_course_button);
 
         if (add_button != null) {
-            if(bundle.getBoolean("isOnline", false))
+            if(bundle.getBoolean("isOnline", false)) {
                 add_button.setVisibility(View.GONE);
-            else {
+            } else {
                 if (bundle.getBoolean("course_taken")) {
                     add_button.setText("remove");
                     add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.fab_color_1)));
@@ -207,53 +207,12 @@ public class SearchFragment extends Fragment {
 
                         if (!courseTaken) {
                             // put sec info into a list of string
-                            CharSequence[] mLecSecList = new CharSequence[lectureSections.size()];
+                            CharSequence[] lecSecList = new CharSequence[lectureSections.size()];
                             for (int i = 0; i < lectureSections.size(); i++) {
-                                mLecSecList[i] = lectureSections.get(i).getSection();
+                                lecSecList[i] = lectureSections.get(i).getSection();
                             }
 
-                            // show dialog to choose sections
-                            AlertDialog ad = new AlertDialog.Builder(mActivity)
-                                    .setTitle("Choose a section")
-                                    .setSingleChoiceItems(mLecSecList, 0, null)
-                                    .setNegativeButton(R.string.cancel, null)
-                                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                            int index = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                                            ArrayList<LectureSectionObject> lectures =
-                                                    bundle.getParcelableArrayList(Constants.lectureSectionObjectListKey);
-                                            LectureSectionObject selectedSection = lectures.get(index);
-
-                                            // add to db
-                                            CourseInfo mCourse = new CourseInfo(bundle.getString("courseName"));
-                                            mCourse.setSec(selectedSection.getSection());
-                                            mCourse.setNum(selectedSection.getNumber());
-                                            mCourse.setLoc(selectedSection.getLocation());
-                                            mCourse.setTimeAPM(selectedSection.getTime());
-                                            mCourse.setProf(selectedSection.getProfessor());
-
-                                            db.addCourse(mCourse);
-
-                                            // change button
-                                            Button add_button = (Button) mActivity.findViewById(R.id.add_course_button);
-                                            add_button.setText("remove");
-                                            add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.fab_color_1)));
-
-                                            // show snackBar
-                                            Snackbar.make(view, "Course Added", Snackbar.LENGTH_SHORT)
-                                                    .show();
-
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .create();
-                            ad.show();
-
-                            // change color
-                            ad.getButton(ad.BUTTON_POSITIVE).setTextColor(mActivity.getResources().getColor(R.color.myPrimaryColor));
-                            ad.getButton(ad.BUTTON_NEGATIVE).setTextColor(mActivity.getResources().getColor(R.color.myPrimaryColor));
-
-
+                            displayDialog(lecSecList, bundle, db, view);
                         } else {
                             // remove from db
                             if (course_taken_num != null)
@@ -272,5 +231,48 @@ public class SearchFragment extends Fragment {
                 add_button.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    void displayDialog(CharSequence[] sectionList, final Bundle bundle, final CoursesDBHandler db, final View view) {
+        // show dialog to choose sections
+        AlertDialog ad = new AlertDialog.Builder(mActivity)
+                .setTitle("Choose a section")
+                .setSingleChoiceItems(sectionList, 0, null)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        int index = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                        ArrayList<LectureSectionObject> lectures =
+                                bundle.getParcelableArrayList(Constants.lectureSectionObjectListKey);
+                        LectureSectionObject selectedSection = lectures.get(index);
+
+                        // add to db
+                        CourseInfo mCourse = new CourseInfo(bundle.getString("courseName"));
+                        mCourse.setSec(selectedSection.getSection());
+                        mCourse.setNum(selectedSection.getNumber());
+                        mCourse.setLoc(selectedSection.getLocation());
+                        mCourse.setTimeAPM(selectedSection.getTime());
+                        mCourse.setProf(selectedSection.getProfessor());
+
+                        db.addCourse(mCourse);
+
+                        // change button
+                        Button add_button = (Button) mActivity.findViewById(R.id.add_course_button);
+                        add_button.setText("remove");
+                        add_button.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.fab_color_1)));
+
+                        // show snackBar
+                        Snackbar.make(view, "Course Added", Snackbar.LENGTH_SHORT)
+                                .show();
+
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        ad.show();
+
+        // change color
+        ad.getButton(ad.BUTTON_POSITIVE).setTextColor(mActivity.getResources().getColor(R.color.myPrimaryColor));
+        ad.getButton(ad.BUTTON_NEGATIVE).setTextColor(mActivity.getResources().getColor(R.color.myPrimaryColor));
     }
 }
