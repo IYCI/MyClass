@@ -18,7 +18,7 @@
         android:scrollbarStyle="outsideOverlay"
         />
 
-    <com.YC2010.jason.myclass.Reminder.FloatingActionButton
+    <com.YC2010.jason.myclass.ui.controls.FloatingActionButton
         android:id="@+id/fab_1"
         android:layout_width="@dimen/fab_size"
         android:layout_height="@dimen/fab_size"
@@ -41,6 +41,6 @@
             android:duplicateParentState="true"
             android:focusableInTouchMode="false" />
 
-    </com.YC2010.jason.myclass.Reminder.FloatingActionButton>
+    </com.YC2010.jason.myclass.ui.controls.FloatingActionButton>
 
 </RelativeLayout>
