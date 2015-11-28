@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.YC2010.jason.myclass.utils.Constants;
 import com.YC2010.jason.myclass.data.Connections;
 import com.YC2010.jason.myclass.ui.adapters.FinalsListAdapter;
-import com.YC2010.jason.myclass.data.FetchTasks.SearchFetchTask;
+import com.YC2010.jason.myclass.data.fetchtasks.SearchFetchTask;
 import com.YC2010.jason.myclass.ui.adapters.SectionListAdapter;
 import com.YC2010.jason.myclass.ui.adapters.TstListAdapter;
 import com.YC2010.jason.myclass.ui.adapters.TutListAdapter;
@@ -79,11 +79,20 @@ public class SearchFragment extends Fragment {
                 title.setText(bundle.getString("title"));
                 description.setText(bundle.getString("description"));
 
-                prerequisites.setText(bundle.getString("prerequisites"));
-                antirequisites.setText(bundle.getString("antirequisites"));
+                String prerequisitesText = bundle.getString("prerequisites");
+                String antirequisitesText = bundle.getString("antirequisites");
 
-                prerequisitesLabel.setVisibility(View.VISIBLE);
-                antirequisitesLabel.setVisibility(View.VISIBLE);
+                if (prerequisitesText != null && prerequisitesText.length() > 0) {
+                    prerequisites.setText(prerequisitesText);
+                    prerequisites.setVisibility(View.VISIBLE);
+                    prerequisitesLabel.setVisibility(View.VISIBLE);
+                }
+
+                if (antirequisitesText != null && antirequisitesText.length() > 0) {
+                    antirequisites.setText(antirequisitesText);
+                    antirequisites.setVisibility(View.VISIBLE);
+                    antirequisitesLabel.setVisibility(View.VISIBLE);
+                }
 
                 if (!bundle.getBoolean("valid_return", true)) {
                     String errorMsg;

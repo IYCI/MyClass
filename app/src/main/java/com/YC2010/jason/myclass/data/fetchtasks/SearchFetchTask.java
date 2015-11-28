@@ -1,4 +1,4 @@
-package com.YC2010.jason.myclass.data.FetchTasks;
+package com.YC2010.jason.myclass.data.fetchtasks;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -98,7 +98,12 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
                 switch (section_type) {
                     case "LEC":
-                        String prof = first_class.getJSONArray("instructors").getString(0);
+                        JSONArray professors = first_class.getJSONArray("instructors");
+                        String prof = "";
+
+                        if (professors != null && professors.length() > 0) {
+                            prof = professors.getString(0);
+                        }
 
                         // check if is in db
                         if(db.IsInDB(section.getString("class_number"))){
@@ -112,8 +117,18 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                         lecture.setSection(section_str.substring(4));
                         lecture.setTime(date.getString("weekdays") + " " +
                                 date.getString("start_time") + "-" + date.getString("end_time"));
+
                         lecture.setProfessor(prof);
-                        lecture.setLocation(loc.getString("building") + " " + loc.getString("room"));
+
+                        String building = loc.getString("building");
+                        String room = loc.getString("room");
+
+                        if (building != null && room != null && !building.equals("null") && !room.equals("null")) {
+                            lecture.setLocation(building + " " + room);
+                        } else {
+                            lecture.setLocation("");
+                        }
+
                         lecture.setCapacity(section.getString("enrollment_capacity"));
                         lecture.setTotal(section.getString("enrollment_total"));
 
@@ -190,9 +205,18 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             // Fetch course information (description, etc)
             JSONObject courseInfoObject = Connections.getJSON_from_url(Connections.getCourseInfoURL(input));
             JSONObject courseObject = courseInfoObject.getJSONObject("data");
+
             bundle.putString("description", courseObject.getString("description"));
-            bundle.putString("prerequisites", courseObject.getString("prerequisites"));
-            bundle.putString("antirequisites", courseObject.getString("antirequisites"));
+            String prerequisites = courseObject.getString("prerequisites");
+            String antirequisites = courseObject.getString("antirequisites");
+
+            if (prerequisites != null && !prerequisites.equals("null")) {
+                bundle.putString("prerequisites", prerequisites);
+            }
+
+            if (antirequisites != null && !antirequisites.equals("null")) {
+                bundle.putString("antirequisites", antirequisites);
+            }
 
             return bundle;
 

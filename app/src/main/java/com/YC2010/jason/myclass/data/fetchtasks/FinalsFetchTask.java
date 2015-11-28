@@ -1,4 +1,4 @@
-package com.YC2010.jason.myclass.data.FetchTasks;
+package com.YC2010.jason.myclass.data.fetchtasks;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
