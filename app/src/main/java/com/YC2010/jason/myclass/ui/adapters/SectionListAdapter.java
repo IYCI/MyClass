@@ -58,13 +58,21 @@ public class SectionListAdapter extends BaseAdapter {
         TextView time = (TextView) v.findViewById(R.id.section_item_time);
         TextView prof = (TextView) v.findViewById(R.id.section_item_prof);
         RelativeLayout section_item_prof_layout = (RelativeLayout) v.findViewById((R.id.section_item_prof_layout));
-        section_item_prof_layout.setVisibility(View.VISIBLE);
+
 
         LectureSectionObject sectionInfo = getItem(position);
+        String professor = sectionInfo.getProfessor();
+
+        if (professor != null && professor.length() > 0) {
+            prof.setText(professor);
+            prof.setVisibility(View.VISIBLE);
+            section_item_prof_layout.setVisibility(View.VISIBLE);
+        } else {
+            prof.setVisibility(View.GONE);
+        }
 
         lec.setText(sectionInfo.getSection());
         time.setText(sectionInfo.getTime());
-        prof.setText(sectionInfo.getProfessor());
         loc.setText(sectionInfo.getLocation());
 
         int enroll_total = Integer.parseInt(sectionInfo.getTotal());

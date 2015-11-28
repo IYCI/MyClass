@@ -30,7 +30,7 @@ import android.widget.TimePicker;
 import com.YC2010.jason.myclass.callbacks.AsyncTaskCallbackInterface;
 import com.YC2010.jason.myclass.model.CourseInfo;
 import com.YC2010.jason.myclass.data.CoursesDBHandler;
-import com.YC2010.jason.myclass.data.FetchTasks.FinalsFetchTask;
+import com.YC2010.jason.myclass.data.fetchtasks.FinalsFetchTask;
 import com.YC2010.jason.myclass.data.ReminderDBHandler;
 import com.YC2010.jason.myclass.ui.adapters.Reminder_Adapter;
 import com.YC2010.jason.myclass.model.Reminder_item;

@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.YC2010.jason.myclass.callbacks.AsyncTaskCallbackInterface;
-import com.YC2010.jason.myclass.data.FetchTasks.CatalogNumFetchTask;
+import com.YC2010.jason.myclass.data.fetchtasks.CatalogNumFetchTask;
 import com.YC2010.jason.myclass.R;
 
 import java.util.ArrayList;
