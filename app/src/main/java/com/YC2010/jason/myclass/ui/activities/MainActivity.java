@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.YC2010.jason.myclass.data.Connections;
+import com.YC2010.jason.myclass.data.FetchTasks.APIKeyFetchTask;
 import com.YC2010.jason.myclass.ui.fragments.SearchFragment;
 import com.YC2010.jason.myclass.ui.fragments.SubjectsFragment;
 import com.YC2010.jason.myclass.ui.fragments.CoursesFragment;
@@ -86,6 +88,9 @@ public class MainActivity extends AppCompatActivity
             // get title out
             mTitle = savedInstanceState.getCharSequence(TITLE_KEY);
         }
+
+        // Fetch the API key from server
+        new APIKeyFetchTask().execute();
 
         setContentView(R.layout.activity_main);
 

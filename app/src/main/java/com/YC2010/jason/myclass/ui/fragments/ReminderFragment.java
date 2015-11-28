@@ -468,11 +468,8 @@ public class ReminderFragment extends Fragment {
                                 .show();
                     }
                 });
+
                 finalsFetchTask.execute(course_names, course_secs);
-
-
-
-
             }
             catch (Exception e) {
                 e.printStackTrace();
