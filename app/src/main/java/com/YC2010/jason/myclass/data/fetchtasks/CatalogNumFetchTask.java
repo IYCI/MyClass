@@ -8,15 +8,14 @@ import android.util.Log;
 import com.YC2010.jason.myclass.callbacks.AsyncTaskCallbackInterface;
 import com.YC2010.jason.myclass.data.Connections;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 /**
@@ -36,49 +35,22 @@ public class CatalogNumFetchTask extends AsyncTask<String, Void, Bundle> {
     @Override
     protected Bundle doInBackground(String...params) {
         Bundle result = new Bundle();
-
         fetchCourse(result);
 
         return result;
     }
 
     private Bundle fetchCourse(Bundle bundle) {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-
-
         try{
             String url = Connections.getCatalogNumURL(mSubject);
-            HttpGet httpGet = new HttpGet(url);
 
-            HttpResponse httpResponse = httpClient.execute(httpGet);
-            HttpEntity httpEntity = httpResponse.getEntity();
-
-            if (null == httpEntity) return null;
-
-            if (httpResponse.getStatusLine().getStatusCode() != 200) {
-                throw new RuntimeException("Failed: HTTP error code: " + httpResponse.getStatusLine().getStatusCode());
-            }
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(httpEntity.getContent(), "UTF-8"));
-
-            String inputLine;
-            StringBuilder entityStringBuilder = new StringBuilder();
-
-            while (null != (inputLine = in.readLine())) {
-                entityStringBuilder.append(inputLine).append("\n");
-            }
-            in.close();
-
-            JSONObject jsonObject = new JSONObject(entityStringBuilder.toString());
+            JSONObject jsonObject = Connections.getJSON_from_url(url);
             JSONArray subject_array = jsonObject.getJSONArray("data");
             Log.d("SubjectFetchTask", "subject array is " + subject_array.length());
-
-
 
             for(int i = 0; i < subject_array.length(); i++){
                 JSONObject subject = subject_array.getJSONObject(i);
                 mCatalogNum_arraylist.add(i,mSubject + " " +  subject.getString("catalog_number"));
-                //Log.d("SubjectFetchTask", "miao");
             }
 
             bundle.putStringArrayList("CatalogNum_arraylist", mCatalogNum_arraylist);
