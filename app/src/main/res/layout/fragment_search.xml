@@ -1,172 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:orientation="vertical">
-
-
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/search_detail_layout"
         android:layout_width="match_parent"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="8dp"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
+        <android.support.design.widget.TabLayout
+            android:id="@+id/sliding_tabs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="32sp"
-            android:gravity="center_vertical"
-            android:id="@+id/course_name"
-            android:layout_toStartOf="@+id/add_course_button"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_alignParentTop="true" />
-
-        <Button
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="50dp"
-            android:translationZ="4dp"
-            android:text="Take"
+            style="@style/DefaultTabLayoutStyle"
+            android:background="?attr/colorPrimary"
+            app:tabIndicatorColor="@android:color/white"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
+            android:visibility="gone" />
 
-            android:textAllCaps="true"
-            android:minWidth="88dp"
-            android:visibility="gone"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:backgroundTint="@color/dialog_text_color"
-            android:id="@+id/add_course_button"
-            android:layout_gravity="end|center"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_alignParentBottom="true" />
-    </RelativeLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:id="@+id/title" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/description" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:visibility="gone"
-        android:text="@string/prerequisites_title"
-        android:id="@+id/preReqLabel" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
-        android:visibility="gone"
-        android:id="@+id/preReq" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:text="@string/antirequisite_title"
-        android:visibility="gone"
-        android:id="@+id/antiReqLabel" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
-        android:visibility="gone"
-        android:id="@+id/antiReq" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="LEC:"
-        android:visibility="gone"
-        android:textSize="18sp"
-        android:paddingTop="8dp"
-        android:id="@+id/lec" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:headerDividersEnabled="true"
-        android:footerDividersEnabled="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/lec_list">
-
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:background="@android:color/white" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TUT:"
-        android:visibility="gone"
-        android:textSize="18sp"
-        android:paddingTop="8dp"
-        android:id="@+id/tut" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:headerDividersEnabled="true"
-        android:footerDividersEnabled="true"
-        android:id="@+id/tut_list">
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="TST:"
-        android:visibility="gone"
-        android:textSize="18sp"
-        android:paddingTop="8dp"
-        android:id="@+id/tst" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:headerDividersEnabled="true"
-        android:footerDividersEnabled="true"
-        android:id="@+id/tst_list">
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="FINAL:"
-        android:visibility="gone"
-        android:textSize="18sp"
-        android:paddingTop="8dp"
-        android:id="@+id/final_exams" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:headerDividersEnabled="true"
-        android:footerDividersEnabled="true"
-        android:id="@+id/finals_list">
-    </LinearLayout>
-
-
-</LinearLayout>
-</ScrollView>
+</android.support.design.widget.CoordinatorLayout>

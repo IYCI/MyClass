@@ -283,11 +283,12 @@ public class MainActivity extends AppCompatActivity
             // search button
             getMenuInflater().inflate(R.menu.main_activity_actions, menu);
             MenuItem searchItem = menu.findItem(R.id.action_search);
-            SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.d("MainActivity", "Text Submitted");
+                    searchView.setIconified(true);
                     // pass query into the fragment through a bundle
                     SearchFragment mSearchFragment = new SearchFragment();
                     Bundle args = new Bundle();
