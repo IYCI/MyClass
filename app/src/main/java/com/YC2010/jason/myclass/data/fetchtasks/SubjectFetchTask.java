@@ -8,15 +8,9 @@ import android.util.Log;
 import com.YC2010.jason.myclass.callbacks.AsyncTaskCallbackInterface;
 import com.YC2010.jason.myclass.data.Connections;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -43,37 +37,12 @@ public class SubjectFetchTask extends AsyncTask<String, Void, Bundle> {
     }
 
     private Bundle fetchCourse(Bundle bundle) {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-
-
         try{
             String url = Connections.getSubjectsOfferingURL();
-            HttpGet httpGet = new HttpGet(url);
 
-            HttpResponse httpResponse = httpClient.execute(httpGet);
-            HttpEntity httpEntity = httpResponse.getEntity();
-
-            if (null == httpEntity) return null;
-
-            if (httpResponse.getStatusLine().getStatusCode() != 200) {
-                throw new RuntimeException("Failed: HTTP error code: " + httpResponse.getStatusLine().getStatusCode());
-            }
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(httpEntity.getContent(), "UTF-8"));
-
-            String inputLine;
-            StringBuilder entityStringBuilder = new StringBuilder();
-
-            while (null != (inputLine = in.readLine())) {
-                entityStringBuilder.append(inputLine).append("\n");
-            }
-            in.close();
-
-            JSONObject jsonObject = new JSONObject(entityStringBuilder.toString());
+            JSONObject jsonObject = Connections.getJSON_from_url(url);
             JSONArray subject_array = jsonObject.getJSONArray("data");
             Log.d("SubjectFetchTask", "subject array is " + subject_array.length());
-
-
 
             for(int i = 0; i < subject_array.length(); i++){
                 JSONObject subject = subject_array.getJSONObject(i);

@@ -7,15 +7,13 @@ import android.util.Log;
 
 import com.YC2010.jason.myclass.utils.Constants;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -77,7 +75,7 @@ public class Connections {
         return Constants.UWAPIROOT + "courses/" + subject + "/" + cataNum + "/schedule.json?key=" + Constants.APIKEY;
     }
 
-    public static String getCurrentTerm() {
+    public static String getCurrentTerm() throws Exception {
         String term;
         String termList_url = Constants.UWAPIROOT + "terms/list.json?key=" + Constants.APIKEY;
         JSONObject termList = getJSON_from_url(termList_url);
@@ -147,24 +145,23 @@ public class Connections {
         return Constants.UWAPIROOT + "courses/" + subject + ".json?key=" + Constants.APIKEY;
     }
 
-    public static JSONObject getJSON_from_url(String url){
-        DefaultHttpClient httpClient = new DefaultHttpClient();
+    public static JSONObject getJSON_from_url(String url) throws Exception {
+        URL obj = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
         JSONObject jsonObject;
 
         try {
             Log.d("getJSONObject", "URL is " + url);
-            HttpGet httpGet = new HttpGet(url);
 
-            HttpResponse httpResponse = httpClient.execute(httpGet);
-            HttpEntity httpEntity = httpResponse.getEntity();
+            int responseCode = connection.getResponseCode();
 
-            if (null == httpEntity) return null;
+            if (null == connection.getInputStream()) return null;
 
-            if (httpResponse.getStatusLine().getStatusCode() != 200) {
-                throw new RuntimeException("Failed: HTTP error code: " + httpResponse.getStatusLine().getStatusCode());
+            if (responseCode != 200) {
+                throw new RuntimeException("Failed: HTTP error code: " + responseCode);
             }
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(httpEntity.getContent(), "UTF-8"));
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
 
             String inputLine;
             StringBuilder entityStringBuilder = new StringBuilder();
