@@ -68,4 +68,9 @@
     <string name="prerequisites_title">Prerequisites:</string>
     <string name="antirequisite_title">Antirequisites:</string>
 
+    <!-- Course Detail Tabs -->
+    <string name="course_tab_title1">Schedule</string>
+    <string name="course_tab_title2">Exam</string>
+    <string name="course_tab_title3">Info</string>
+
 </resources>

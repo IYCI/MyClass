@@ -48,23 +48,23 @@ import java.util.UUID;
  * A Floating Action Button is a {@link Checkable} view distinguished by a circled
  * icon floating above the UI, with special motion behaviors.
  */
-public class FloatingActionButton extends FrameLayout {
+public class MyFloatingActionButton extends FrameLayout {
 
 
-    public FloatingActionButton(Context context) {
+    public MyFloatingActionButton(Context context) {
         this(context, null, 0, 0);
     }
 
-    public FloatingActionButton(Context context, AttributeSet attrs) {
+    public MyFloatingActionButton(Context context, AttributeSet attrs) {
         this(context, attrs, 0, 0);
     }
 
-    public FloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MyFloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);
     }
 
-    public FloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr,
-            int defStyleRes) {
+    public MyFloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr,
+                                  int defStyleRes) {
         super(context, attrs, defStyleAttr);
 
         setClickable(true);
