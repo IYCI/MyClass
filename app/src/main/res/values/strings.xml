@@ -3,6 +3,8 @@
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
 
+    <string name="not_available">N/A</string>
+
     <!-- for action bar -->
     <string name="action_search">Search</string>
 
