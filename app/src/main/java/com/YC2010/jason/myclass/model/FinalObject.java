@@ -11,6 +11,7 @@ public class FinalObject implements Parcelable {
     private String time;
     private String location;
     private String date;
+    private boolean isOnline;
 
     public FinalObject() {}
 
@@ -25,6 +26,7 @@ public class FinalObject implements Parcelable {
         dest.writeString(time);
         dest.writeString(location);
         dest.writeString(date);
+        dest.writeByte((byte) (isOnline ? 1 : 0));
     }
 
     public FinalObject(Parcel src) {
@@ -32,6 +34,7 @@ public class FinalObject implements Parcelable {
         this.time = src.readString();
         this.location = src.readString();
         this.date = src.readString();
+        this.isOnline = src.readByte() == 1;
     }
 
     public static final Creator CREATOR = new Creator() {
@@ -62,6 +65,10 @@ public class FinalObject implements Parcelable {
         this.date = date;
     }
 
+    public void setIsOnline(boolean isOnline) {
+        this.isOnline = isOnline;
+    }
+
     public String getSection() {
         return section;
     }
@@ -76,5 +83,9 @@ public class FinalObject implements Parcelable {
 
     public String getDate() {
         return date;
+    }
+
+    public boolean isOnline() {
+        return isOnline;
     }
 }

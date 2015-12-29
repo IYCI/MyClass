@@ -84,9 +84,6 @@ public class Course_Adapter extends RecyclerView.Adapter<Course_Adapter.ViewHold
         holder.mLocation.setText(mDataset.get(position).getCourseLoc());
         holder.mSection.setText(mDataset.get(position).getCourseSec());
         holder.mTime.setText(mDataset.get(position).getCourseTime());
-        if (mDataset.get(position).isOnline()){
-            holder.mLocation.setText("Online");
-        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

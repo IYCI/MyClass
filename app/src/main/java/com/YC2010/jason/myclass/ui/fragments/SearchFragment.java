@@ -56,7 +56,9 @@ public class SearchFragment extends Fragment {
         SearchFetchTask searchFetchTask = new SearchFetchTask(mActivity, new AsyncTaskCallbackInterface() {
             @Override
             public void onOperationComplete(Bundle bundle) {
-                setupTabs(bundle);
+                if (bundle != null) {
+                    setupTabs(bundle);
+                }
             }
         });
         searchFetchTask.execute(mCourse);

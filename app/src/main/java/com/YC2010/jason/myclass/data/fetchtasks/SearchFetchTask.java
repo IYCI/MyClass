@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.YC2010.jason.myclass.R;
 import com.YC2010.jason.myclass.data.Connections;
 import com.YC2010.jason.myclass.data.CoursesDBHandler;
 import com.YC2010.jason.myclass.utils.Constants;
@@ -70,9 +71,14 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             JSONObject schedulesObject = Connections.getJSON_from_url(schedule_url);
 
             // check valid data return
-            if(!schedulesObject.getJSONObject("meta").getString("message").equals("Request successful")) {
-                Log.d("SearchFetchTask",schedulesObject.toString());
-                return bundle;
+            if (schedulesObject == null) {
+                Log.d("SearchFetchTask", "WARNING - schedulesObject is NULL");
+                return null;
+            }
+
+            if (!schedulesObject.getJSONObject("meta").getString("message").equals("Request successful")) {
+                Log.d("SearchFetchTask", schedulesObject.toString());
+                return null;
             }
 
             bundle.putBoolean("valid_return", true);
@@ -81,16 +87,14 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             for(int i = 0; i < data.length(); i++){
                 JSONObject section = data.getJSONObject(i);
                 JSONObject first_class = section.getJSONArray("classes").getJSONObject(0);
-                //Log.d("SearchFetchTask",first_class.toString());
                 JSONObject date = first_class.getJSONObject("date");
                 JSONObject loc = first_class.getJSONObject("location");
 
                 String section_str = section.getString("section");
                 String section_type = section_str.substring(0, 3);
-                String section_num = section_str.substring(section_str.length() - 3);
+                String sectionNumber = section_str.substring(section_str.length() - 3);
 
-                if(section_num.equals("081"))
-                    bundle.putBoolean("isOnline", true);
+                boolean isOnline = sectionNumber.equals("081");
 
                 Log.d("SearchFetchTask", "section_type is <" + section_type + ">");
 
@@ -98,6 +102,7 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
                 switch (section_type) {
                     case "LEC":
+                    case "STU":
                         JSONArray professors = first_class.getJSONArray("instructors");
                         String prof = "";
 
@@ -112,26 +117,39 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
                         }
 
                         LectureSectionObject lecture = new LectureSectionObject();
-
                         lecture.setNumber(section.getString("class_number"));
-                        lecture.setSection(section_str.substring(4));
-                        lecture.setTime(date.getString("weekdays") + " " +
-                                date.getString("start_time") + "-" + date.getString("end_time"));
+                        lecture.setIsOnline(isOnline);
 
-                        lecture.setProfessor(prof);
+                        if (!isOnline) {
+                            String weekdays = date.getString("weekdays");
+                            String startTime = date.getString("start_time");
+                            String endTime = date.getString("end_time");
 
-                        String building = loc.getString("building");
-                        String room = loc.getString("room");
+                            if (!weekdays.equals("null") && !startTime.equals("null") && !endTime.equals("null")) {
+                                lecture.setTime(date.getString("weekdays") + " " +
+                                        date.getString("start_time") + "-" + date.getString("end_time"));
+                            }
 
-                        if (building != null && room != null && !building.equals("null") && !room.equals("null")) {
-                            lecture.setLocation(building + " " + room);
+                            String building = loc.getString("building");
+                            String room = loc.getString("room");
+
+                            if (!building.equals("null") && !room.equals("null")) {
+                                lecture.setLocation(building + " " + room);
+                            } else {
+                                lecture.setLocation("");
+                            }
                         } else {
-                            lecture.setLocation("");
+                            sectionNumber = "Online";
+                            lecture.setTime(mActivity.getResources().
+                                    getString(R.string.date_not_available));
+                            lecture.setLocation(mActivity.getResources().
+                                    getString(R.string.location_not_available));
                         }
 
+                        lecture.setProfessor(prof);
+                        lecture.setSection(sectionNumber);
                         lecture.setCapacity(section.getString("enrollment_capacity"));
                         lecture.setTotal(section.getString("enrollment_total"));
-
                         lectures.add(lecture);
                         break;
 
@@ -181,26 +199,36 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
             // get exam JSONBObject
             String exam_url = Connections.getExamsURL(current_term);
-            JSONArray examData = Connections.getJSON_from_url(exam_url).getJSONArray("data");
+            JSONObject examObject = Connections.getJSON_from_url(exam_url);
 
-            for(int i = 0; i < examData.length(); i++){
-                if(examData.getJSONObject(i).getString("course").equals(bundle.getString("courseName"))){
-                    bundle.putBoolean("has_finals", true);
-                    JSONArray exam_sections = examData.getJSONObject(i).getJSONArray("sections");
-                    for(int j = 0; j < exam_sections.length(); j++){
-                        FinalObject finalObject = new FinalObject();
+            if (examObject != null) {
+                JSONArray examData = examObject.getJSONArray("data");
 
-                        finalObject.setSection(exam_sections.getJSONObject(j).getString("section"));
-                        finalObject.setTime(exam_sections.getJSONObject(j).getString("start_time") + "-" +
+                for (int i = 0; i < examData.length(); i++) {
+                    if (examData.getJSONObject(i).getString("course").equals(bundle.getString("courseName"))) {
+                        bundle.putBoolean("has_finals", true);
+                        JSONArray exam_sections = examData.getJSONObject(i).getJSONArray("sections");
+                        for (int j = 0; j < exam_sections.length(); j++) {
+                            FinalObject finalObject = new FinalObject();
+
+                            String section = exam_sections.getJSONObject(j).getString("section");
+
+                            finalObject.setSection(section);
+                            if (!section.contains("Online")) {
+                                finalObject.setTime(exam_sections.getJSONObject(j).getString("start_time") + "-" +
                                         exam_sections.getJSONObject(j).getString("end_time"));
-                        finalObject.setLocation(exam_sections.getJSONObject(j).getString("location"));
-                        finalObject.setDate(exam_sections.getJSONObject(j).getString("date"));
-
-                        finals.add(finalObject);
+                                finalObject.setLocation(exam_sections.getJSONObject(j).getString("location"));
+                                finalObject.setDate(exam_sections.getJSONObject(j).getString("date"));
+                                finalObject.setIsOnline(false);
+                            } else {
+                                finalObject.setIsOnline(true);
+                            }
+                            finals.add(finalObject);
+                        }
                     }
                 }
+                bundle.putParcelableArrayList(Constants.finalObjectListKey, finals);
             }
-            bundle.putParcelableArrayList(Constants.finalObjectListKey, finals);
 
             // Fetch course information (description, etc)
             JSONObject courseInfoObject = Connections.getJSON_from_url(Connections.getCourseInfoURL(input));
@@ -222,9 +250,8 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-
-        return bundle;
     }
 
     @Override
@@ -232,28 +259,6 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
         progDailog.dismiss();
 
         mAsyncTaskCallbackInterface.onOperationComplete(bundle);
-
-        /*TextView description = (TextView) mActivity.findViewById(R.id.description);
-        TextView units = (TextView) mActivity.findViewById(R.id.units);
-        TextView preReq = (TextView) mActivity.findViewById(R.id.preReq);
-        TextView antiReq = (TextView) mActivity.findViewById(R.id.antiReq);
-        TextView termsOffered = (TextView) mActivity.findViewById(R.id.termsOffered);
-        TextView online = (TextView) mActivity.findViewById(R.id.online);
-
-        courseName.setText(bundle.getString("courseName"));
-        title.setText(bundle.getString("title"));
-        description.setText(bundle.getString("description"));
-        units.setText(bundle.getString("units"));
-        preReq.setText(bundle.getString("preReq"));
-        antiReq.setText(bundle.getString("antiReq"));
-        termsOffered.setText(bundle.getString("termsOffered"));
-
-        if (bundle.getBoolean("online")) {
-            online.setText("Yes");
-        } else {
-            online.setText("no");
-        }*/
-
     }
 
 

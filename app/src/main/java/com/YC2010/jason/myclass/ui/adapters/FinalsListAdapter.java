@@ -60,9 +60,12 @@ public class FinalsListAdapter extends BaseAdapter {
         FinalObject finalInfo = getItem(position);
 
         sec.setText(finalInfo.getSection());
-        time.setText(finalInfo.getTime());
-        loc.setText(finalInfo.getLocation());
-        date.setText(finalInfo.getDate());
+
+        if (!finalInfo.isOnline()) {
+            time.setText(finalInfo.getTime());
+            loc.setText(finalInfo.getLocation());
+            date.setText(finalInfo.getDate());
+        }
 
         return v;
     }
