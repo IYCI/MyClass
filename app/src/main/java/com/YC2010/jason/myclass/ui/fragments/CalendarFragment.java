@@ -186,8 +186,15 @@ public class CalendarFragment extends Fragment implements WeekView.MonthChangeLi
         if (myDataset == null) return events;
 
         for (int k = 0; k < myDataset.size(); k++) {
-            String time = myDataset.get(k).getCourseTime();
-            String name = myDataset.get(k).getCourseName();
+            // Won't display online courses
+            CourseInfo course = myDataset.get(k);
+
+            if (course.isOnline()) {
+                continue;
+            }
+
+            String time = course.getCourseTime();
+            String name = course.getCourseName();
 
             if (time == null) continue;
 
@@ -242,7 +249,7 @@ public class CalendarFragment extends Fragment implements WeekView.MonthChangeLi
                     WeekViewEvent event = new WeekViewEvent(eventCount++, name + "\n" + formattedTime, startTime, endTime);
 
                     // Change display color of courses
-                    // what if exceed 5 courses?
+                    // TODO: what if exceed 5 courses?
                     switch (k % 5) {
                         case 0:
                             event.setColor(getResources().getColor(R.color.event_color_01));

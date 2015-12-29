@@ -44,29 +44,32 @@ public class CourseInfo {
     }
 
     public void setTimeAPM(String time){
-        int i = 0;
-        for(; time.charAt(i) < 48 || time.charAt(i) > 57; i++);
-        String days = time.substring(0,i);
-        String realtime = time.substring(i);
-        String starttime = realtime.substring(0,5);
-        String endtime = realtime.substring(6);
-        try{
-            DateFormat f1 = new SimpleDateFormat("HH:mm"); //HH for hour of the day (0 - 23)
-            Date d = f1.parse(starttime);
-            DateFormat f2 = new SimpleDateFormat("h:mma");
-            starttime = f2.format(d); // "12:18am"
+        if (!isOnline) {
+            int i = 0;
+            for (; time.charAt(i) < 48 || time.charAt(i) > 57; i++);
+            String days = time.substring(0,i);
+            String realtime = time.substring(i);
+            String starttime = realtime.substring(0,5);
+            String endtime = realtime.substring(6);
+            try{
+                DateFormat f1 = new SimpleDateFormat("HH:mm"); //HH for hour of the day (0 - 23)
+                Date d = f1.parse(starttime);
+                DateFormat f2 = new SimpleDateFormat("h:mma");
+                starttime = f2.format(d); // "12:18am"
 
-            DateFormat f3 = new SimpleDateFormat("HH:mm"); //HH for hour of the day (0 - 23)
-            Date d2 = f3.parse(endtime);
-            DateFormat f4 = new SimpleDateFormat("h:mma");
-            endtime = f4.format(d2); // "12:18am"
+                DateFormat f3 = new SimpleDateFormat("HH:mm"); //HH for hour of the day (0 - 23)
+                Date d2 = f3.parse(endtime);
+                DateFormat f4 = new SimpleDateFormat("h:mma");
+                endtime = f4.format(d2); // "12:18am"
 
 
-        } catch (ParseException e){
-            e.printStackTrace();
+            } catch (ParseException e){
+                e.printStackTrace();
+            }
+            courseTime = days + starttime + "-" + endtime;
+        } else {
+            courseTime = time;
         }
-
-        courseTime = days + starttime + "-" + endtime;
     }
     public void setSec(String sec){
         courseSec = sec;
@@ -108,6 +111,10 @@ public class CourseInfo {
     public void setlabLoc(String loc){ labLoc = loc;}
 
     public void setlabSec(String sec){ labSec = sec;}
+
+    public void setIsOnline(boolean isOnline) {
+        this.isOnline = isOnline;
+    }
 
     public String getCourseName() {
         return courseName;

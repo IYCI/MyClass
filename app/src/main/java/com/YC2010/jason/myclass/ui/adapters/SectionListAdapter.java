@@ -45,12 +45,8 @@ public class SectionListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        //Log.d("SectionListAdapter", "enter getView");
-        View v = convertView;
 
-        v = mLayoutInflater.inflate(R.layout.section_item, null);
-
-        Log.d("SectionListAdapter", "position is " + position);
+        View v = mLayoutInflater.inflate(R.layout.section_item, null);
 
         TextView capacity = (TextView) v.findViewById(R.id.section_item_capacity);
         TextView lec = (TextView) v.findViewById(R.id.section_item_lec);
@@ -58,7 +54,6 @@ public class SectionListAdapter extends BaseAdapter {
         TextView time = (TextView) v.findViewById(R.id.section_item_time);
         TextView prof = (TextView) v.findViewById(R.id.section_item_prof);
         RelativeLayout section_item_prof_layout = (RelativeLayout) v.findViewById((R.id.section_item_prof_layout));
-
 
         LectureSectionObject sectionInfo = getItem(position);
         String professor = sectionInfo.getProfessor();
@@ -78,10 +73,11 @@ public class SectionListAdapter extends BaseAdapter {
         int enroll_total = Integer.parseInt(sectionInfo.getTotal());
         int enroll_cap = Integer.parseInt(sectionInfo.getCapacity());
 
-        if(enroll_total/enroll_cap >= 1)
+        if (enroll_total/enroll_cap >= 1) {
             capacity.setTextColor(mContext.getResources().getColor(R.color.fab_color_1));
-        else
+        } else {
             capacity.setTextColor(mContext.getResources().getColor(R.color.light_green));
+        }
 
         Log.d("SectionListAdapter", "rate is " + enroll_total/enroll_cap);
 

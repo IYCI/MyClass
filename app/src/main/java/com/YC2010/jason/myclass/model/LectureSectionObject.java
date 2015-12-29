@@ -14,8 +14,9 @@ public class LectureSectionObject implements Parcelable {
     private String location;
     private String capacity;
     private String total;
+    private boolean isOnline;
 
-    public LectureSectionObject(String number, String section, String time, String professor, String location, String capacity, String total) {
+    public LectureSectionObject(String number, String section, String time, String professor, String location, String capacity, String total, boolean isOnline) {
         this.number = number;
         this.section = section;
         this.time = time;
@@ -23,6 +24,7 @@ public class LectureSectionObject implements Parcelable {
         this.location = location;
         this.capacity = capacity;
         this.total = total;
+        this.isOnline = isOnline;
     }
 
     public LectureSectionObject() {}
@@ -41,6 +43,7 @@ public class LectureSectionObject implements Parcelable {
         dest.writeString(location);
         dest.writeString(capacity);
         dest.writeString(total);
+        dest.writeByte((byte) (isOnline ? 1 : 0));
     }
 
     public LectureSectionObject(Parcel src) {
@@ -51,6 +54,7 @@ public class LectureSectionObject implements Parcelable {
         this.location = src.readString();
         this.capacity = src.readString();
         this.total = src.readString();
+        this.isOnline = src.readByte() != 0;
     }
 
     public static final Creator CREATOR = new Creator() {
@@ -93,6 +97,10 @@ public class LectureSectionObject implements Parcelable {
         this.professor = professor;
     }
 
+    public void setIsOnline(boolean isOnline) {
+        this.isOnline = isOnline;
+    }
+
     public String getNumber() {
         return number;
     }
@@ -119,5 +127,9 @@ public class LectureSectionObject implements Parcelable {
 
     public String getTotal() {
         return total;
+    }
+
+    public boolean isOnline() {
+        return isOnline;
     }
 }

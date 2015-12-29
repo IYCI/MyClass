@@ -73,12 +73,9 @@ public class SearchScheduleFragment extends Fragment {
             mLecLinearLayout.setDividerDrawable(divider);
         }
 
-        final TextView lec = (TextView) mView.findViewById(R.id.lec);
+        TextView lec = (TextView) mView.findViewById(R.id.lec);
         if (lec != null) {
             lec.setVisibility(View.VISIBLE);
-            if (mFetchedResult.getBoolean("isOnline", false)) {
-                lec.setText("Online");
-            }
         }
 
         if (mFetchedResult.getBoolean("has_tst", false)) {
@@ -118,63 +115,59 @@ public class SearchScheduleFragment extends Fragment {
         Button addButton = (Button) mView.findViewById(R.id.add_course_button);
 
         if (addButton != null) {
-            if (mFetchedResult.getBoolean("isOnline", false)) {
-                addButton.setVisibility(View.GONE);
-            } else {
-                boolean courseTaken = false;
+            boolean courseTaken = false;
 
-                final ArrayList<LectureSectionObject> lectureSections = mFetchedResult.getParcelableArrayList(Constants.lectureSectionObjectListKey);
+            final ArrayList<LectureSectionObject> lectureSections =
+                    mFetchedResult.getParcelableArrayList(Constants.lectureSectionObjectListKey);
 
-                if (lectureSections == null) {
-                    return;
-                }
-
-                final CoursesDBHandler db = new CoursesDBHandler(mActivity);
-
-                for (int i = 0; i < lectureSections.size(); i++) {
-                    if (db.IsInDB(lectureSections.get(i).getNumber())) {
-                        courseTaken = true;
-                        mTakenCourseNumber = lectureSections.get(i).getNumber();
-                        break;
-                    }
-                }
-
-                setCourseTaken(courseTaken);
-
-                addButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View view) {
-
-                        if (!mCourseTaken) {
-                            // put sec info into a list of string
-                            CharSequence[] lecSecList = new CharSequence[lectureSections.size()];
-                            for (int i = 0; i < lectureSections.size(); i++) {
-                                lecSecList[i] = lectureSections.get(i).getSection();
-                            }
-
-                            displayDialog(lecSecList, mFetchedResult, db, view);
-                        } else {
-                            setCourseTaken(false);
-
-                            // remove from db
-                            if (mTakenCourseNumber != null) {
-                                db.removeCourse(mTakenCourseNumber);
-                                mTakenCourseNumber = null;
-                            }
-
-                            // show snackBar
-                            Snackbar.make(view, "Course Dropped", Snackbar.LENGTH_SHORT)
-                                    .show();
-                        }
-                        db.close();
-                    }
-                });
-                addButton.setVisibility(View.VISIBLE);
+            if (lectureSections == null) {
+                return;
             }
+
+            final CoursesDBHandler db = new CoursesDBHandler(mActivity);
+
+            for (int i = 0; i < lectureSections.size(); i++) {
+                if (db.IsInDB(lectureSections.get(i).getNumber())) {
+                    courseTaken = true;
+                    mTakenCourseNumber = lectureSections.get(i).getNumber();
+                    break;
+                }
+            }
+
+            setCourseTaken(courseTaken);
+
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View view) {
+                    if (!mCourseTaken) {
+                        // put sec info into a list of string
+                        CharSequence[] lecSecList = new CharSequence[lectureSections.size()];
+                        for (int i = 0; i < lectureSections.size(); i++) {
+                            lecSecList[i] = lectureSections.get(i).getSection();
+                        }
+
+                        displayDialog(lecSecList, db, view);
+                    } else {
+                        setCourseTaken(false);
+
+                        // remove from db
+                        if (mTakenCourseNumber != null) {
+                            db.removeCourse(mTakenCourseNumber);
+                            mTakenCourseNumber = null;
+                        }
+
+                        // show snackBar
+                        Snackbar.make(view, "Course Dropped", Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                    db.close();
+                }
+            });
+            addButton.setVisibility(View.VISIBLE);
         }
     }
 
-    void displayDialog(CharSequence[] sectionList, final Bundle bundle, final CoursesDBHandler db, final View view) {
+    void displayDialog(CharSequence[] sectionList, final CoursesDBHandler db, final View view) {
         // show dialog to choose sections
         AlertDialog ad = new AlertDialog.Builder(mActivity)
                 .setTitle("Choose a section")
@@ -184,14 +177,15 @@ public class SearchScheduleFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         int index = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                         ArrayList<LectureSectionObject> lectures =
-                                bundle.getParcelableArrayList(Constants.lectureSectionObjectListKey);
+                                mFetchedResult.getParcelableArrayList(Constants.lectureSectionObjectListKey);
                         LectureSectionObject selectedSection = lectures.get(index);
 
                         // add to db
-                        CourseInfo course = new CourseInfo(bundle.getString("courseName"));
+                        CourseInfo course = new CourseInfo(mFetchedResult.getString("courseName"));
                         course.setSec(selectedSection.getSection());
                         course.setNum(selectedSection.getNumber());
                         course.setLoc(selectedSection.getLocation());
+                        course.setIsOnline(selectedSection.isOnline());
                         course.setTimeAPM(selectedSection.getTime());
                         course.setProf(selectedSection.getProfessor());
 
@@ -203,7 +197,6 @@ public class SearchScheduleFragment extends Fragment {
                                 .show();
 
                         setCourseTaken(true);
-
                         dialog.dismiss();
                     }
                 })
@@ -211,8 +204,10 @@ public class SearchScheduleFragment extends Fragment {
         ad.show();
 
         // change color
-        ad.getButton(ad.BUTTON_POSITIVE).setTextColor(mActivity.getResources().getColor(R.color.myPrimaryColor));
-        ad.getButton(ad.BUTTON_NEGATIVE).setTextColor(mActivity.getResources().getColor(R.color.myPrimaryColor));
+        ad.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(mActivity.getResources().getColor(R.color.myPrimaryColor));
+        ad.getButton(AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(mActivity.getResources().getColor(R.color.myPrimaryColor));
     }
 
     private void setCourseTaken(boolean taken) {

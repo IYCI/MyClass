@@ -89,6 +89,7 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
         values.put(KEY_SEC_TUT, mCourse.getTutSec());
         values.put(KEY_TIME_TUT, mCourse.getTutTime());
         values.put(KEY_LOC_TUT, mCourse.getTutLoc());
+        values.put(KEY_ONLINE, mCourse.isOnline());
 
         // Inserting Row
         db.insert(TABLE_COURSES, null, values);
@@ -160,6 +161,7 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
                 course.setTutTime(cursor.getString(8));
                 course.setTutLoc(cursor.getString(9));
                 course.setTutsec(cursor.getString(10));
+                course.setIsOnline(cursor.getInt(11) > 0);
 
                 // Adding course to list
                 CoursesList.add(course);
