@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/myPrimaryColor</item>
         <item name="colorPrimaryDark">@color/myPrimaryDarkColor</item>
         <item name="colorAccent">@color/myPrimaryColor</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:textColorPrimary">@color/myTextPrimaryColor</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>

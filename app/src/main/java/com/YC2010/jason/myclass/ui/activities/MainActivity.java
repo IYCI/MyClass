@@ -5,30 +5,43 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.YC2010.jason.myclass.ui.fragments.SearchFragment;
-import com.YC2010.jason.myclass.ui.fragments.SubjectsFragment;
-import com.YC2010.jason.myclass.ui.fragments.CoursesFragment;
-import com.YC2010.jason.myclass.callbacks.NavigationDrawerCallbacks;
-import com.YC2010.jason.myclass.ui.fragments.NavigationDrawerFragment;
 import com.YC2010.jason.myclass.R;
 import com.YC2010.jason.myclass.data.ReminderDBHandler;
-import com.YC2010.jason.myclass.ui.fragments.ReminderFragment;
 import com.YC2010.jason.myclass.model.Reminder_item;
 import com.YC2010.jason.myclass.ui.fragments.CalendarFragment;
+import com.YC2010.jason.myclass.ui.fragments.CoursesFragment;
+import com.YC2010.jason.myclass.ui.fragments.ReminderFragment;
+import com.YC2010.jason.myclass.ui.fragments.SearchFragment;
 import com.YC2010.jason.myclass.ui.fragments.SettingFragment;
+import com.YC2010.jason.myclass.ui.fragments.SubjectsFragment;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -58,14 +71,15 @@ import java.util.Locale;
 import java.util.UUID;
 
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationDrawerCallbacks{
+public class MainActivity extends AppCompatActivity {
 
     /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
+     * Fragment managing the behaviors, interactions and presentation of the navigation drawer_menu.
      */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
+    private NavigationView mNavigationView;
+    private DrawerLayout mDrawerLayout;
+
     private CharSequence mTitle;
     private CharSequence currentTitle;
     CallbackManager callbackManager;
@@ -86,7 +100,6 @@ public class MainActivity extends AppCompatActivity
             // get title out
             mTitle = savedInstanceState.getCharSequence(TITLE_KEY);
         }
-
         setContentView(R.layout.activity_main);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
@@ -95,20 +108,119 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) Log.d("MainActivity", "savedInstanceState is null");
         else Log.d("MainActivity", "savedInstanceState is NOT null");
 
-        //if (savedInstanceState == null) {
+        //Initializing NavigationView
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-            mNavigationDrawerFragment = (NavigationDrawerFragment)
-                    getFragmentManager().findFragmentById(R.id.fragment_drawer);
+        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
-            // Set up the drawer.
-            mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
-            // populate the navigation drawer
-            mNavigationDrawerFragment.setUserData("Guest", "guest@miao.com", BitmapFactory.decodeResource(getResources(), R.drawable.avatar));
+            // This method will trigger on item Click of navigation menu
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                Log.d("MainActivity", "onNavigationItemSelected");
+                //Checking if the item is in checked state or not, if not make it in checked state
+                if (menuItem.isChecked()){
+                    menuItem.setChecked(false);
+                }
+                else{
+                    menuItem.setChecked(true);
+                }
 
-        //}
+                //Closing drawer_menu on item click
+                mDrawerLayout.closeDrawers();
+
+                //Check to see which item was being clicked and perform appropriate action
+                switch (menuItem.getItemId()) {
+                    case R.id.drawer_Calender:
+                        mTitle = getString(R.string.title_MyClass);
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new CalendarFragment())
+                                .addToBackStack("0")
+                                .commit();
+                        break;
+                    case R.id.drawer_Courses:
+                        mTitle = getString(R.string.title_Courses);
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new CoursesFragment())
+                                .addToBackStack("1")
+                                .commit();
+                        break;
+                    case R.id.drawer_Course_Select:
+                        mTitle = getString(R.string.title_Course_Select);
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new SubjectsFragment())
+                                .addToBackStack("2")
+                                .commit();
+                        break;
+                    case R.id.drawer_Reminder:
+                        mTitle = getString(R.string.title_Reminder);
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new ReminderFragment())
+                                .addToBackStack("3")
+                                .commit();
+                        break;
+                    case R.id.drawer_Settings:
+                        mTitle = getString(R.string.title_Settings);
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new SettingFragment())
+                                .addToBackStack("4")
+                                .commit();
+                        break;
+                    default:
+                        Toast.makeText(getApplicationContext(), "undefine drawer item selected, please report to the developer", Toast.LENGTH_LONG).show();
+                        break;
+                }
+                
+                if (mToolbar != null) {
+                    mToolbar.setTitle(mTitle);
+                }
+                return true;
+            }
+        });
+
+        // make the profile image as a circle
+        ImageView profileImageContainer = (ImageView) mNavigationView.getHeaderView(0).findViewById(R.id.profile_image);
+        profileImageContainer.setImageDrawable((new RoundImage(BitmapFactory.decodeResource(getResources(), R.drawable.avatar))));
+
+        // show calendar initially, before any drawer_menu item select
+        if (savedInstanceState == null) {
+            mNavigationView.getMenu().getItem(0).setChecked(true);
+            mTitle = getString(R.string.title_MyClass);
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, new CalendarFragment())
+                    .addToBackStack("0")
+                    .commit();
+            if (mToolbar != null) {
+                mToolbar.setTitle(mTitle);
+            }
+        }
+
+        // Initializing Drawer Layout and ActionBarToggle
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,mToolbar,R.string.drawer_openDrawer, R.string.drawer_closeDrawer){
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                // Code here will be triggered once the drawer_menu closes as we dont want anything to happen so we leave this blank
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                // Code here will be triggered once the drawer_menu open as we dont want anything to happen so we leave this blank
+                super.onDrawerOpened(drawerView);
+            }
+        };
+
+        //Setting the actionbarToggle to drawer_menu layout
+        mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+        //calling sync state is necessay or else your hamburger icon wont show up
+        actionBarDrawerToggle.syncState();
+
 
         checkFirstRun();
 
+        /* Facebook stuff starts */
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
@@ -123,8 +235,6 @@ public class MainActivity extends AppCompatActivity
         };
         // If the access token is available already assign it.
         accessToken = AccessToken.getCurrentAccessToken();
-
-
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(
@@ -133,6 +243,7 @@ public class MainActivity extends AppCompatActivity
                 // App code
             }
         };
+        /* Facebook stuff ends */
 
     }
 
@@ -178,80 +289,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
-
-        if (position == 0) {
-            if (mTitle == null || !mTitle.equals(getString(R.string.title_MyClass))) {
-                mTitle = getString(R.string.title_MyClass);
-
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.container, new CalendarFragment())
-                        .addToBackStack("0")
-                        .commit();
-
-                if (null != mToolbar) {
-                    mToolbar.setTitle(mTitle);
-                }
-            }
-        }
-        if (position == 1 && !mTitle.equals(getString(R.string.title_Courses))) {
-            mTitle = getString(R.string.title_Courses);
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new CoursesFragment())
-                    .addToBackStack("1")
-                    .commit();
-            if (null != mToolbar) {
-                mToolbar.setTitle(mTitle);
-            }
-        }
-        if (position == 2 && !mTitle.equals(getString(R.string.title_Course_Select))) {
-            mTitle = getString(R.string.title_Course_Select);
-
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new SubjectsFragment())
-                    .addToBackStack("2")
-                    .commit();
-            if (null != mToolbar) {
-                mToolbar.setTitle(mTitle);
-            }
-        }
-        if (position == 3 && !mTitle.equals(getString(R.string.title_Reminder))) {
-            mTitle = getString(R.string.title_Reminder);
-
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new ReminderFragment())
-                    .addToBackStack("3")
-                    .commit();
-            if (null != mToolbar) {
-                mToolbar.setTitle(mTitle);
-            }
-        }
-        if (position == 4 && !mTitle.equals(getString(R.string.title_Settings))) {
-            mTitle = getString(R.string.title_Settings);
-
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new SettingFragment())
-                    .addToBackStack("4")
-                    .commit();
-            if (null != mToolbar) {
-                mToolbar.setTitle(mTitle);
-            }
-        }
-    }
-
-
-    @Override
     public void onBackPressed() {
         // pop title and fragment stack
-
         Log.d("MainActivity", "stack count is " + getFragmentManager().getBackStackEntryCount());
-        if (mNavigationDrawerFragment.isDrawerOpen()) {
-            mNavigationDrawerFragment.closeDrawer();
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         }
         else if (getFragmentManager().getBackStackEntryCount() <= 1) {
             moveTaskToBack(true);
-            //onStop();
-            // finish();
         }
         else{
             FragmentManager.BackStackEntry backEntry=getFragmentManager().getBackStackEntryAt(getFragmentManager().getBackStackEntryCount()-1);
@@ -275,44 +320,35 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-
-            // search button
-            getMenuInflater().inflate(R.menu.main_activity_actions, menu);
-            MenuItem searchItem = menu.findItem(R.id.action_search);
-            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    Log.d("MainActivity", "Text Submitted");
-                    searchView.setIconified(true);
-                    // pass query into the fragment through a bundle
-                    SearchFragment mSearchFragment = new SearchFragment();
-                    Bundle args = new Bundle();
-                    args.putString(ARG_COURSE, query);
-                    mSearchFragment.setArguments(args);
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.container, mSearchFragment)
-                            .addToBackStack("7")
-                            .commit();
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    return false;
-                }
-            });
-
-            if(mNavigationDrawerFragment.getPositionSelected() == 0) {
-                getMenuInflater().inflate(R.menu.calender_action_overflow, menu);
+        // search button
+        getMenuInflater().inflate(R.menu.main_activity_actions, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d("MainActivity", "Text Submitted");
+                // pass query into the fragment through a bundle
+                SearchFragment mSearchFragment = new SearchFragment();
+                Bundle args = new Bundle();
+                args.putString(ARG_COURSE, query);
+                mSearchFragment.setArguments(args);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, mSearchFragment)
+                        .addToBackStack("7")
+                        .commit();
+                return false;
             }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
-            return true;
+        // if calendar is shown, show calendar action overflow
+        if(mNavigationView.getMenu().getItem(0).isChecked()) {
+            getMenuInflater().inflate(R.menu.calender_action_overflow, menu);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -466,4 +502,84 @@ public class MainActivity extends AppCompatActivity
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    public static class RoundImage extends Drawable {
+        private final Bitmap mBitmap;
+        private final Paint mPaint;
+        private final RectF mRectF;
+        private final int mBitmapWidth;
+        private final int mBitmapHeight;
+
+        public RoundImage(Bitmap bitmap) {
+            mBitmap = bitmap;
+            mRectF = new RectF();
+            mPaint = new Paint();
+            mPaint.setAntiAlias(true);
+            mPaint.setDither(true);
+            final BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            mPaint.setShader(shader);
+
+            mBitmapWidth = mBitmap.getWidth();
+            mBitmapHeight = mBitmap.getHeight();
+        }
+
+        @Override
+        public void draw(Canvas canvas) {
+            canvas.drawOval(mRectF, mPaint);
+        }
+
+        @Override
+        protected void onBoundsChange(Rect bounds) {
+            super.onBoundsChange(bounds);
+            mRectF.set(bounds);
+        }
+
+        @Override
+        public void setAlpha(int alpha) {
+            if (mPaint.getAlpha() != alpha) {
+                mPaint.setAlpha(alpha);
+                invalidateSelf();
+            }
+        }
+
+        @Override
+        public void setColorFilter(ColorFilter cf) {
+            mPaint.setColorFilter(cf);
+        }
+
+        @Override
+        public int getOpacity() {
+            return PixelFormat.TRANSLUCENT;
+        }
+
+        @Override
+        public int getIntrinsicWidth() {
+            return mBitmapWidth;
+        }
+
+        @Override
+        public int getIntrinsicHeight() {
+            return mBitmapHeight;
+        }
+
+        public void setAntiAlias(boolean aa) {
+            mPaint.setAntiAlias(aa);
+            invalidateSelf();
+        }
+
+        @Override
+        public void setFilterBitmap(boolean filter) {
+            mPaint.setFilterBitmap(filter);
+            invalidateSelf();
+        }
+
+        @Override
+        public void setDither(boolean dither) {
+            mPaint.setDither(dither);
+            invalidateSelf();
+        }
+
+        public Bitmap getBitmap() {
+            return mBitmap;
+        }
+    }
 }

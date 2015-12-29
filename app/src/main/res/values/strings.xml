@@ -70,6 +70,8 @@
     <!--Course Info-->
     <string name="prerequisites_title">Prerequisites:</string>
     <string name="antirequisite_title">Antirequisites:</string>
+    <string name="drawer_openDrawer">Open Drawer</string>
+    <string name="drawer_closeDrawer">Close Drawer</string>
 
     <!-- Course Detail Tabs -->
     <string name="course_tab_title1">Schedule</string>

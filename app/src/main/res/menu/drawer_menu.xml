@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_Calender"
+            android:checked="false"
+            android:icon="@drawable/ic_calendar_grey600_24dp"
+            android:title="@string/drawer_Calender" />
+        <item
+            android:id="@+id/drawer_Courses"
+            android:checked="false"
+            android:icon="@drawable/ic_school_grey600_24dp"
+            android:title="@string/drawer_Courses" />
+        <item
+            android:id="@+id/drawer_Course_Select"
+            android:checked="false"
+            android:icon="@drawable/ic_playlist_plus_grey600_24dp"
+            android:title="@string/drawer_Course_Select" />
+        <item
+            android:id="@+id/drawer_Reminder"
+            android:checked="false"
+            android:icon="@drawable/ic_format_list_numbers_grey600_24dp"
+            android:title="@string/drawer_Reminder" />
+    </group>
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_Settings"
+            android:checked="false"
+            android:icon="@drawable/ic_settings_grey600_24dp"
+            android:title="@string/drawer_Settings" />
+    </group>
+</menu>

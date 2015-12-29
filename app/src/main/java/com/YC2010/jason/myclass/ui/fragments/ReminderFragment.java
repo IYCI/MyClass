@@ -51,20 +51,11 @@ public class ReminderFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ItemTouchHelper mItemTouchHelper;
-    private NavigationDrawerFragment mNavigationDrawerFragment;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.fragment_drawer);
-
-
-        //LoginButton loginButton = (LoginButton) getActivity().findViewById(R.id.login_button);
-        //loginButton.registerCallback(callbackManager, null);
 
     }
 
@@ -427,14 +418,7 @@ public class ReminderFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-
-            getActivity().getMenuInflater().inflate(R.menu.reminder_menu, menu);
-
-        }
+        getActivity().getMenuInflater().inflate(R.menu.reminder_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
