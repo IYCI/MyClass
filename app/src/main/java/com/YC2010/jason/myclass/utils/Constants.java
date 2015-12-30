@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class Constants {
     public static String UWAPIROOT = "https://api.uwaterloo.ca/v2/";
-    public static String APIKEY = "93071c27c200c7b41e22f12902dabdef";
+    public static String APIKEY_SERVER = "http://ec2-52-34-91-116.us-west-2.compute.amazonaws.com:8080/api/key";
     public static List<Reminder_item> holiday_2015;
     public static List<Reminder_item> sample_reminder;
 
