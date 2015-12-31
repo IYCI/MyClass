@@ -322,12 +322,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // search button
         getMenuInflater().inflate(R.menu.main_activity_actions, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.d("MainActivity", "Text Submitted");
+                MenuItemCompat.collapseActionView(searchItem);
+
                 // pass query into the fragment through a bundle
                 SearchFragment mSearchFragment = new SearchFragment();
                 Bundle args = new Bundle();
@@ -343,6 +345,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
+            }
+        });
+
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean queryTextFocused) {
+                if (!queryTextFocused) {
+                    MenuItemCompat.collapseActionView(searchItem);
+                }
             }
         });
 

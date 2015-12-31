@@ -12,10 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.YC2010.jason.myclass.ui.adapters.CourseDetailPagerAdapter;
-import com.YC2010.jason.myclass.data.fetchtasks.SearchFetchTask;
-import com.YC2010.jason.myclass.callbacks.AsyncTaskCallbackInterface;
 import com.YC2010.jason.myclass.R;
+import com.YC2010.jason.myclass.callbacks.AsyncTaskCallbackInterface;
+import com.YC2010.jason.myclass.data.fetchtasks.SearchFetchTask;
+import com.YC2010.jason.myclass.ui.adapters.CourseDetailPagerAdapter;
 
 
 /**
@@ -36,8 +36,9 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_search, container, false);
-
+        if (mView == null) {
+            mView = inflater.inflate(R.layout.fragment_search, container, false);
+        }
         return mView;
     }
 
@@ -67,7 +68,6 @@ public class SearchFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         // Remove the shadow between the action bar and the tabs
         ActionBar actionBar = ((AppCompatActivity) mActivity).getSupportActionBar();
         if (actionBar != null) {
