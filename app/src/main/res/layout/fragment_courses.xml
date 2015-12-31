@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="@color/cardview_light_background">
 
-    <!-- A RecyclerView with some commonly used attributes -->
+<!-- A RecyclerView with some commonly used attributes -->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/courses_recycler_view"
         android:scrollbars="vertical"
