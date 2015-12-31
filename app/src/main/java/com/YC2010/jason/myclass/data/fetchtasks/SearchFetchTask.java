@@ -29,27 +29,19 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
     private Activity mActivity;
     private AsyncTaskCallbackInterface mAsyncTaskCallbackInterface;
 
-    public SearchFetchTask(Activity activity, AsyncTaskCallbackInterface asyncTaskCallbackInterface) {
-        this.mActivity = activity;
-        mAsyncTaskCallbackInterface = asyncTaskCallbackInterface;
-    }
-
     private ArrayList<LectureSectionObject> lectures = new ArrayList<>();
     private ArrayList<TutorialObject> tutorials = new ArrayList<>();
     private ArrayList<TestObject> tests = new ArrayList<>();
     private ArrayList<FinalObject> finals = new ArrayList<>();
 
-    ProgressDialog progDailog;
+    public SearchFetchTask(Activity activity, AsyncTaskCallbackInterface asyncTaskCallbackInterface) {
+        this.mActivity = activity;
+        mAsyncTaskCallbackInterface = asyncTaskCallbackInterface;
+    }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progDailog = new ProgressDialog(mActivity);
-        progDailog.setMessage("Loading...");
-        progDailog.setIndeterminate(false);
-        progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progDailog.setCancelable(true);
-        progDailog.show();
     }
 
     @Override
@@ -73,12 +65,12 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             // check valid data return
             if (schedulesObject == null) {
                 Log.d("SearchFetchTask", "WARNING - schedulesObject is NULL");
-                return null;
+                return bundle;
             }
 
-            if (!schedulesObject.getJSONObject("meta").getString("message").equals("Request successful")) {
+            if (!schedulesObject.getJSONObject("meta").getString("status").equals("200")) {
                 Log.d("SearchFetchTask", schedulesObject.toString());
-                return null;
+                return bundle;
             }
 
             bundle.putBoolean("valid_return", true);
@@ -256,8 +248,6 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
 
     @Override
     protected void onPostExecute(final Bundle bundle) {
-        progDailog.dismiss();
-
         mAsyncTaskCallbackInterface.onOperationComplete(bundle);
     }
 
