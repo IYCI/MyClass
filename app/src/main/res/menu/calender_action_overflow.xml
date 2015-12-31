@@ -1,12 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- <item android:id="@+id/search"
-        android:title="search"
-        android:showAsAction="always"
-        android:icon="@drawable/ic_search_white_24dp"
-        android:actionViewClass="android.widget.SearchView" /> -->
 
-    <item
-        android:id="@+id/Login_FB_setting"
-        android:title="@string/login_to_FB" />
+    <!--<item-->
+        <!--android:id="@+id/Login_FB_setting"-->
+        <!--android:title="@string/login_to_FB" />-->
 
 </menu>

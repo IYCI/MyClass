@@ -42,21 +42,21 @@ import com.YC2010.jason.myclass.ui.fragments.ReminderFragment;
 import com.YC2010.jason.myclass.ui.fragments.SearchFragment;
 import com.YC2010.jason.myclass.ui.fragments.SettingFragment;
 import com.YC2010.jason.myclass.ui.fragments.SubjectsFragment;
-import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+//import com.facebook.AccessToken;
+//import com.facebook.AccessTokenTracker;
+//import com.facebook.CallbackManager;
+//import com.facebook.FacebookCallback;
+//import com.facebook.FacebookException;
+//import com.facebook.FacebookSdk;
+//import com.facebook.GraphRequest;
+//import com.facebook.GraphResponse;
+//import com.facebook.HttpMethod;
+//import com.facebook.Profile;
+//import com.facebook.ProfileTracker;
+//import com.facebook.appevents.AppEventsLogger;
+//import com.facebook.login.LoginManager;
+//import com.facebook.login.LoginResult;
+//import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -82,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
     private CharSequence mTitle;
     private CharSequence currentTitle;
-    CallbackManager callbackManager;
-    AccessTokenTracker accessTokenTracker;
-    AccessToken accessToken;
-    ProfileTracker profileTracker;
+//    CallbackManager callbackManager;
+//    AccessTokenTracker accessTokenTracker;
+//    AccessToken accessToken;
+//    ProfileTracker profileTracker;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_COURSE = "COURSE";
@@ -220,30 +220,30 @@ public class MainActivity extends AppCompatActivity {
 
         checkFirstRun();
 
-        /* Facebook stuff starts */
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
-
-        accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(
-                    AccessToken oldAccessToken,
-                    AccessToken currentAccessToken) {
-                // Set the access token using
-                // currentAccessToken when it's loaded or set.
-            }
-        };
-        // If the access token is available already assign it.
-        accessToken = AccessToken.getCurrentAccessToken();
-        profileTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(
-                    Profile oldProfile,
-                    Profile currentProfile) {
-                // App code
-            }
-        };
-        /* Facebook stuff ends */
+//        /* Facebook stuff starts */
+//        FacebookSdk.sdkInitialize(getApplicationContext());
+//        callbackManager = CallbackManager.Factory.create();
+//
+//        accessTokenTracker = new AccessTokenTracker() {
+//            @Override
+//            protected void onCurrentAccessTokenChanged(
+//                    AccessToken oldAccessToken,
+//                    AccessToken currentAccessToken) {
+//                // Set the access token using
+//                // currentAccessToken when it's loaded or set.
+//            }
+//        };
+//        // If the access token is available already assign it.
+//        accessToken = AccessToken.getCurrentAccessToken();
+//        profileTracker = new ProfileTracker() {
+//            @Override
+//            protected void onCurrentProfileChanged(
+//                    Profile oldProfile,
+//                    Profile currentProfile) {
+//                // App code
+//            }
+//        };
+//        /* Facebook stuff ends */
 
     }
 
@@ -260,8 +260,9 @@ public class MainActivity extends AppCompatActivity {
                 .show();
         super.onDestroy();
 
-        accessTokenTracker.stopTracking();
-        profileTracker.stopTracking();
+        // Facebook Related Code
+//        accessTokenTracker.stopTracking();
+//        profileTracker.stopTracking();
 
     }
 
@@ -270,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         // Logs 'install' and 'app activate' App Events.
-        AppEventsLogger.activateApp(this);
+//        AppEventsLogger.activateApp(this);
     }
 
     @Override
@@ -278,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
         // Logs 'app deactivate' App Event.
-        AppEventsLogger.deactivateApp(this);
+//        AppEventsLogger.deactivateApp(this);
     }
 
     @Override
@@ -358,139 +359,139 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.Login_FB_setting){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            builder.setTitle("Log in to Facebook");
-            builder.setView(R.layout.facebook_login_dialog);
-
-            AlertDialog login_dialog = builder.create();
-            login_dialog.show();
-
-            LoginButton loginButton = (LoginButton) login_dialog.findViewById(R.id.login_button);
-            List<String> permissions = new ArrayList<String>();
-            permissions.add("user_friends");
-
-            LoginManager.getInstance().logInWithReadPermissions(
-                    this,
-                    Arrays.asList("user_events"));
-
-            loginButton.setReadPermissions(permissions);
-            // If using in a fragment
-            //loginButton.setFragment(new NativeFragmentWrapper(this));
-            // Other app specific specialization
-
-            // Callback registration
-            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-                    Log.d("MainActivity", "success");
-                    // App code
-                    Profile profile = Profile.getCurrentProfile();
-                    // change username
-                    Log.d("MainActivity", "got id is " + profile.getId() + " " + profile.getFirstName() +
-                            " " + profile.getLastName());
-
-                    String userID = profile.getId();
-
-                    new GraphRequest(
-                            AccessToken.getCurrentAccessToken(),
-                            "/" + userID + "/events",
-                            null,
-                            HttpMethod.GET,
-                            new GraphRequest.Callback() {
-                                public void onCompleted(GraphResponse response) {
-                            /* handle the result */
-                                    try {
-                                        Log.d("MainActivity", response.toString());
-                                        JSONArray eventsArray = response.getJSONObject().getJSONArray("data");
-                                        final ReminderDBHandler reminder_db = new ReminderDBHandler(getApplicationContext());
-                                        reminder_db.removeAll("fb");
-                                        Bundle parameters = new Bundle();
-                                        parameters.putString("fields", "id,name,start_time,place");
-                                        for (int i = 0; i < eventsArray.length(); i++) {
-                                            JSONObject mEvent = eventsArray.getJSONObject(i);
-                                            String eid = mEvent.getString("id");
-                                    /* make the API call */
-                                            GraphRequest request = new GraphRequest(
-                                                    AccessToken.getCurrentAccessToken(),
-                                                    "/" + eid,
-                                                    null,
-                                                    HttpMethod.GET,
-                                                    new GraphRequest.Callback() {
-                                                        public void onCompleted(GraphResponse response) {
-                                                    /* handle the result */
-                                                            try {
-                                                                //Log.d("MainActivity", response.toString());
-                                                                JSONObject event = response.getJSONObject();
-                                                                String loc = event.getJSONObject("place").getString("name");
-                                                                //String loc = "";
-                                                                String title = event.getString("name");
-                                                                String start_time = event.getString("start_time");
-                                                                DateFormat f1 = new SimpleDateFormat("yyyy-MM-dd'T'h:mm:ssZ", Locale.CANADA);
-                                                                Date d = f1.parse(start_time);
-                                                                final Reminder_item new_fb_events = new Reminder_item(UUID.randomUUID().toString(), title, loc, d.getTime(), "fb");
-
-                                                                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                                                Boolean exam_warning = sharedPref.getBoolean("pref_key_exam_warning", true);
-
-                                                                if (exam_warning && reminder_db.closoToExam(d)){
-                                                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                                                    builder.setMessage(title + " has exams followed by within a week, do you still want to create this event?")
-                                                                            .setTitle("Event Warning");
-                                                                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                                                                        @Override
-                                                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                                                            reminder_db.addReminder(new_fb_events);
-
-                                                                        }
-                                                                    });
-                                                                    builder.setNegativeButton("NO", null);
-                                                                    AlertDialog dialog = builder.create();
-                                                                    dialog.show();
-
-
-                                                                }
-                                                                else
-                                                                    reminder_db.addReminder(new_fb_events);
-
-                                                            } catch (org.json.JSONException e) {
-                                                                e.printStackTrace();
-                                                            } catch (java.text.ParseException p) {
-                                                                p.printStackTrace();
-                                                            }
-                                                        }
-                                                    }
-                                            );
-                                            request.setParameters(parameters);
-                                            request.executeAsync();
-                                        }
-                                        reminder_db.close();
-                                    } catch (org.json.JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                    ).executeAsync();
-                }
-
-                @Override
-                public void onCancel() {
-                    Log.d("MainActivity", "cancel");
-                    // App code
-                }
-
-                @Override
-                public void onError(FacebookException exception) {
-                    Log.d("MainActivity", "error");
-                    // App code
-                }
-            });
-
-            login_dialog.dismiss();
-        }
+//        int id = item.getItemId();
+//
+//        if (id == R.id.Login_FB_setting){
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//
+//            builder.setTitle("Log in to Facebook");
+//            builder.setView(R.layout.facebook_login_dialog);
+//
+//            AlertDialog login_dialog = builder.create();
+//            login_dialog.show();
+//
+//            LoginButton loginButton = (LoginButton) login_dialog.findViewById(R.id.login_button);
+//            List<String> permissions = new ArrayList<String>();
+//            permissions.add("user_friends");
+//
+//            LoginManager.getInstance().logInWithReadPermissions(
+//                    this,
+//                    Arrays.asList("user_events"));
+//
+//            loginButton.setReadPermissions(permissions);
+//            // If using in a fragment
+//            //loginButton.setFragment(new NativeFragmentWrapper(this));
+//            // Other app specific specialization
+//
+//            // Callback registration
+//            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+//                @Override
+//                public void onSuccess(LoginResult loginResult) {
+//                    Log.d("MainActivity", "success");
+//                    // App code
+//                    Profile profile = Profile.getCurrentProfile();
+//                    // change username
+//                    Log.d("MainActivity", "got id is " + profile.getId() + " " + profile.getFirstName() +
+//                            " " + profile.getLastName());
+//
+//                    String userID = profile.getId();
+//
+//                    new GraphRequest(
+//                            AccessToken.getCurrentAccessToken(),
+//                            "/" + userID + "/events",
+//                            null,
+//                            HttpMethod.GET,
+//                            new GraphRequest.Callback() {
+//                                public void onCompleted(GraphResponse response) {
+//                            /* handle the result */
+//                                    try {
+//                                        Log.d("MainActivity", response.toString());
+//                                        JSONArray eventsArray = response.getJSONObject().getJSONArray("data");
+//                                        final ReminderDBHandler reminder_db = new ReminderDBHandler(getApplicationContext());
+//                                        reminder_db.removeAll("fb");
+//                                        Bundle parameters = new Bundle();
+//                                        parameters.putString("fields", "id,name,start_time,place");
+//                                        for (int i = 0; i < eventsArray.length(); i++) {
+//                                            JSONObject mEvent = eventsArray.getJSONObject(i);
+//                                            String eid = mEvent.getString("id");
+//                                    /* make the API call */
+//                                            GraphRequest request = new GraphRequest(
+//                                                    AccessToken.getCurrentAccessToken(),
+//                                                    "/" + eid,
+//                                                    null,
+//                                                    HttpMethod.GET,
+//                                                    new GraphRequest.Callback() {
+//                                                        public void onCompleted(GraphResponse response) {
+//                                                    /* handle the result */
+//                                                            try {
+//                                                                //Log.d("MainActivity", response.toString());
+//                                                                JSONObject event = response.getJSONObject();
+//                                                                String loc = event.getJSONObject("place").getString("name");
+//                                                                //String loc = "";
+//                                                                String title = event.getString("name");
+//                                                                String start_time = event.getString("start_time");
+//                                                                DateFormat f1 = new SimpleDateFormat("yyyy-MM-dd'T'h:mm:ssZ", Locale.CANADA);
+//                                                                Date d = f1.parse(start_time);
+//                                                                final Reminder_item new_fb_events = new Reminder_item(UUID.randomUUID().toString(), title, loc, d.getTime(), "fb");
+//
+//                                                                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//                                                                Boolean exam_warning = sharedPref.getBoolean("pref_key_exam_warning", true);
+//
+//                                                                if (exam_warning && reminder_db.closoToExam(d)){
+//                                                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                                                                    builder.setMessage(title + " has exams followed by within a week, do you still want to create this event?")
+//                                                                            .setTitle("Event Warning");
+//                                                                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+//                                                                        @Override
+//                                                                        public void onClick(DialogInterface dialogInterface, int i) {
+//                                                                            reminder_db.addReminder(new_fb_events);
+//
+//                                                                        }
+//                                                                    });
+//                                                                    builder.setNegativeButton("NO", null);
+//                                                                    AlertDialog dialog = builder.create();
+//                                                                    dialog.show();
+//
+//
+//                                                                }
+//                                                                else
+//                                                                    reminder_db.addReminder(new_fb_events);
+//
+//                                                            } catch (org.json.JSONException e) {
+//                                                                e.printStackTrace();
+//                                                            } catch (java.text.ParseException p) {
+//                                                                p.printStackTrace();
+//                                                            }
+//                                                        }
+//                                                    }
+//                                            );
+//                                            request.setParameters(parameters);
+//                                            request.executeAsync();
+//                                        }
+//                                        reminder_db.close();
+//                                    } catch (org.json.JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            }
+//                    ).executeAsync();
+//                }
+//
+//                @Override
+//                public void onCancel() {
+//                    Log.d("MainActivity", "cancel");
+//                    // App code
+//                }
+//
+//                @Override
+//                public void onError(FacebookException exception) {
+//                    Log.d("MainActivity", "error");
+//                    // App code
+//                }
+//            });
+//
+//            login_dialog.dismiss();
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -499,7 +500,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("MainActivity", "got result");
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+//        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     public static class RoundImage extends Drawable {
