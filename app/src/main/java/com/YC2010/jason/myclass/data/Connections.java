@@ -155,8 +155,6 @@ public class Connections {
 
             int responseCode = connection.getResponseCode();
 
-            if (null == connection.getInputStream()) return null;
-
             if (responseCode != 200) {
                 throw new RuntimeException("Failed: HTTP error code: " + responseCode);
             }

@@ -77,5 +77,8 @@
     <string name="course_tab_title1">Schedule</string>
     <string name="course_tab_title2">Exam</string>
     <string name="course_tab_title3">Info</string>
+    <string name="error_message_network">There is no network connection right now</string>
+    <string name="error_message_course">Course is not available this term or it does not exist</string>
+    <string name="error_retry_button">try again</string>
 
 </resources>

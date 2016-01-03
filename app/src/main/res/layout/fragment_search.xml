@@ -1,26 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/error_view_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/error_view_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_cloud_off_black_36dp" />
+
+            <TextView
+                android:id="@+id/error_view_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@id/error_view_icon"
+                android:text="ttttt"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/error_view_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:text="@string/error_retry_button"
+            android:textColor="@color/myPrimaryColor" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/search_detail_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <android.support.design.widget.TabLayout
             android:id="@+id/sliding_tabs"
+            style="@style/DefaultTabLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/DefaultTabLayoutStyle"
             android:background="?attr/colorPrimary"
-            app:tabIndicatorColor="@android:color/white"
             app:tabGravity="fill"
-            app:tabMode="fixed"
-            android:visibility="gone" />
+            app:tabIndicatorColor="@android:color/white"
+            app:tabMode="fixed" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"

@@ -2,6 +2,7 @@ package com.YC2010.jason.myclass.ui.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -10,12 +11,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.YC2010.jason.myclass.R;
-import com.YC2010.jason.myclass.callbacks.AsyncTaskCallbackInterface;
-import com.YC2010.jason.myclass.data.fetchtasks.SearchFetchTask;
+import com.YC2010.jason.myclass.data.Connections;
 import com.YC2010.jason.myclass.ui.adapters.CourseDetailPagerAdapter;
+import com.YC2010.jason.myclass.data.fetchtasks.SearchFetchTask;
+import com.YC2010.jason.myclass.callbacks.AsyncTaskCallbackInterface;
+import com.YC2010.jason.myclass.R;
 
 
 /**
@@ -26,6 +32,7 @@ public class SearchFragment extends Fragment {
     private Activity mActivity;
     private View mView;
     private float defaultElevation;
+    private ProgressDialog mProgDialog;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_COURSE = "COURSE";
@@ -38,7 +45,9 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_search, container, false);
+            generateView();
         }
+
         return mView;
     }
 
@@ -49,20 +58,9 @@ public class SearchFragment extends Fragment {
         mCourse = course;
         mActivity = getActivity();
 
-
         if (course == null) {
             Toast.makeText(mActivity, "course string not found", Toast.LENGTH_SHORT).show();
         }
-
-        SearchFetchTask searchFetchTask = new SearchFetchTask(mActivity, new AsyncTaskCallbackInterface() {
-            @Override
-            public void onOperationComplete(Bundle bundle) {
-                if (bundle != null) {
-                    setupTabs(bundle);
-                }
-            }
-        });
-        searchFetchTask.execute(mCourse);
     }
 
     @Override
@@ -95,4 +93,73 @@ public class SearchFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setVisibility(View.VISIBLE);
     }
+
+    private void showErrorMessage(ErrorState errorState) {
+        final LinearLayout errorView = (LinearLayout) mView.findViewById(R.id.error_view_layout);
+        TextView errorMessage = (TextView) mView.findViewById(R.id.error_view_message);
+        ImageView errorIcon = (ImageView) mView.findViewById(R.id.error_view_icon);
+        Button errorButton = (Button) mView.findViewById(R.id.error_view_button);
+
+        switch (errorState) {
+            case Network:
+                errorMessage.setText(mActivity.getString(R.string.error_message_network));
+                errorIcon.setImageResource(R.drawable.ic_cloud_off_black_36dp);
+                errorButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        errorView.setVisibility(View.GONE);
+                        generateView();
+                    }
+                });
+                break;
+            case CourseNotFound:
+                errorMessage.setText(mActivity.getString(R.string.error_message_course));
+                errorIcon.setImageResource(R.drawable.ic_report_black_36dp);
+                errorButton.setVisibility(View.GONE);
+                break;
+        }
+
+        errorView.setVisibility(View.VISIBLE);
+    }
+
+    private void generateView() {
+        showProgressDialog();
+
+        if (!Connections.isNetworkAvailable(mActivity)) {
+            mProgDialog.dismiss();
+            showErrorMessage(ErrorState.Network);
+        } else {
+            SearchFetchTask searchFetchTask = new SearchFetchTask(mActivity, new AsyncTaskCallbackInterface() {
+                @Override
+                public void onOperationComplete(Bundle bundle) {
+                    if (bundle != null && bundle.getBoolean("valid_return")) {
+                        setupTabs(bundle);
+                        LinearLayout searchLayout = (LinearLayout) mView.findViewById(R.id.search_detail_layout);
+                        searchLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        showErrorMessage(ErrorState.CourseNotFound);
+                    }
+                    mProgDialog.dismiss();
+                }
+            });
+            searchFetchTask.execute(mCourse);
+        }
+    }
+
+    private void showProgressDialog() {
+        if (mProgDialog == null) {
+            mProgDialog = new ProgressDialog(mActivity);
+            mProgDialog.setMessage("Loading...");
+            mProgDialog.setCanceledOnTouchOutside(false);
+            mProgDialog.setIndeterminate(false);
+            mProgDialog.setCancelable(false);
+            mProgDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        }
+
+        mProgDialog.show();
+    }
+}
+
+enum ErrorState {
+    Network, CourseNotFound
 }
