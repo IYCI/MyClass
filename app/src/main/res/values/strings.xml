@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">MyClass</string>
+    <string name="credit_title">Credit</string>
+    <string name="credit_content">Developed by:\n\nJason Feng\nRen Tao (Danny) Lin</string>
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
 
@@ -62,7 +64,7 @@
 
     <string name="title_about">About</string>
         <string name="title_Version">Version</string>
-        <string name="version_name">1.0.1 beta1</string>
+        <string name="version_name">1.1.0</string>
 
     <!-- Facebook -->
     <string name="facebook_app_id">400606413479391</string>

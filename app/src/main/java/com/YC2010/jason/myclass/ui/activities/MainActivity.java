@@ -118,16 +118,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 Log.d("MainActivity", "onNavigationItemSelected");
+                mDrawerLayout.closeDrawers();
+
                 //Checking if the item is in checked state or not, if not make it in checked state
                 if (menuItem.isChecked()){
-                    menuItem.setChecked(false);
-                }
-                else{
-                    menuItem.setChecked(true);
+                    //Closing drawer_menu on item click
+                    return true;
                 }
 
-                //Closing drawer_menu on item click
-                mDrawerLayout.closeDrawers();
+                menuItem.setChecked(true);
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
