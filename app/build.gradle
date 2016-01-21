@@ -6,7 +6,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion '21.1.2'
     defaultConfig {
-        applicationId 'com.YC2010.jason.myclass'
+        applicationId 'com.YC2010.MyClass'
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1010099
