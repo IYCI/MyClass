@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.YC2010.MyClass.utils.Constants;
+import com.YC2010.MyClass.utils.Tools;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,7 +43,7 @@ public class Connections {
             }
         }
 
-        return Constants.UWAPIROOT + "courses/" + subject + "/" + cataNum + ".json?key=" + Constants.APIKEY;
+        return Constants.UWAPIROOT + "courses/" + subject + "/" + cataNum + ".json" + URLEnding();
     }
 
     public static boolean isNetworkAvailable(Context context) {
@@ -72,12 +73,12 @@ public class Connections {
         }
 
 
-        return Constants.UWAPIROOT + "courses/" + subject + "/" + cataNum + "/schedule.json?key=" + Constants.APIKEY;
+        return Constants.UWAPIROOT + "courses/" + subject + "/" + cataNum + "/schedule.json" + URLEnding();
     }
 
     public static String getCurrentTerm() throws Exception {
         String term;
-        String termList_url = Constants.UWAPIROOT + "terms/list.json?key=" + Constants.APIKEY;
+        String termList_url = Constants.UWAPIROOT + "terms/list.json" + URLEnding();
         JSONObject termList = getJSON_from_url(termList_url);
         try {
             term = termList.getJSONObject("data").getString("current_term");
@@ -96,7 +97,7 @@ public class Connections {
     /* index 2: next term     */
     public static ArrayList getTerms() {
         ArrayList<String> term_list = new ArrayList<>();
-        String termList_url = Constants.UWAPIROOT + "terms/list.json?key=" + Constants.APIKEY;
+        String termList_url = Constants.UWAPIROOT + "terms/list.json" + URLEnding();
         try {
             JSONObject termData = getJSON_from_url(termList_url).getJSONObject("data");
             term_list.add(0, termData.getString("previous_term"));
@@ -111,7 +112,7 @@ public class Connections {
     }
 
     public static String getTermName(String term){
-        String termList_url = Constants.UWAPIROOT + "terms/list.json?key=" + Constants.APIKEY;
+        String termList_url = Constants.UWAPIROOT + "terms/list.json" + URLEnding();
         try {
             JSONObject terms_listing = getJSON_from_url(termList_url).getJSONObject("data").getJSONObject("listings");
             Iterator i = terms_listing.keys();
@@ -134,15 +135,15 @@ public class Connections {
     }
 
     public static String getExamsURL(String term) {
-        return Constants.UWAPIROOT + "terms/" + term + "/examschedule" + ".json?key=" + Constants.APIKEY;
+        return Constants.UWAPIROOT + "terms/" + term + "/examschedule" + ".json" + URLEnding();
     }
 
     public static String getSubjectsOfferingURL() {
-        return Constants.UWAPIROOT + "codes/subjects" + ".json?key=" + Constants.APIKEY;
+        return Constants.UWAPIROOT + "codes/subjects" + ".json" + URLEnding();
     }
 
     public static String getCatalogNumURL(String subject) {
-        return Constants.UWAPIROOT + "courses/" + subject + ".json?key=" + Constants.APIKEY;
+        return Constants.UWAPIROOT + "courses/" + subject + ".json" + URLEnding();
     }
 
     public static JSONObject getJSON_from_url(String url) throws Exception {
@@ -178,5 +179,9 @@ public class Connections {
             return null;
         }
         return jsonObject;
+    }
+
+    public static String URLEnding() {
+        return "?key=" + Tools.YOUNEEDTHIS;
     }
 }
