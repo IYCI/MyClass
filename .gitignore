@@ -29,3 +29,4 @@ proguard/
 .idea/workspace.xml - remove # and delete .idea if it better suit your needs.
 .gradle
 build/
+app/src/main/java/com/YC2010/MyClass/utils/Tools.java
