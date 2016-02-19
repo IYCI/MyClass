@@ -1,0 +1,9 @@
+// Note:
+// *** indicates changes compare to previous version
+
+Version 3:
+KEY_ID   			STRING PRIMARY KEY
+KEY_TITLE   		TEXT
+KEY_LOCATION		TEXT
+KEY_UNIX_TIME		TEXT
+KEY_TYPE			TEXT

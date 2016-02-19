@@ -189,7 +189,7 @@ public class SearchScheduleFragment extends Fragment {
                         course.setTimeAPM(selectedSection.getTime());
                         course.setProf(selectedSection.getProfessor());
 
-                        db.addCourse(course);
+                        db.addCourse(course, mActivity.getSharedPreferences("TERMS", mActivity.MODE_PRIVATE).getInt("TERM_NUM", 0));
                         mTakenCourseNumber = selectedSection.getNumber();
 
                         // show snackBar

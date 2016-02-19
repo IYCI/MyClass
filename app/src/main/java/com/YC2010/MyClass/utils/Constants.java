@@ -2,12 +2,14 @@ package com.YC2010.MyClass.utils;
 
 import com.YC2010.MyClass.model.Reminder_item;
 
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * Created by Danny on 2015/6/27.
  */
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class Constants {
     public static String UWAPIROOT = "https://api.uwaterloo.ca/v2/";
@@ -18,6 +20,18 @@ public class Constants {
     public static String testObjectListKey = "TST_OBJECTS";
     public static String tutorialObjectListKey = "TUT_OBJECTS";
     public static String finalObjectListKey = "FINAL_OBJECTS";
+
+    // default term value
+    public static Integer defaultCurTermNum = 1161;
+    public static String defaultCurTermName = "2016 Winter (Current)";
+    public static Integer defaultNextTermNum = 1165;
+    public static String defaultNextTermName = "2016 Spring (Next)";
+
+    // temporarily hardcoded
+    // Note: month off by one because of unix time standard
+    public static GregorianCalendar nextTermStartDate = new GregorianCalendar(2016, 4, 2);
+
+
 
     public static List<Reminder_item> get_sample_reminder(){
         sample_reminder = new ArrayList<>();

@@ -17,8 +17,10 @@ import java.util.List;
  * Created by Jason on 2015-06-02.
  */
 public class CoursesDBHandler extends SQLiteOpenHelper {
+    private Context mContext;
+
     // DB Version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
 
     // DB Name
     private static final String DATABASE_NAME = "CoursesManager";
@@ -40,9 +42,11 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
     private static final String KEY_LOC_TUT = "tutLoc";         //      9
     private static final String KEY_SEC_TUT = "tutSec";         //      10
     private static final String KEY_ONLINE  = "isOnline";       //      11
+    private static final String KEY_TAKING_TERM  = "takingTerm";//      12
 
     public CoursesDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = context;
     }
 
     @Override
@@ -55,18 +59,26 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
                 + KEY_PROF + " TEXT," + KEY_NAME_TUT + " TEXT,"
                 + KEY_NUM_TUT + " TEXT," + KEY_TIME_TUT + " TEXT,"
                 + KEY_LOC_TUT + " TEXT," + KEY_SEC_TUT + " TEXT,"
-                + KEY_ONLINE + " INTEGER"+ ")";
+                + KEY_ONLINE + " INTEGER," + KEY_TAKING_TERM +  " INTEGER" + ")";
         db.execSQL(CREATE_TABLE);
     }
 
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_COURSES);
-
-        // Create tables again
-        onCreate(db);
+        Log.d("CoursesDBHandler", "onUpgrade");
+        switch(oldVersion) {
+            case 4:
+                try {
+                    Log.d("CoursesDBHandler", "onUpgrade case 4");
+                    db.execSQL("ALTER TABLE " + TABLE_COURSES + " ADD column " + KEY_TAKING_TERM + " INTEGER NOT NULL DEFAULT(" +
+                            mContext.getSharedPreferences("TERMS", mContext.MODE_PRIVATE).getInt("CURRENT_TERM", 0) + ")");
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
     }
 
     /**
@@ -90,6 +102,31 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
         values.put(KEY_TIME_TUT, mCourse.getTutTime());
         values.put(KEY_LOC_TUT, mCourse.getTutLoc());
         values.put(KEY_ONLINE, mCourse.isOnline());
+        values.put(KEY_TAKING_TERM, 0);
+
+        // Inserting Row
+        db.insert(TABLE_COURSES, null, values);
+        db.close(); // Closing database connection
+    }
+
+    // add new course with taking term specify
+    public void addCourse(CourseInfo mCourse, int term) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NUM, mCourse.getCourseNum());
+        values.put(KEY_NAME, mCourse.getCourseName());
+        values.put(KEY_SECTION, mCourse.getCourseSec());
+        values.put(KEY_TIME, mCourse.getCourseTime());
+        values.put(KEY_LOC, mCourse.getCourseLoc());
+        values.put(KEY_PROF, mCourse.getCourseProf());
+        values.put(KEY_NAME_TUT, mCourse.getTutName());
+        values.put(KEY_NUM_TUT, mCourse.getTutNum());
+        values.put(KEY_SEC_TUT, mCourse.getTutSec());
+        values.put(KEY_TIME_TUT, mCourse.getTutTime());
+        values.put(KEY_LOC_TUT, mCourse.getTutLoc());
+        values.put(KEY_ONLINE, mCourse.isOnline());
+        values.put(KEY_TAKING_TERM, term);
 
         // Inserting Row
         db.insert(TABLE_COURSES, null, values);
@@ -143,6 +180,41 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
 
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_COURSES;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                CourseInfo course = new CourseInfo(cursor.getString(1));
+                course.setNum(cursor.getString(0));
+                course.setSec(cursor.getString(2));
+                course.setTime(cursor.getString(3));
+                course.setLoc(cursor.getString(4));
+                course.setProf(cursor.getString(5));
+                course.setTutname();
+                course.setTutnum(cursor.getString(7));
+                course.setTutTime(cursor.getString(8));
+                course.setTutLoc(cursor.getString(9));
+                course.setTutsec(cursor.getString(10));
+                course.setIsOnline(cursor.getInt(11) > 0);
+
+                // Adding course to list
+                CoursesList.add(course);
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return CoursesList;
+    }
+
+    // Get All Courses by term
+    public List<CourseInfo> getAllCourses(int term) {
+        List<CourseInfo> CoursesList = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_COURSES + " WHERE " + KEY_TAKING_TERM + " = " + term;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

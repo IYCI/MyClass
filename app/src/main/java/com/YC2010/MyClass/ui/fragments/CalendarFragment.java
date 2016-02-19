@@ -13,10 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.YC2010.MyClass.R;
+import com.YC2010.MyClass.data.CoursesDBHandler;
+import com.YC2010.MyClass.model.CourseInfo;
+import com.YC2010.MyClass.utils.Constants;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
-import com.YC2010.MyClass.model.CourseInfo;
-import com.YC2010.MyClass.data.CoursesDBHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +67,12 @@ public class CalendarFragment extends Fragment implements WeekView.MonthChangeLi
 
         // Go to correct position in the page
         mWeekView.goToHour(8);
+
+        // Go to next Term's date if select next term
+        if (getActivity().getSharedPreferences("TERMS", getActivity().MODE_PRIVATE).getInt("CURRENT_TERM", 0) !=
+                getActivity().getSharedPreferences("TERMS", getActivity().MODE_PRIVATE).getInt("TERM_NUM", -1)) {
+            mWeekView.goToDate(Constants.nextTermStartDate);
+        }
 
         return view;
     }
@@ -172,7 +179,7 @@ public class CalendarFragment extends Fragment implements WeekView.MonthChangeLi
         List<WeekViewEvent> events = new ArrayList<>();
 
         CoursesDBHandler db = new CoursesDBHandler(getActivity());
-        List<CourseInfo> myDataset = db.getAllCourses();
+        List<CourseInfo> myDataset = db.getAllCourses(getActivity().getSharedPreferences("TERMS", getActivity().MODE_PRIVATE).getInt("TERM_NUM", 0));
         db.close();
 
         int eventCount = 1;

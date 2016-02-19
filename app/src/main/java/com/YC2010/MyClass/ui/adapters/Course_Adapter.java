@@ -100,7 +100,7 @@ public class Course_Adapter extends RecyclerView.Adapter<Course_Adapter.ViewHold
     public void updateView() {
         Log.d("Reminder adapter ", "updating view");
         CoursesDBHandler db = new CoursesDBHandler(mContext);
-        mDataset = db.getAllCourses();
+        mDataset = db.getAllCourses(mContext.getSharedPreferences("TERMS", mContext.MODE_PRIVATE).getInt("TERM_NUM", 0));
         notifyDataSetChanged();
     }
 

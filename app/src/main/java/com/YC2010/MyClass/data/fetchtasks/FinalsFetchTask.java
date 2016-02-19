@@ -6,9 +6,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.YC2010.MyClass.data.ReminderDBHandler;
-import com.YC2010.MyClass.data.Connections;
 import com.YC2010.MyClass.callbacks.AsyncTaskCallbackInterface;
+import com.YC2010.MyClass.data.Connections;
+import com.YC2010.MyClass.data.ReminderDBHandler;
 import com.YC2010.MyClass.model.Reminder_item;
 
 import org.json.JSONArray;
@@ -59,20 +59,21 @@ public class FinalsFetchTask extends AsyncTask<List<String>, Void, Bundle> {
             bundle.putBoolean("valid_return", false);
             // get schedule JSONBObject
             // TODO: what if no course exist???
-            String schedule_url = Connections.getScheduleURL(course_names.get(0));
-            JSONObject schedulesObject = Connections.getJSON_from_url(schedule_url);
+
+            //ArrayList<Integer> termNumList = Connections.getTerms().get
+            int current_term = Connections.getTerms().getIntegerArrayList("KEY_TERM_NUM").get(1);
+            // get exam JSONBObject
+            String exam_url = Connections.getExamsURL(current_term);
+            JSONObject examObject = Connections.getJSON_from_url(exam_url);
 
             // check valid data return
-            if(!schedulesObject.getJSONObject("meta").getString("message").equals("Request successful")) {
-                Log.d("FinalsFetchTask",schedulesObject.toString());
+            if (!examObject.getJSONObject("meta").getString("message").equals("Request successful")) {
+                Log.d("FinalsFetchTask",examObject.toString());
                 return bundle;
             }
             bundle.putBoolean("valid_return", true);
 
-            String current_term = (String) Connections.getTerms().get(1);
-            // get exam JSONBObject
-            String exam_url = Connections.getExamsURL(current_term);
-            JSONArray examData = Connections.getJSON_from_url(exam_url).getJSONArray("data");
+            JSONArray examData = examObject.getJSONArray("data");
 
             // get final info from courses
             ReminderDBHandler reminder_db = new ReminderDBHandler(mActivity);

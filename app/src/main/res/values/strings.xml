@@ -64,7 +64,7 @@
 
     <string name="title_about">About</string>
         <string name="title_Version">Version</string>
-        <string name="version_name">1.1.0</string>
+        <string name="version_name">1.2.0 develop</string>
 
     <!-- Facebook -->
     <string name="facebook_app_id">400606413479391</string>
@@ -80,7 +80,7 @@
     <string name="course_tab_title2">Exam</string>
     <string name="course_tab_title3">Info</string>
     <string name="error_message_network">There is no network connection right now</string>
-    <string name="error_message_course">Course is not available this term or it does not exist</string>
+    <string name="error_message_course">Course is not available at selected term or it does not exist</string>
     <string name="error_retry_button">try again</string>
 
 </resources>
