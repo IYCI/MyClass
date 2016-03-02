@@ -21,7 +21,6 @@ tools:context=".MainActivity">
         android:layout_height="match_parent">
 
     </FrameLayout>
-
 </LinearLayout>
 
 <android.support.design.widget.NavigationView
@@ -33,3 +32,5 @@ tools:context=".MainActivity">
     app:menu="@menu/drawer_menu"
     />
 </android.support.v4.widget.DrawerLayout>
+
+

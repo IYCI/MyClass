@@ -14,6 +14,8 @@
 
         <item name="android:windowBackground">@color/myWindowBackground</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="searchViewStyle">@style/AppTheme.SearchView</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <style name="CodeFont" parent="@android:style/TextAppearance.Medium">
@@ -28,6 +30,7 @@
         <item name="colorControlNormal">#c5c5c5</item>
         <item name="colorControlActivated">@color/myPrimaryColor</item>
         <item name="colorControlHighlight">@color/myPrimaryColor</item>
+        <item name="searchViewStyle">@style/AppTheme.SearchView</item>
     </style>
 
 
@@ -41,11 +44,17 @@
         <item name="android:elevation">@dimen/toolbar_elevation</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="searchViewStyle">@style/AppTheme.SearchView</item>
     </style>
 
     <style name="DefaultTabLayoutStyle" parent="">
         <item name="elevation">@dimen/toolbar_elevation</item>
         <item name="android:elevation">@dimen/toolbar_elevation</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
+    <style name="AppTheme.SearchView" parent="@style/Widget.AppCompat.SearchView">
+        <!-- Layout for query suggestion rows -->
+        <item name="suggestionRowLayout">@layout/hint_row</item>
     </style>
 </resources>

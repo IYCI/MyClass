@@ -145,6 +145,10 @@ public class Connections {
         return Constants.UWAPIROOT + "courses/" + subject + ".json?key=" + Constants.APIKEY;
     }
 
+    public static String getCoursesURL(String term) {
+        return Constants.UWAPIROOT + "terms/" + term + "/courses" + ".json?key=" + Constants.APIKEY;
+    }
+
     public static JSONObject getJSON_from_url(String url) throws Exception {
         URL obj = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) obj.openConnection();

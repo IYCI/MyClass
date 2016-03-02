@@ -1,8 +1,12 @@
 package com.YC2010.MyClass.ui.activities;
 
 import android.app.FragmentManager;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.AbstractCursor;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -15,19 +19,24 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+
 import android.widget.Toast;
 
 import com.YC2010.MyClass.R;
@@ -52,7 +61,11 @@ import com.YC2010.MyClass.ui.fragments.SubjectsFragment;
 //import com.facebook.login.LoginManager;
 //import com.facebook.login.LoginResult;
 //import com.facebook.login.widget.LoginButton;
+import com.YC2010.MyClass.utils.SampleRecentSuggestionsProvider;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -152,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "undefine drawer item selected, please report to the developer", Toast.LENGTH_LONG).show();
                         break;
                 }
-                
+
                 if (mToolbar != null) {
                     mToolbar.setTitle(mTitle);
                 }
@@ -304,10 +317,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // search button
+        Log.d("MainActivity", "Text Submitted");
         getMenuInflater().inflate(R.menu.main_activity_actions, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
+
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        MenuItemCompat.collapseActionView(searchItem);
+        /*searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.d("MainActivity", "Text Submitted");
@@ -317,6 +339,7 @@ public class MainActivity extends AppCompatActivity {
                 SearchFragment mSearchFragment = new SearchFragment();
                 Bundle args = new Bundle();
                 args.putString(ARG_COURSE, query);
+
                 mSearchFragment.setArguments(args);
                 getFragmentManager().beginTransaction()
                         .replace(R.id.container, mSearchFragment)
@@ -338,13 +361,13 @@ public class MainActivity extends AppCompatActivity {
                     MenuItemCompat.collapseActionView(searchItem);
                 }
             }
-        });
+        });*/
 
         // if calendar is shown, show calendar action overflow
         if(mNavigationView.getMenu().getItem(0).isChecked()) {
             getMenuInflater().inflate(R.menu.calender_action_overflow, menu);
         }
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override

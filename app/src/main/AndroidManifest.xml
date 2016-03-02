@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.YC2010.MyClass" >
+    package="com.YC2010.MyClass">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -10,25 +10,49 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data android:name="android.app.default_searchable"
+            android:value=".ui.activities.SearchableActivity" />
+
         <activity
-            android:name="com.YC2010.MyClass.ui.activities.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+
         </activity>
-        <!--<activity android:name="com.facebook.FacebookActivity"-->
-            <!--android:configChanges=-->
-                <!--"keyboard|keyboardHidden|screenLayout|screenSize|orientation"-->
-            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->
-            <!--android:label="@string/app_name" />-->
 
+        <!-- <activity android:name="com.facebook.FacebookActivity" -->
+        <!-- android:configChanges= -->
+        <!-- "keyboard|keyboardHidden|screenLayout|screenSize|orientation" -->
+        <!-- android:theme="@android:style/Theme.Translucent.NoTitleBar" -->
+        <!-- android:label="@string/app_name" /> -->
+        <provider
+            android:name=".utils.SampleRecentSuggestionsProvider"
+            android:authorities="com.YC2010.MyClass.utils.SampleRecentSuggestionsProvider"
+            android:enabled="true"></provider>
+
+        <activity
+            android:name=".ui.activities.SearchableActivity"
+            android:label="@string/title_activity_searchable"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
     </application>
-
 
 </manifest>

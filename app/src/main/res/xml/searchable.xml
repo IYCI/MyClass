@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
     android:label="@string/title_MyClass"
-    android:hint="@string/Search_hint" >
+    android:hint="@string/Search_hint"
+    android:searchSuggestAuthority="com.YC2010.MyClass.utils.SampleRecentSuggestionsProvider"
+    android:searchSuggestSelection="word MATCH ?"
+    android:searchSuggestThreshold="1"
+    android:searchMode="showSearchLabelAsBadge"
+    android:searchSuggestIntentAction="android.intent.action.VIEW">
 </searchable>
