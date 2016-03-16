@@ -57,7 +57,7 @@ public class CoursesFragment extends Fragment {
 
         // get Courses from db
         CoursesDBHandler db = new CoursesDBHandler(getActivity());
-        final List<CourseInfo> myDataset = db.getAllCourses();
+        final List<CourseInfo> myDataset = db.getAllCourses(getActivity().getSharedPreferences("TERMS", getActivity().MODE_PRIVATE).getInt("TERM_NUM", 0));
 
 
         // specify an adapter (see also next example)

@@ -1,0 +1,734 @@
+[33mcommit fb2b8953a7106aefe78470d5244bc9f4053c2841[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Fri Feb 19 16:50:55 2016 -0500
+
+    TermView added for viewing courses and calendar for current term and next term.
+    DB history added to keep track of all DB versions.
+
+[33mcommit 4f2f7ab6a3b381829c432c63f3b9ffc5b6b32ae3[m
+Merge: 8eb98ac 4469b5f
+Author: Jason Feng <IYCI@users.noreply.github.com>
+Date:   Sat Feb 13 12:38:16 2016 -0500
+
+    Merge pull request #48 from IYCI/SecurityUpdate
+    
+    Improve security of the app
+
+[33mcommit 4469b5fd8b9104e70d0577f21aae6936f8a23e5a[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sat Feb 13 12:24:08 2016 -0500
+
+    Improve security of the app
+
+[33mcommit 8eb98ac2f2922e6cb89b9e267cec8a4999881bcb[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Wed Jan 20 20:27:17 2016 -0500
+
+    Update package name and app store link
+
+[33mcommit 582044b00f89e6c29b4c8c914fef9805a5d10da2[m
+Merge: 98e8b11 e2bb6d6
+Author: Jason Feng <IYCI@users.noreply.github.com>
+Date:   Wed Jan 20 00:00:01 2016 -0500
+
+    Merge pull request #45 from IYCI/Release
+    
+    Update version number and add credit
+
+[33mcommit e2bb6d6f09ef837e0401eaa27c43ef9331a976fa[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Tue Jan 19 23:27:46 2016 -0500
+
+    Update version number and add credit
+    
+    Clean up unused codes
+
+[33mcommit 98e8b11b69e724b3ae6ee36b7533555fdfc7f03d[m
+Merge: df26032 6addb3f
+Author: Jason Feng <IYCI@users.noreply.github.com>
+Date:   Sun Jan 3 00:32:01 2016 -0500
+
+    Merge pull request #42 from IYCI/ErrorView
+    
+    Add error view for course search
+
+[33mcommit 6addb3f86eea2893c1942893239dba5ab6ef9a0f[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Wed Dec 30 20:58:16 2015 -0700
+
+    Add error view for course search
+    
+    Include network error and course not found error
+    Improve error handling when fetching for a course
+    Prevent user from cancelling the loading dialog
+
+[33mcommit df26032194896c736039dff882a141839b1e9e3e[m
+Merge: 0f2a7a9 c4a70ee
+Author: Danny Lin <19506jk@users.noreply.github.com>
+Date:   Thu Dec 31 13:16:18 2015 -0700
+
+    Merge pull request #41 from IYCI/BugFix
+    
+    Fix bugs in Course view
+
+[33mcommit c4a70ee6149e43e775cfa9b9217930420655a312[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Thu Dec 31 13:42:41 2015 -0500
+
+    Fix bugs in Course view
+    Resolves Pressing back button in search view displays empty page
+    Resolves after search a course, keyboard is still present
+    Resolves after search a course, search view will not collapse
+
+[33mcommit 0f2a7a90a1933c505d41f18b0826072c77cc0f6a[m
+Merge: 985fe0d 8239b2c
+Author: Jason Feng <IYCI@users.noreply.github.com>
+Date:   Wed Dec 30 22:20:34 2015 -0500
+
+    Merge pull request #40 from IYCI/FBCleanUp
+    
+    Disable Facebook Login Button
+
+[33mcommit 8239b2cb229fbd518bad1b0ae2c678b16d1aa6b7[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Wed Dec 30 20:09:05 2015 -0700
+
+    Disable Facebook Login Button
+
+[33mcommit 985fe0dfc92faacb0ec192ccd6d2e7f307d00054[m
+Merge: 2b33bb9 b597f28
+Author: Danny Lin <19506jk@users.noreply.github.com>
+Date:   Wed Dec 30 18:54:58 2015 -0700
+
+    Merge pull request #38 from IYCI/DrawerRework
+    
+    Rework the drawer with android support library.
+
+[33mcommit b597f28c8e03d5befd58103d0e2c2ff723db2957[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Tue Dec 29 18:21:08 2015 -0500
+
+    Rework the drawer with android support library.
+    change the status bar to transparent and push the drawer to the very front of the whole UI.
+
+[33mcommit 2b33bb9cc78ab36c38f879a9c241fb8dfbed5495[m
+Merge: b3af3a1 139ca90
+Author: Jason Feng <IYCI@users.noreply.github.com>
+Date:   Tue Dec 29 18:51:29 2015 -0500
+
+    Merge pull request #37 from IYCI/BugFix
+    
+    Fix a bug for displaying HRM 200 in search view
+
+[33mcommit 139ca904da04091dc88e91a4ef480de86c15c3f9[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Tue Dec 29 13:08:22 2015 -0700
+
+    Fix a bug for displaying HRM 200 in search view
+    
+    Enable user to take online courses
+
+[33mcommit b3af3a14a58d4059a8f0f9b218865dde002f87a3[m
+Merge: 020c1db 87cf563
+Author: Jason Feng <IYCI@users.noreply.github.com>
+Date:   Mon Dec 28 13:34:45 2015 -0500
+
+    Merge pull request #29 from IYCI/CourseTabsView
+    
+    Add tabs in course detail view
+
+[33mcommit 87cf563a150061aff0964d4abeb707180739af55[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Fri Dec 25 22:51:46 2015 -0700
+
+    Add tabs in course detail view
+    
+    Close search view after submitting query
+
+[33mcommit 020c1dbbb8412a7684f268df7a19b42a8291de65[m
+Merge: 81c228c e5a76ad
+Author: Danny Lin <19506jk@users.noreply.github.com>
+Date:   Fri Dec 25 21:00:15 2015 -0700
+
+    Merge pull request #26 from IYCI/NetworkUpdate
+    
+    Target SDK Version Update and Network Update
+
+[33mcommit e5a76ad0717e168f4d951ad274e85cb86ef53b29[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Fri Dec 25 19:36:31 2015 -0700
+
+    Bump Target SDK Version to 6.0
+    Removed deprecated Apache HTTP Client
+
+[33mcommit 81c228c49d525b59c1b4d1a2df9f5d9e2ab6bd17[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Fri Dec 25 17:41:42 2015 -0700
+
+    Bump SDK version to 22
+
+[33mcommit c7723f5b77201ed59f9905fa398bc09a33d629f5[m
+Merge: d3dcc80 7648b0f
+Author: IYCI <IYCI@users.noreply.github.com>
+Date:   Sat Nov 28 12:01:19 2015 -0500
+
+    Merge pull request #16 from IYCI/BugFix
+    
+    Fix several bugs in course info view
+
+[33mcommit 7648b0ff5d4874051c6ed3a0d7d655aa1263e3b6[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sat Nov 28 11:05:58 2015 -0500
+
+    Fix several bugs in course info view
+    Fix a bug that displays blank page for courses that do not have professor
+    listed
+    Fix a bug that displays "null null" for empty location
+
+[33mcommit d3dcc803b62c34fe388d24e3dc5b0c81d21d775a[m
+Author: Danny Lin <19506jk@users.noreply.github.com>
+Date:   Tue Nov 24 21:45:47 2015 -0500
+
+    Update README.md
+
+[33mcommit cf144db3f1611415d24478076aad212607c63957[m
+Author: Danny Lin <19506jk@users.noreply.github.com>
+Date:   Tue Nov 24 21:45:03 2015 -0500
+
+    Update README.md
+
+[33mcommit f9ab5fb8c6c06e62794fe33baeb9ec42394a1d41[m
+Merge: 51dc7e6 1ae650c
+Author: Danny Lin <19506jk@users.noreply.github.com>
+Date:   Wed Nov 18 19:50:38 2015 -0800
+
+    Merge pull request #13 from IYCI/ProjectRestructure
+    
+    Project restructure
+
+[33mcommit 1ae650c6e7cdba59e18ee415f9bf549eef4910aa[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Tue Nov 17 22:13:06 2015 -0500
+
+    Project restructure
+
+[33mcommit 51dc7e6cbc6aa4690361ae920bd7322e30314d21[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Mon Nov 16 22:46:10 2015 -0500
+
+    Code clean up
+
+[33mcommit c2a7d1ac1d8d059af0b2ba470bc33de3e982a291[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sun Oct 25 18:23:24 2015 -0400
+
+    Displays course description, antirequisites and prerequisites in course info view
+
+[33mcommit 42b8b23c262796c3352e8a3bdcba037641fce8a3[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sun Oct 25 17:20:17 2015 -0400
+
+    Clean up codes in SearchFragment and SearchFetchTask
+
+[33mcommit 7b4f8296e952cf0328d2d9ae95653ca0dae1f1bd[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sun Oct 25 16:18:25 2015 -0400
+
+    Removes import from Quest timetable feature
+
+[33mcommit e655fb1bf0131a48d40321796b64b86f6d374209[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sun Oct 25 16:08:15 2015 -0400
+
+    Removes tutorial on first launch of the app
+
+[33mcommit a856d10dc6f20a337384cbc79d316bf63267e8d4[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sun Oct 25 15:56:50 2015 -0400
+
+    Creates new models to store fetched course infos
+
+[33mcommit 00b93f58f583ea45a4035928c2a563e04bc8cfb4[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Wed Sep 9 21:16:02 2015 -0400
+
+    using a new simple way to get terms
+    improve interfaces to get term id and term name
+
+[33mcommit 0a682ba0b30eb92754cd0e02bd4e82df8e571ac4[m
+Merge: c0772a1 fe3bfc2
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sun Aug 23 21:10:07 2015 -0400
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit c0772a1bd1a251a8b634745b83aa6fe56e7d378d[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sun Aug 23 21:08:48 2015 -0400
+
+    all args now passed into fragments through bundle
+
+[33mcommit fe3bfc254c9d3355536b69a5b822f3d64adaa2cb[m
+Author: IYCI <IYCI@users.noreply.github.com>
+Date:   Sun Jul 26 18:25:57 2015 -0400
+
+    Update README.md
+
+[33mcommit bd391bc7e46dedf6e6211227b7ac926d9becbadc[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sun Jul 26 18:19:46 2015 -0400
+
+    icon updated
+    event warning implemented
+    back button and fragment stack fixed
+    ready to release state:
+    change example to YC2010
+
+[33mcommit 6e07b15894bc24165b6574d28f44cb4d20ef058d[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Mon Jul 20 14:14:44 2015 -0400
+
+    guide_dialog added, some bug fixes and word rephrase
+
+[33mcommit 58bb6f4f0db031d05dc8cd3a409f6b4796e6d6da[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sun Jul 19 14:30:48 2015 -0400
+
+    fix bugs for importing exams and reminders
+
+[33mcommit 06e0658731a7c8aac5573e5852a73d60b5a44af4[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sun Jul 19 13:36:48 2015 -0400
+
+    remove all courses, reminders and import sample reminders implemented
+
+[33mcommit bfcc8728b5e4c5fb684bda3a7799a652ea8d2412[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sun Jul 19 13:08:58 2015 -0400
+
+    type attribute added for reminder_item
+    facebook event update and final exam update will overwrite exist events.
+    remove by type  method added for reminderDBHandler
+
+[33mcommit d7435d6d02606d0ef78300fdac723ced92c2a92a[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sat Jul 18 23:42:35 2015 -0400
+
+    facebook login implemented
+    events will be auto updated into reminder
+
+[33mcommit ce3652211843ef4514c00a3797b937fa3b5a42aa[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Fri Jul 17 09:46:44 2015 -0400
+
+    final exams can be imported into reminder now
+    redesign of reminder cardview item layout
+    search button always shown on action bar
+
+[33mcommit e8aed8577d021ee1ce1f88c580cb7133c7b2ab5b[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Thu Jul 16 15:24:57 2015 -0400
+
+    bug fix for calender display issue
+
+[33mcommit 873e453fbfcb4a5e75cc0427e23c8a024802c3e0[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Thu Jul 16 00:59:22 2015 -0400
+
+    final exams added in course info page
+    bug fixes for online courses
+
+[33mcommit a775b2780f55bfe799cb629e55553cb325ccdf38[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Wed Jul 15 22:49:23 2015 -0400
+
+    set trap for no network connection
+
+[33mcommit 1d4013ddfa83266b7580eb63eec5d9e14399c8fd[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Wed Jul 15 19:08:05 2015 -0400
+
+    Setting fragment implemented, partially functional
+
+[33mcommit 92d5534537e177871b41fc4b0f3784534e284922[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Fri Jul 10 00:55:07 2015 -0400
+
+    fast scroll removed
+
+[33mcommit ca914af531efae4d2617c83318bf9dd248adc87e[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Wed Jul 8 18:00:46 2015 -0400
+
+    optimization for loading Navig drawer
+
+[33mcommit 3556d94f7efcd5a88a918f28d2543bcac5ade225[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Tue Jul 7 15:02:37 2015 -0400
+
+    profile pic updated, sec choose list cancel button added, button color updatde
+
+[33mcommit 132fee0165f5a2e0188149f47abd54cb021e7fab[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Tue Jul 7 00:30:07 2015 -0400
+
+    wallpaper updated, fast scroll bar added
+
+[33mcommit 142d8d5a3e4fc05546b432d0c8824c6dc8eefd58[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Mon Jul 6 21:02:11 2015 -0400
+
+    courses info page can be accessed by clicking my course item
+    bug fixes for take/drop button and course's time string
+
+[33mcommit 4ab9c4773998651dd2a6088f4c9e94f260a6f7b4[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Mon Jul 6 18:39:32 2015 -0400
+
+    courses can be take or drop from info page by choosing a lec section
+
+[33mcommit 7431ff57c8b076a092f2302979251ada0ef07dea[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sun Jul 5 17:28:36 2015 -0400
+
+    courses info page has TAKE/DROP button
+    Course in Navi. drawer changed to My Course
+
+[33mcommit d4f646b332d699a8b7480ccf0cbe371799e24ad6[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sat Jul 4 16:51:31 2015 -0400
+
+    courses info page have a TAKE button now
+    bug fixes for fail import case
+
+[33mcommit bcabfd85cec975ab2f58281c064898de900b43f1[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Fri Jul 3 18:29:22 2015 -0400
+
+    courses can be searched through the action bar
+
+[33mcommit 32a25a5f38f784c38496e18a04302b97b9f1b4e5[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Thu Jul 2 21:28:00 2015 -0400
+
+    fix a bug accepting "EASIA 210R"-like course string
+
+[33mcommit b359972517cfb00995b297045344658220389f4e[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Thu Jul 2 19:34:01 2015 -0400
+
+    calender item responsive to click
+    bug fixes
+
+[33mcommit 5414839a1caadf051d26e5cbd05c144cc1e5b814[m
+Merge: 4d71ab3 79bee48
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Wed Jul 1 16:46:39 2015 -0400
+
+    Merge branch 'master' of https://github.com/IYCI/MyClass
+
+[33mcommit 4d71ab3bcbbac625798f41613ea8ceb4debcb0f3[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Wed Jul 1 16:46:12 2015 -0400
+
+    Course select can view a course's sec,tut and tst
+    import parser updated
+
+[33mcommit 79bee48ae74d05a293286c6d149da86c1deb8241[m
+Merge: b7b25a4 6ce6930
+Author: Danny Lin <19506jk@users.noreply.github.com>
+Date:   Tue Jun 30 17:32:28 2015 -0400
+
+    Merge pull request #6 from IYCI/Calendar
+    
+    Use Android-Week-View to display courses
+
+[33mcommit 6ce693028077282e0ece3703e0dbc5b77fcc3513[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Tue Jun 30 00:16:16 2015 -0400
+
+    Use Android-Week-View to display courses
+
+[33mcommit b7b25a46af1316f96b3fafa4de821b8b4f0ff221[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Tue Jun 30 00:08:32 2015 -0400
+
+    Course select can view a course's info
+    import parser updated
+
+[33mcommit 621eebe247eb1f87b36fde55ab6d26142c1d9541[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Mon Jun 29 22:45:11 2015 -0400
+
+    Course select can view all subjects with catalog num
+
+[33mcommit 7fc41a0144f94c47f35b7f5b0b2365fb807d91ad[m
+Merge: ffd8f63 f544c7f
+Author: Danny Lin <19506jk@users.noreply.github.com>
+Date:   Mon Jun 29 21:53:06 2015 -0400
+
+    Merge pull request #5 from IYCI/Search
+    
+    Course select can view all subjects
+
+[33mcommit f544c7f63a90be16b4f5ae5314599135cd9f41b6[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Mon Jun 29 21:35:09 2015 -0400
+
+    Course select can view all subjects
+    swipe to remove now delete from db
+
+[33mcommit ffd8f63efa61544ff6e4040d3bdf8167937de4ae[m
+Merge: b285dc5 0eb40ba
+Author: IYCI <IYCI@users.noreply.github.com>
+Date:   Sun Jun 28 11:16:26 2015 -0400
+
+    Merge pull request #4 from IYCI/Search
+    
+    Search
+
+[33mcommit b285dc511af8f7aca49c23d2016821b0acd852c4[m
+Merge: 332045f e61196d
+Author: IYCI <IYCI@users.noreply.github.com>
+Date:   Sun Jun 28 10:59:49 2015 -0400
+
+    Merge pull request #3 from IYCI/SwipeDelete
+    
+    Add swipe to delete for reminders
+
+[33mcommit 0eb40ba7e5afe82aae7d4e110116c71981cdf687[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sun Jun 28 10:54:56 2015 -0400
+
+    fix bug when app is restored
+
+[33mcommit e61196dd7f2c6e19536ed5f84b0ff6080c601b19[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sun Jun 28 02:26:26 2015 -0400
+
+    Add license for helper files
+
+[33mcommit 355125fbb775876f6566377c65f8c78ba8c64d46[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sun Jun 28 02:24:07 2015 -0400
+
+    Add swipe to delete for Reminders
+
+[33mcommit f66a6b01f8763aa4cd78cf16eac237df221883cb[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sat Jun 27 19:21:16 2015 -0400
+
+    Work progress of Search
+
+[33mcommit 332045f2f8309b58360b03b7cda2bead989f7b42[m
+Merge: 0497ae7 d095ad6
+Author: IYCI <IYCI@users.noreply.github.com>
+Date:   Sat Jun 27 19:11:39 2015 -0400
+
+    Merge pull request #2 from IYCI/Search
+    
+    Add course search in the backend
+
+[33mcommit d095ad62dc86f1aad2549f7fb7ecbb64d224b58c[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sat Jun 27 19:00:08 2015 -0400
+
+    Add course search in the backend
+
+[33mcommit 0497ae7e67f00cf8b935ac80415f8a0be4076db8[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sat Jun 27 18:48:10 2015 -0400
+
+    force the app to run in portrait mode
+
+[33mcommit 4321cde0896da979f05e8b85abb1ed38b2d1dab4[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sat Jun 27 16:57:55 2015 -0400
+
+    onCreate empty stack bug fixed
+
+[33mcommit 2c7da46904a48ffc73e2a59fb7ff00275d477037[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sat Jun 27 12:01:41 2015 -0400
+
+    added vibrate when longClick performs
+
+[33mcommit 515b870a490550045a6611adb9c1f89eebbfbfe6[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Fri Jun 26 17:53:10 2015 -0400
+
+    snackbar added for all action response, onCreate bug fixes
+
+[33mcommit 94551c6e62c429d7d8e988f85eccb3c2d69392b8[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Fri Jun 26 11:31:25 2015 -0400
+
+    fix bug when pro get killed and run onCreate
+
+[33mcommit 9dd3df8da02560dfae4880c8dded89a22ec1d8d3[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Wed Jun 24 17:07:26 2015 -0400
+
+    import action and date diaplay bug fixes
+
+[33mcommit 478957fc9341a8911b26a17173766f52bd1e1a3f[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Wed Jun 24 14:08:18 2015 -0400
+
+    courses section and import dialog now fully functional mk2
+
+[33mcommit 5fb320af1e89d12ff7bd2afc55b94b8b5b310c1c[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Tue Jun 16 17:12:52 2015 -0400
+
+    courses section and import dialog now fully functional
+
+[33mcommit 596f58ecd95528b4cd5f18cb7e01882f41ae0843[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Mon Jun 15 21:33:16 2015 -0400
+
+    add courses  section in navig drawer
+
+[33mcommit 233cb249ca339633ff57dcffe1aa7a119c266161[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Mon Jun 15 21:09:03 2015 -0400
+
+    navigation drawer icon temporarily set
+
+[33mcommit 3f30d9bb9f2d6242b7017ad8e95a6c72ac77e4c3[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Mon Jun 15 16:34:29 2015 -0400
+
+    delete now fully working
+
+[33mcommit 3b57d904887580bd39edea6fd28d4c4c1ad47f6c[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Mon Jun 15 15:27:03 2015 -0400
+
+    passed  event now wont show,
+    onLongClick now can delete,
+    mobile quest data parser now added but not implemented
+
+[33mcommit a0768e070a3d50d6612075af69d66bcd949ba336[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Tue Jun 9 12:39:17 2015 -0400
+
+    CardView onClick and onLongClick action implemented with ripple effect
+    edit event dialog created, but not functional temporarily
+
+[33mcommit 2ab497f52e62b2696f5d46bb2fc01957e3ab8d02[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sun Jun 7 00:14:19 2015 -0400
+
+    Add bottom padding for Reminder's view
+
+[33mcommit c53f679681636c9be22e558f08fffdd9a4ed3ff8[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sun Jun 7 00:00:56 2015 -0400
+
+    Organize file structure
+
+[33mcommit b46f55284ed68a86f0472eab1dddb8d19d94f073[m
+Merge: 533ab66 7842cc0
+Author: Danny Lin <19506jk@users.noreply.github.com>
+Date:   Sat Jun 6 23:54:53 2015 -0400
+
+    Merge pull request #1 from IYCI/RefreshView
+    
+    Update Reminder's view for new data entry
+
+[33mcommit 7842cc089ed4279081ce9f25914264c595d2b95a[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sat Jun 6 23:53:12 2015 -0400
+
+    Update and apply gitignore
+
+[33mcommit 835eb47c74dd0fca98d7096c08ee930d80510001[m
+Author: 19506jk <pengdanny23@gmail.com>
+Date:   Sat Jun 6 23:49:21 2015 -0400
+
+    Update Reminder's view for new data entry
+
+[33mcommit 533ab66ffad90924953bc16aba30fa4d0e15d00f[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sat Jun 6 19:32:20 2015 -0400
+
+    card view refinement
+    better ui, now date and location can correctly display
+
+[33mcommit f4c52767b7d4a5164807da1f72136421e9beb203[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sat Jun 6 03:16:21 2015 -0400
+
+    card view with title display, reminder db added
+    reminder data base implemented with sqlite
+    reminder now has card view with only title
+    new event dialog can interact with card view
+
+[33mcommit 498bd54e1b77ab46e1d9ebf6759b7854f97d0eba[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Mon Jun 1 20:33:42 2015 -0400
+
+    New event dialog: date and time button now with pickers' update
+    button font change after selecting date or time
+    selected time saved into shared preferences
+
+[33mcommit f6d61a6396e4169d9ec41916394dbebc1926f38d[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sat May 30 15:32:39 2015 -0400
+
+    New event dialog refinement with strict padding
+
+[33mcommit eb27b5747f6d37ee4bd86571c64db7580471e1e0[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Sat May 30 01:03:04 2015 -0400
+
+    New event now using alert dialog, with better button design
+    bug fix for new event as well
+    but now function for new event dialog
+
+[33mcommit d0ef6a5ae24e71ec7decf825192f612dd0929f77[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Fri May 29 14:33:50 2015 -0400
+
+    import dialog implemented mk2
+    add event has bug
+
+[33mcommit 287b0368ce6bfe2d27ab90be84d9a18f7ac55bf1[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Thu May 28 20:20:41 2015 -0400
+
+    add event dialog implemented
+
+[33mcommit cb83a846af3e516150e15443a996dae5b3924ed3[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Thu May 28 18:57:09 2015 -0400
+
+    Fab and import dialog added
+    now can test calender data structure using dialog i/o box
+
+[33mcommit e7bd9bcf0c99e18580cbfeea4aa16a7cf362b3fe[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Tue May 26 17:45:11 2015 -0400
+
+    drawer selected item fixed
+    but no back button navigation anymore
+
+[33mcommit 87301216bcbe9261f24f3ca6b85079e997f5a579[m
+Merge: def8ce5 dbdfbbb
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Tue May 26 15:59:51 2015 -0400
+
+    Initial commit
+
+[33mcommit def8ce577432b52b537147be717e203c8388ea0d[m
+Author: IYCI <jason412389806@hotmail.com>
+Date:   Tue May 26 15:56:22 2015 -0400
+
+    Initial commit
+
+[33mcommit dbdfbbb9e6fa0d306e0f530d686518c6523f547c[m
+Author: IYCI <IYCI@users.noreply.github.com>
+Date:   Tue May 26 15:53:10 2015 -0400
+
+    Initial commit

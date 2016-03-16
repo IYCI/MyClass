@@ -9,8 +9,8 @@ android {
         applicationId 'com.YC2010.MyClass'
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 1010099
-        versionName "1.1.0"
+        versionCode 1020000
+        versionName "1.2.0 develop"
     }
     buildTypes {
         release {

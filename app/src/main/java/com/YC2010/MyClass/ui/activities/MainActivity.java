@@ -14,6 +14,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,16 +28,23 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.YC2010.MyClass.R;
+import com.YC2010.MyClass.data.Connections;
 import com.YC2010.MyClass.ui.fragments.CalendarFragment;
 import com.YC2010.MyClass.ui.fragments.CoursesFragment;
 import com.YC2010.MyClass.ui.fragments.ReminderFragment;
 import com.YC2010.MyClass.ui.fragments.SearchFragment;
 import com.YC2010.MyClass.ui.fragments.SettingFragment;
 import com.YC2010.MyClass.ui.fragments.SubjectsFragment;
+import com.YC2010.MyClass.utils.Constants;
+
+import java.util.ArrayList;
 //import com.facebook.AccessToken;
 //import com.facebook.AccessTokenTracker;
 //import com.facebook.CallbackManager;
@@ -54,7 +62,8 @@ import com.YC2010.MyClass.ui.fragments.SubjectsFragment;
 //import com.facebook.login.widget.LoginButton;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        AdapterView.OnItemSelectedListener{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer_menu.
@@ -79,6 +88,38 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity", "enter onCreate");
         super.onCreate(savedInstanceState);
 
+        // update ALL terms in sharedPreference
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    ArrayList<Integer> termNumList = Connections.getTerms().getIntegerArrayList("KEY_TERM_NUM");
+                    ArrayList<String> termNameList = Connections.getTerms().getStringArrayList("KEY_TERM_NAME");
+
+                    if (termNumList != null) {
+                        getSharedPreferences("TERMS", MODE_PRIVATE)
+                                .edit()
+                                .putInt("CURRENT_TERM", termNumList.get(1))
+                                .putInt("NEXT_TERM", termNumList.get(2))
+                                .apply();
+                        Log.d("MainActivity", "curTerm is " + getSharedPreferences("TERMS", MODE_PRIVATE).getInt("CURRENT_TERM", 0));
+                    }
+                    if (termNameList != null) {
+                        getSharedPreferences("TERMS", MODE_PRIVATE)
+                                .edit()
+                                .putString("CURRENT_TERM_NAME", termNameList.get(1) + " (Current)")
+                                .putString("NEXT_TERM_NAME", termNameList.get(2) + " (Next)")
+                                .apply();
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+        }.execute();
+
         if (savedInstanceState != null){
             // get title out
             mTitle = savedInstanceState.getCharSequence(TITLE_KEY);
@@ -95,70 +136,7 @@ public class MainActivity extends AppCompatActivity {
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-
-            // This method will trigger on item Click of navigation menu
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                Log.d("MainActivity", "onNavigationItemSelected");
-                mDrawerLayout.closeDrawers();
-
-                //Checking if the item is in checked state or not, if not make it in checked state
-                if (menuItem.isChecked()){
-                    //Closing drawer_menu on item click
-                    return true;
-                }
-
-                menuItem.setChecked(true);
-
-                //Check to see which item was being clicked and perform appropriate action
-                switch (menuItem.getItemId()) {
-                    case R.id.drawer_Calender:
-                        mTitle = getString(R.string.title_MyClass);
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.container, new CalendarFragment())
-                                .addToBackStack("0")
-                                .commit();
-                        break;
-                    case R.id.drawer_Courses:
-                        mTitle = getString(R.string.title_Courses);
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.container, new CoursesFragment())
-                                .addToBackStack("1")
-                                .commit();
-                        break;
-                    case R.id.drawer_Course_Select:
-                        mTitle = getString(R.string.title_Course_Select);
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.container, new SubjectsFragment())
-                                .addToBackStack("2")
-                                .commit();
-                        break;
-                    case R.id.drawer_Reminder:
-                        mTitle = getString(R.string.title_Reminder);
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.container, new ReminderFragment())
-                                .addToBackStack("3")
-                                .commit();
-                        break;
-                    case R.id.drawer_Settings:
-                        mTitle = getString(R.string.title_Settings);
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.container, new SettingFragment())
-                                .addToBackStack("4")
-                                .commit();
-                        break;
-                    default:
-                        Toast.makeText(getApplicationContext(), "undefine drawer item selected, please report to the developer", Toast.LENGTH_LONG).show();
-                        break;
-                }
-                
-                if (mToolbar != null) {
-                    mToolbar.setTitle(mTitle);
-                }
-                return true;
-            }
-        });
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         // make the profile image as a circle
         ImageView profileImageContainer = (ImageView) mNavigationView.getHeaderView(0).findViewById(R.id.profile_image);
@@ -182,16 +160,33 @@ public class MainActivity extends AppCompatActivity {
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,mToolbar,R.string.drawer_openDrawer, R.string.drawer_closeDrawer){
             @Override
             public void onDrawerClosed(View drawerView) {
-                // Code here will be triggered once the drawer_menu closes as we dont want anything to happen so we leave this blank
+                // Code here will be triggered once the drawer_menu closes as we don't want anything to happen so we leave this blank
                 super.onDrawerClosed(drawerView);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                // Code here will be triggered once the drawer_menu open as we dont want anything to happen so we leave this blank
+                // Code here will be triggered once the drawer_menu open as we don't want anything to happen so we leave this blank
                 super.onDrawerOpened(drawerView);
             }
         };
+
+        // set up the term spinner
+        Spinner termSpinner = (Spinner) mNavigationView.getHeaderView(0).findViewById(R.id.term_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayList<String> termStrings = new ArrayList<>();
+        termStrings.add(0, getSharedPreferences("TERMS", MODE_PRIVATE).getString("CURRENT_TERM_NAME", Constants.defaultCurTermName));
+        termStrings.add(1, getSharedPreferences("TERMS", MODE_PRIVATE).getString("NEXT_TERM_NAME", Constants.defaultNextTermName));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, termStrings);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        termSpinner.setAdapter(adapter);
+        ArrayList<Integer> termInts = new ArrayList<>();
+        termInts.add(0, getSharedPreferences("TERMS", MODE_PRIVATE).getInt("CURRENT_TERM", Constants.defaultCurTermNum));
+        termInts.add(1, getSharedPreferences("TERMS", MODE_PRIVATE).getInt("NEXT_TERM", Constants.defaultNextTermNum));
+        termSpinner.setSelection(termInts.indexOf(getSharedPreferences("TERMS", MODE_PRIVATE).getInt("TERM_NUM", termInts.get(0))));
+        termSpinner.setOnItemSelectedListener(this);
 
         //Setting the actionbarToggle to drawer_menu layout
         mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
@@ -199,8 +194,8 @@ public class MainActivity extends AppCompatActivity {
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
-
         checkFirstRun();
+
 
 //        /* Facebook stuff starts */
 //        FacebookSdk.sdkInitialize(getApplicationContext());
@@ -238,8 +233,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         Log.d("MainActivity", "enter onDestroy");
-        Toast.makeText(getApplicationContext(), "onDestroy", Toast.LENGTH_LONG)
-                .show();
+        //Toast.makeText(getApplicationContext(), "onDestroy", Toast.LENGTH_LONG).show();
         super.onDestroy();
 
         // Facebook Related Code
@@ -575,5 +569,114 @@ public class MainActivity extends AppCompatActivity {
         public Bitmap getBitmap() {
             return mBitmap;
         }
+    }
+
+
+
+    /*** Here begins all listeners ***/
+
+    /**************** implements NavigationView.OnNavigationItemSelectedListener ****************/
+    @Override
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
+        Log.d("MainActivity", "onNavigationItemSelected");
+        mDrawerLayout.closeDrawers();
+
+        //Checking if the item is in checked state or not, if not make it in checked state
+        if (menuItem.isChecked()){
+            //Closing drawer_menu on item click
+            return true;
+        }
+
+        menuItem.setChecked(true);
+
+        //Check to see which item was being clicked and perform appropriate action
+        switch (menuItem.getItemId()) {
+            case R.id.drawer_Calender:
+                mTitle = getString(R.string.title_MyClass);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new CalendarFragment())
+                        .addToBackStack("0")
+                        .commit();
+                break;
+            case R.id.drawer_Courses:
+                mTitle = getString(R.string.title_Courses);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new CoursesFragment())
+                        .addToBackStack("1")
+                        .commit();
+                break;
+            case R.id.drawer_Course_Select:
+                mTitle = getString(R.string.title_Course_Select);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new SubjectsFragment())
+                        .addToBackStack("2")
+                        .commit();
+                break;
+            case R.id.drawer_Reminder:
+                mTitle = getString(R.string.title_Reminder);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new ReminderFragment())
+                        .addToBackStack("3")
+                        .commit();
+                break;
+            case R.id.drawer_Settings:
+                mTitle = getString(R.string.title_Settings);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new SettingFragment())
+                        .addToBackStack("4")
+                        .commit();
+                break;
+            default:
+                Toast.makeText(getApplicationContext(), "undefine drawer item selected, please report to the developer", Toast.LENGTH_LONG).show();
+                break;
+        }
+
+        if (mToolbar != null) {
+            mToolbar.setTitle(mTitle);
+        }
+        return true;
+    }
+
+
+    /**************** AdapterView.OnItemSelectedListener(Term Selection) ****************/
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        SharedPreferences termSharedPreferences = getSharedPreferences("TERMS", MODE_PRIVATE);
+        // search for term id and add it into shared preference
+        int selectedTermID = 200;
+        if (parent.getItemAtPosition(position).equals(termSharedPreferences.getString("CURRENT_TERM_NAME", ""))){
+            selectedTermID = termSharedPreferences.getInt("CURRENT_TERM", Constants.defaultCurTermNum);
+        }
+        if (parent.getItemAtPosition(position).equals(termSharedPreferences.getString("NEXT_TERM_NAME", ""))){
+            selectedTermID = termSharedPreferences.getInt("NEXT_TERM", Constants.defaultNextTermNum);
+        }
+        Log.d("MainActivity", "selectedTermID is " + selectedTermID);
+
+        if (termSharedPreferences.getInt("TERM_NUM", -1) ==  -1){
+            termSharedPreferences.edit().putInt("TERM_NUM", selectedTermID).apply();
+        }
+        else if (termSharedPreferences.getInt("TERM_NUM", -1) != selectedTermID) {
+            termSharedPreferences.edit().putInt("TERM_NUM", selectedTermID).apply();
+
+            // get back to the calender view
+            mDrawerLayout.closeDrawers();
+            mNavigationView.getMenu().getItem(0).setChecked(true);
+            mTitle = getString(R.string.title_MyClass);
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, new CalendarFragment())
+                    .addToBackStack("0")
+                    .commit();
+            if (mToolbar != null) {
+                mToolbar.setTitle(mTitle);
+            }
+
+            Toast.makeText(getApplicationContext(), "Change term to " + parent.getItemAtPosition(position),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

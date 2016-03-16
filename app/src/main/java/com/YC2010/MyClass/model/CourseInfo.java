@@ -44,7 +44,7 @@ public class CourseInfo {
     }
 
     public void setTimeAPM(String time){
-        if (!isOnline) {
+        if (!isOnline && time != null) {
             int i = 0;
             for (; time.charAt(i) < 48 || time.charAt(i) > 57; i++);
             String days = time.substring(0,i);

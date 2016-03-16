@@ -3,6 +3,7 @@ package com.YC2010.MyClass.data;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.YC2010.MyClass.utils.Constants;
@@ -16,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -71,12 +73,30 @@ public class Connections {
                 cataNum += input.charAt(i);
             }
         }
-
-
         return Constants.UWAPIROOT + "courses/" + subject + "/" + cataNum + "/schedule.json" + URLEnding();
     }
 
-    public static String getCurrentTerm() throws Exception {
+    // /terms/{term}/{subject}/{catalog_number}/schedule
+    public static String getScheduleURL(String input, Integer term) {
+        String subject = "";
+        String cataNum = "";
+        boolean isCoursePrefix = true;
+        input = input.replaceAll("\\s+","");
+
+        for (int i = 0; i < input.length(); i++) {
+            if (isCoursePrefix && Character.isDigit(input.charAt(i)))
+                isCoursePrefix = false;
+            if (isCoursePrefix){
+                subject += input.charAt(i);
+            }
+            else {
+                cataNum += input.charAt(i);
+            }
+        }
+        return Constants.UWAPIROOT + "terms/" + term + "/" + subject + "/" + cataNum + "/schedule.json" + URLEnding();
+    }
+
+    public static Integer getCurrentTerm() throws Exception {
         String term;
         String termList_url = Constants.UWAPIROOT + "terms/list.json" + URLEnding();
         JSONObject termList = getJSON_from_url(termList_url);
@@ -87,28 +107,49 @@ public class Connections {
             e.printStackTrace();
             return null;
         }
-        return term;
+        return Integer.parseInt(term);
     }
 
 
-    /*      return a list     */
+    /*      return a list of term num and a list of term name     */
     /* index 0: previous term */
     /* index 1: current term  */
     /* index 2: next term     */
-    public static ArrayList getTerms() {
-        ArrayList<String> term_list = new ArrayList<>();
+    public static Bundle getTerms() {
+        Bundle mbundle = new Bundle();
+        ArrayList<Integer> termNumList = new ArrayList<>();
+        ArrayList<String> termNameList = new ArrayList<>();
         String termList_url = Constants.UWAPIROOT + "terms/list.json" + URLEnding();
         try {
             JSONObject termData = getJSON_from_url(termList_url).getJSONObject("data");
-            term_list.add(0, termData.getString("previous_term"));
-            term_list.add(1, termData.getString("current_term"));
-            term_list.add(2,termData.getString("next_term"));
+            termNumList.add(0, Integer.parseInt(termData.getString("previous_term")));
+            termNumList.add(1, Integer.parseInt(termData.getString("current_term")));
+            termNumList.add(2,Integer.parseInt(termData.getString("next_term")));
+
+            JSONObject termYear = termData.getJSONObject("listings");
+            Iterator<?> years = termYear.keys();
+            JSONArray termTermList;
+            HashMap<Integer, String> termMap = new HashMap<>();
+            while (years.hasNext()){
+                String key = (String) years.next();
+                termTermList = termYear.getJSONArray(key);
+                for (int j = 0; j < termTermList.length(); j++){
+                    termMap.put(termTermList.getJSONObject(j).getInt("id"), termTermList.getJSONObject(j).getString("name"));
+                }
+            }
+
+            for (int i = 0; i < termNumList.size(); i++){
+                termNameList.add(i, termMap.get(termNumList.get(i)));
+            }
         }
         catch (Exception e){
             e.printStackTrace();
             return null;
         }
-        return term_list;
+
+        mbundle.putIntegerArrayList("KEY_TERM_NUM", termNumList);
+        mbundle.putStringArrayList("KEY_TERM_NAME", termNameList);
+        return mbundle;
     }
 
     public static String getTermName(String term){
@@ -134,7 +175,7 @@ public class Connections {
         }
     }
 
-    public static String getExamsURL(String term) {
+    public static String getExamsURL(int term) {
         return Constants.UWAPIROOT + "terms/" + term + "/examschedule" + ".json" + URLEnding();
     }
 

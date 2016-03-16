@@ -27,17 +27,17 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import com.YC2010.MyClass.model.CourseInfo;
+import com.YC2010.MyClass.R;
 import com.YC2010.MyClass.callbacks.AsyncTaskCallbackInterface;
+import com.YC2010.MyClass.callbacks.SimpleItemTouchHelperCallback;
 import com.YC2010.MyClass.data.CoursesDBHandler;
-import com.YC2010.MyClass.data.fetchtasks.FinalsFetchTask;
 import com.YC2010.MyClass.data.ReminderDBHandler;
-import com.YC2010.MyClass.ui.adapters.Reminder_Adapter;
+import com.YC2010.MyClass.data.fetchtasks.FinalsFetchTask;
+import com.YC2010.MyClass.model.CourseInfo;
 import com.YC2010.MyClass.model.Reminder_item;
 import com.YC2010.MyClass.ui.activities.MainActivity;
-import com.YC2010.MyClass.R;
 import com.YC2010.MyClass.ui.adapters.ItemTouchHelperAdapter;
-import com.YC2010.MyClass.callbacks.SimpleItemTouchHelperCallback;
+import com.YC2010.MyClass.ui.adapters.Reminder_Adapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -429,7 +429,7 @@ public class ReminderFragment extends Fragment {
             try {
                 // get courses
                 CoursesDBHandler db = new CoursesDBHandler(getActivity());
-                List<CourseInfo> myCourses = db.getAllCourses();
+                List<CourseInfo> myCourses = db.getAllCourses(getActivity().getSharedPreferences("TERMS", getActivity().MODE_PRIVATE).getInt("CURRENT_TERM", 0));
                 db.close();
                 List <String> course_names = new ArrayList<>();
                 List <String> course_secs = new ArrayList<>();

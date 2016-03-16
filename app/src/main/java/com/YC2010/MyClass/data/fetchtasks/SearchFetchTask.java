@@ -58,7 +58,8 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             bundle.putBoolean("valid_return", false);
 
             // get schedule JSONBObject
-            String schedule_url = Connections.getScheduleURL(input);
+            Log.d("SearchFetchTask", "term is " + mActivity.getSharedPreferences("TERMS", mActivity.MODE_PRIVATE).getInt("TERM_NUM", 0));
+            String schedule_url = Connections.getScheduleURL(input, mActivity.getSharedPreferences("TERMS", mActivity.MODE_PRIVATE).getInt("TERM_NUM", 0));
             JSONObject schedulesObject = Connections.getJSON_from_url(schedule_url);
 
             // check valid data return
@@ -186,10 +187,9 @@ public class SearchFetchTask extends AsyncTask<String, Void, Bundle> {
             bundle.putParcelableArrayList(Constants.tutorialObjectListKey, tutorials);
             bundle.putParcelableArrayList(Constants.testObjectListKey, tests);
 
-            String current_term = (String) Connections.getTerms().get(1);
 
             // get exam JSONBObject
-            String exam_url = Connections.getExamsURL(current_term);
+            String exam_url = Connections.getExamsURL(mActivity.getSharedPreferences("TERMS", mActivity.MODE_PRIVATE).getInt("TERM_NUM", 0));
             JSONObject examObject = Connections.getJSON_from_url(exam_url);
 
             if (examObject != null) {
