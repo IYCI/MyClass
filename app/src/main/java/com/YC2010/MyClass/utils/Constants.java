@@ -23,9 +23,9 @@ public class Constants {
 
     // default term value
     public static Integer defaultCurTermNum = 1161;
-    public static String defaultCurTermName = "2016 Winter (Current)";
+    public static String defaultCurTermName = "Winter 2016 (Current)";
     public static Integer defaultNextTermNum = 1165;
-    public static String defaultNextTermName = "2016 Spring (Next)";
+    public static String defaultNextTermName = "Spring 2016 (Next)";
 
     // temporarily hardcoded
     // Note: month off by one because of unix time standard

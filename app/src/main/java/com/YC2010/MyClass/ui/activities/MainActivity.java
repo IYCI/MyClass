@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 .putInt("CURRENT_TERM", termNumList.get(1))
                                 .putInt("NEXT_TERM", termNumList.get(2))
                                 .apply();
-                        Log.d("MainActivity", "curTerm is " + getSharedPreferences("TERMS", MODE_PRIVATE).getInt("CURRENT_TERM", 0));
+                        Log.d("MainActivity", "Fetch from JSON, curTerm: " + getSharedPreferences("TERMS", MODE_PRIVATE).getInt("CURRENT_TERM", 0));
                     }
                     if (termNameList != null) {
                         getSharedPreferences("TERMS", MODE_PRIVATE)
@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 .putString("CURRENT_TERM_NAME", termNameList.get(1) + " (Current)")
                                 .putString("NEXT_TERM_NAME", termNameList.get(2) + " (Next)")
                                 .apply();
+                        Log.d("MainActivity", "Fetch from JSON, curTermName: " + getSharedPreferences("TERMS", MODE_PRIVATE).getString("CURRENT_TERM_NAME", "NAN"));
                     }
                 }
                 catch (Exception e) {
@@ -644,10 +645,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences termSharedPreferences = getSharedPreferences("TERMS", MODE_PRIVATE);
         // search for term id and add it into shared preference
         int selectedTermID = 200;
-        if (parent.getItemAtPosition(position).equals(termSharedPreferences.getString("CURRENT_TERM_NAME", ""))){
+        Log.d("MainActivity", "selected item is " + parent.getItemAtPosition(position) + ", " + termSharedPreferences.getString("CURRENT_TERM_NAME", Constants.defaultCurTermName));
+        if (parent.getItemAtPosition(position).equals(termSharedPreferences.getString("CURRENT_TERM_NAME", Constants.defaultCurTermName))){
             selectedTermID = termSharedPreferences.getInt("CURRENT_TERM", Constants.defaultCurTermNum);
         }
-        if (parent.getItemAtPosition(position).equals(termSharedPreferences.getString("NEXT_TERM_NAME", ""))){
+        if (parent.getItemAtPosition(position).equals(termSharedPreferences.getString("NEXT_TERM_NAME", Constants.defaultNextTermName))){
             selectedTermID = termSharedPreferences.getInt("NEXT_TERM", Constants.defaultNextTermNum);
         }
         Log.d("MainActivity", "selectedTermID is " + selectedTermID);
