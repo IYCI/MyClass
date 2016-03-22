@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 .putInt("CURRENT_TERM", termNumList.get(1))
                                 .putInt("NEXT_TERM", termNumList.get(2))
                                 .apply();
-                        Log.d("MainActivity", "Fetch from JSON, curTerm: " + getSharedPreferences("TERMS", MODE_PRIVATE).getInt("CURRENT_TERM", 0));
                     }
                     if (termNameList != null) {
                         getSharedPreferences("TERMS", MODE_PRIVATE)
@@ -110,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 .putString("CURRENT_TERM_NAME", termNameList.get(1) + " (Current)")
                                 .putString("NEXT_TERM_NAME", termNameList.get(2) + " (Next)")
                                 .apply();
-                        Log.d("MainActivity", "Fetch from JSON, curTermName: " + getSharedPreferences("TERMS", MODE_PRIVATE).getString("CURRENT_TERM_NAME", "NAN"));
                     }
                 }
                 catch (Exception e) {

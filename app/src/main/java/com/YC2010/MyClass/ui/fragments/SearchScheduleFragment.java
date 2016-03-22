@@ -9,6 +9,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -217,10 +218,10 @@ public class SearchScheduleFragment extends Fragment {
         if (takeButton != null) {
             if (taken) {
                 takeButton.setText("remove");
-                takeButton.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.fab_color_1)));
+                ((AppCompatButton)takeButton).setSupportBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.fab_color_1)));
             } else {
                 takeButton.setText("Take");
-                takeButton.setBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.dialog_text_color)));
+                ((AppCompatButton)takeButton).setSupportBackgroundTintList(ColorStateList.valueOf(mActivity.getResources().getColor(R.color.dialog_text_color)));
             }
         }
     }
