@@ -1,7 +1,7 @@
 // Note:
 // *** indicates changes compare to previous version
 
-Version 4:
+Version 3,4,5:
 KEY_NUM  			STRING 	PRIMARY KEY
 KEY_NAME  			TEXT
 KEY_SECTION  		TEXT
@@ -15,7 +15,7 @@ KEY_LOC_TUT  		TEXT
 KEY_SEC_TUT  		TEXT
 KEY_ONLINE  		INTEGER
 
-Version 5:
+Version 6:
 KEY_NUM  			STRING 	PRIMARY KEY
 KEY_NAME  			TEXT
 KEY_SECTION  		TEXT

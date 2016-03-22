@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.YC2010.MyClass.model.CourseInfo;
+import com.YC2010.MyClass.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
     private Context mContext;
 
     // DB Version
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     // DB Name
     private static final String DATABASE_NAME = "CoursesManager";
@@ -68,11 +69,13 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d("CoursesDBHandler", "onUpgrade");
         switch(oldVersion) {
+            case 3:
             case 4:
+            case 5:
                 try {
                     Log.d("CoursesDBHandler", "onUpgrade case 4");
                     db.execSQL("ALTER TABLE " + TABLE_COURSES + " ADD column " + KEY_TAKING_TERM + " INTEGER NOT NULL DEFAULT(" +
-                            mContext.getSharedPreferences("TERMS", mContext.MODE_PRIVATE).getInt("CURRENT_TERM", 0) + ")");
+                            mContext.getSharedPreferences("TERMS", mContext.MODE_PRIVATE).getInt("CURRENT_TERM", Constants.defaultCurTermNum) + ")");
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -214,7 +217,7 @@ public class CoursesDBHandler extends SQLiteOpenHelper {
         List<CourseInfo> CoursesList = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_COURSES + " WHERE " + KEY_TAKING_TERM + " = " + term;
+        String selectQuery = "SELECT * FROM " + TABLE_COURSES + " WHERE " + KEY_TAKING_TERM + " = " + term;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
