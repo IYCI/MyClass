@@ -16,7 +16,7 @@ public class FinalObject implements Parcelable {
     public FinalObject() {}
 
     @Override
-    public int describeContents() {
+    public int describeContents()  {
         return 0;
     }
 
